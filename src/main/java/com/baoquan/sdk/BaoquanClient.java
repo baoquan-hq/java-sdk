@@ -145,8 +145,8 @@ public class BaoquanClient {
    */
   public ApplyCaResponse applyCa(ApplyCaPayload payload, ByteArrayBody seal) throws ServerException {
     checkApplyCaPayload(payload);
-    if (payload.getType() == CaType.ENTERPRISE && seal == null) {
-      throw new IllegalArgumentException("seal can not be null when ca type is enterprise");
+    if (payload.getType() == CaType.ENTERPRISE) {
+      checkSeal(seal);
     }
     Map<String, Object> payloadMap = buildApplyCaPayloadMap(payload);
     Map<String, ByteArrayBody> streamBodyMap = new HashMap<>();
@@ -215,6 +215,20 @@ public class BaoquanClient {
     }
     if (StringUtils.isEmpty(payload.getLinkIdCard())) {
       throw new IllegalArgumentException("payload.linkIdCard can not be empty");
+    }
+  }
+
+  private void checkSeal(ByteArrayBody seal) {
+    if (seal == null) {
+      throw new IllegalArgumentException("seal can not be null when ca type is enterprise");
+    }
+    String fileName = seal.getFilename();
+    if (!fileName.contains(".")) {
+      throw new IllegalArgumentException("seal file name must be like xxx.png or xxx.jpg");
+    }
+    String fileType = fileName.substring(fileName.indexOf(".") + 1).toLowerCase();
+    if (!fileType.equals("jpg") && !fileType.equals("png")) {
+      throw new IllegalArgumentException("seal file name extension must be png or jpg");
     }
   }
 

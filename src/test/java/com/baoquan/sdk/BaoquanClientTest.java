@@ -508,6 +508,29 @@ public class BaoquanClientTest {
    */
   @Test
   public void testApplyCa6() throws ServerException, IOException {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("seal file name extension must be png or jpg");
+    ApplyCaPayload payload = new ApplyCaPayload();
+    payload.setType(CaType.ENTERPRISE);
+    payload.setName("浙金网");
+    payload.setIcCode("91330105311263043J");
+    payload.setOrgCode("311263043");
+    payload.setTaxCode("330105311263043");
+    payload.setLinkName("张三");
+    payload.setLinkIdCard(randomIDCard());
+    payload.setLinkPhone(randomPhone());
+    payload.setLinkEmail(randomPhone() + "@qq.com");
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+    ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.gif");
+    client.applyCa(payload, byteArrayBody);
+  }
+
+  /**
+   * apply enterprise ca
+   * @throws ServerException
+   */
+  @Test
+  public void testApplyCa7() throws ServerException, IOException {
     ApplyCaPayload payload = new ApplyCaPayload();
     payload.setType(CaType.ENTERPRISE);
     payload.setName("浙金网");
