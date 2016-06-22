@@ -315,21 +315,23 @@ public class BaoquanClient {
   }
 
   private <T>T post(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+    String path = String.format("/api/%s/%s", version, apiName);
+    String requestId = requestIdGenerator.createRequestId();
+    if (StringUtils.isEmpty(requestId)) {
+      throw new ClientException("request id can not be empty");
+    }
+    if (StringUtils.isEmpty(accessKey)) {
+      throw new ClientException("accessKey can not be empty");
+    }
+    int tonce = (int) (System.currentTimeMillis()/1000);
     String payloadString;
     try {
       payloadString = Utils.objectToJson(payload);
     } catch (JsonProcessingException e) {
       throw new ClientException(e);
     }
-    String httpMethod = "POST";
-    String path = String.format("/api/%s/%s", version, apiName);
-    String requestId = requestIdGenerator.createRequestId();
-    if (StringUtils.isEmpty(requestId)) {
-      throw new ClientException("request id can not be empty");
-    }
-    int tonce = (int) (System.currentTimeMillis()/1000);
     // build the data to sign
-    String data = httpMethod + path + requestId + accessKey + tonce + payloadString;
+    String data = "POST" + path + requestId + accessKey + tonce + payloadString;
     String signature;
     try {
       signature = Utils.sign(pemPath, data);
@@ -375,15 +377,15 @@ public class BaoquanClient {
       try {
         exceptionResponse = Utils.jsonToObject(response, ExceptionResponse.class);
       } catch (IOException e) {
-        throw new ServerException(requestId, "Unknown error");
+        throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
       }
-      throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage());
+      throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage(), exceptionResponse.getTimestamp());
     }
     T responseObject;
     try {
       responseObject = Utils.jsonToObject(response, responseClass);
     } catch (IOException e) {
-      throw new ServerException(requestId, "Unknown error");
+      throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
     }
     return responseObject;
   }

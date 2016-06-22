@@ -187,6 +187,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("invalid factoid type: product corresponding schema not exist");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    payload.setCompleted(false);
     Map<IdentityType, String> identities = new HashMap<>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
