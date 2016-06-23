@@ -139,7 +139,7 @@ public class BaoquanClientTest {
     User user = new User();
     user.setName("张三");
     user.setPhone_number("13234568732");
-    user.setRegistered_at("2015.06.23");
+    user.setRegistered_at("1466674609");
     user.setUsername("tom");
     factoid.setType("user");
     factoid.setData(user);
@@ -168,7 +168,7 @@ public class BaoquanClientTest {
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
-    user.setRegistered_at("2015.06.23");
+    user.setRegistered_at("1466674609");
     user.setUsername("tom");
     factoid.setType("user");
     factoid.setData(user);
@@ -403,7 +403,7 @@ public class BaoquanClientTest {
     factoid = new Factoid();
     User user = new User();
     user.setName("张三");
-    user.setRegistered_at("2015.06.23");
+    user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
     factoid.setType("user");
@@ -550,6 +550,11 @@ public class BaoquanClientTest {
     Assert.checkNonNull(response.getData().getNo());
   }
 
+  /**
+   * add one factoid with one attachment that need to sign
+   * @throws ServerException
+   * @throws IOException
+   */
   @Test
   public void testSign0() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
@@ -562,7 +567,7 @@ public class BaoquanClientTest {
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
-    user.setRegistered_at("2015.06.23");
+    user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
     factoid.setType("user");
@@ -576,11 +581,111 @@ public class BaoquanClientTest {
     signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
     jMap.put("0", signs);
     iMap.put("0", jMap);
-    payload.setAttachments(iMap);
+    payload.setSigns(iMap);
     InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
     ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
     Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+    CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
+    Assert.checkNonNull(response.getRequest_id());
+    Assert.checkNonNull(response.getData());
+    Assert.checkNonNull(response.getData().getNo());
+  }
+
+  /**
+   * add one factoid with two attachments and one of them need to sign
+   * @throws ServerException
+   * @throws IOException
+   */
+  @Test
+  public void testSign1() throws ServerException, IOException {
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    Map<IdentityType, String> identities = new HashMap<>();
+    identities.put(IdentityType.ID, "42012319800127691X");
+    identities.put(IdentityType.MO, "15857112383");
+    payload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<>();
+    Factoid factoid = new Factoid();
+    User user = new User();
+    user.setName("张三");
+    user.setRegistered_at("1466674609");
+    user.setUsername("tom");
+    user.setPhone_number("13452345987");
+    factoid.setType("user");
+    factoid.setData(user);
+    factoids.add(factoid);
+    payload.setFactoids(factoids);
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
+    Map<String, List<String>> signs = new HashMap<>();
+    signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
+    signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
+    jMap.put("0", signs);
+    iMap.put("0", jMap);
+    payload.setSigns(iMap);
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+    ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+    InputStream inputStream1 = getClass().getClassLoader().getResourceAsStream("seal.png");
+    ByteArrayBody byteArrayBody1 = new ByteArrayBody(IOUtils.toByteArray(inputStream1), ContentType.DEFAULT_BINARY, "seal.png");
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    byteStreamBodyMap.put("0", Arrays.asList(byteArrayBody, byteArrayBody1));
+    CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
+    Assert.checkNonNull(response.getRequest_id());
+    Assert.checkNonNull(response.getData());
+    Assert.checkNonNull(response.getData().getNo());
+  }
+
+  /**
+   * add two factoids with attachments and one of the factoids has attachment need to sign
+   * @throws ServerException
+   * @throws IOException
+   */
+  @Test
+  public void testSign2() throws ServerException, IOException {
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
+    Map<IdentityType, String> identities = new HashMap<>();
+    identities.put(IdentityType.ID, "42012319800127691X");
+    identities.put(IdentityType.MO, "15857112383");
+    payload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<>();
+    // add product
+    Factoid factoid = new Factoid();
+    Product product = new Product();
+    product.setName("浙金网");
+    product.setDescription("p2g理财平台");
+    factoid.setType("product");
+    factoid.setData(product);
+    factoids.add(factoid);
+    // add user
+    factoid = new Factoid();
+    User user = new User();
+    user.setName("张三");
+      user.setRegistered_at("1466674609");
+    user.setUsername("tom");
+    user.setPhone_number("13452345987");
+    factoid.setType("user");
+    factoid.setData(user);
+    factoids.add(factoid);
+    payload.setFactoids(factoids);
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
+    Map<String, List<String>> signs = new HashMap<>();
+    signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
+    signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
+    jMap.put("1", signs);
+    iMap.put("1", jMap);
+    payload.setSigns(iMap);
+    InputStream inputStream0 = getClass().getClassLoader().getResourceAsStream("seal.png");
+    ByteArrayBody byteArrayBody0 = new ByteArrayBody(IOUtils.toByteArray(inputStream0), ContentType.DEFAULT_BINARY, "seal.png");
+    InputStream inputStream1 = getClass().getClassLoader().getResourceAsStream("seal.png");
+    ByteArrayBody byteArrayBody1 = new ByteArrayBody(IOUtils.toByteArray(inputStream1), ContentType.DEFAULT_BINARY, "seal.png");
+    InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+    ByteArrayBody byteArrayBody2 = new ByteArrayBody(IOUtils.toByteArray(inputStream2), ContentType.DEFAULT_BINARY, "contract.pdf");
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody0));
+    byteStreamBodyMap.put("1", Arrays.asList(byteArrayBody1, byteArrayBody2));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
     Assert.checkNonNull(response.getRequest_id());
     Assert.checkNonNull(response.getData());

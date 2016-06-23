@@ -45,7 +45,7 @@ public class AttestationPayload {
     return signs;
   }
 
-  public void setAttachments(Map<String, Map<String, Map<String, List<String>>>> signs) {
+  public void setSigns(Map<String, Map<String, Map<String, List<String>>>> signs) {
     this.signs = signs;
   }
 }

@@ -25,10 +25,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sbwdlihao on 6/17/16.
@@ -108,7 +105,7 @@ public class BaoquanClient {
   public CreateAttestationResponse createAttestation(CreateAttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
     checkCreateAttestationPayload(payload);
     Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, attachments);
-    Map<String, ByteArrayBody> streamBodyMap = buildStreamBodyMap(attachments);
+    Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
     return post("attestations", payloadMap, streamBodyMap, CreateAttestationResponse.class);
   }
 
@@ -132,7 +129,7 @@ public class BaoquanClient {
   public AddFactoidsResponse addFactoids(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
     checkAddFactoidsPayload(payload);
     Map<String, Object> payloadMap = buildAddFactoidsPayloadMap(payload, attachments);
-    Map<String, ByteArrayBody> streamBodyMap = buildStreamBodyMap(attachments);
+    Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
     return post("factoids", payloadMap, streamBodyMap, AddFactoidsResponse.class);
   }
 
@@ -149,9 +146,9 @@ public class BaoquanClient {
       checkSeal(seal);
     }
     Map<String, Object> payloadMap = buildApplyCaPayloadMap(payload);
-    Map<String, ByteArrayBody> streamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
     if (seal != null) {
-      streamBodyMap.put("seal", seal);
+      streamBodyMap.put("seal", Collections.singletonList(seal));
     }
     return post("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
   }
@@ -265,10 +262,10 @@ public class BaoquanClient {
     return payloadMap;
   }
 
-  private Map<String, ByteArrayBody> buildStreamBodyMap(Map<String, List<ByteArrayBody>> attachments) {
-    Map<String, ByteArrayBody> streamBodyMap = new HashMap<>();
+  private Map<String, List<ByteArrayBody>> buildStreamBodyMap(Map<String, List<ByteArrayBody>> attachments) {
+    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
     if (attachments != null) {
-      attachments.forEach((i, list)->list.forEach(item->streamBodyMap.put(String.format("attachments[%s][]", i), item)));
+      attachments.forEach((i, list)->streamBodyMap.put(String.format("attachments[%s][]", i), list));
     }
     return streamBodyMap;
   }
@@ -314,7 +311,7 @@ public class BaoquanClient {
     return payloadAttachments;
   }
 
-  private <T>T post(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+  private <T>T post(String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap, Class<T> responseClass) throws ServerException {
     String path = String.format("/api/%s/%s", version, apiName);
     String requestId = requestIdGenerator.createRequestId();
     if (StringUtils.isEmpty(requestId)) {
@@ -351,7 +348,7 @@ public class BaoquanClient {
             .addTextBody("payload", payloadString, ContentType.create("text/plain", Consts.UTF_8)) // avoid chinese garbled
             .addTextBody("signature", signature);
     if (streamBodyMap != null) {
-      streamBodyMap.forEach(multipartEntityBuilder::addPart);
+      streamBodyMap.forEach((name, list)-> list.forEach(item-> multipartEntityBuilder.addPart(name, item)));
     }
     httpPost.setEntity(multipartEntityBuilder.build());
     // execute http post

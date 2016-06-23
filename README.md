@@ -53,7 +53,7 @@ List<Factoid> factoids = new ArrayList<>();
 Factoid factoid = new Factoid();
 User user = new User();
 user.setName("张三");
-user.setRegistered_at("2015.06.23");
+user.setRegistered_at("1466674609");
 user.setUsername("tom");
 user.setPhone_number("13452345987");
 factoid.setType("user");
@@ -68,7 +68,7 @@ signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方�
 signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
 jMap.put("0", signs);
 iMap.put("0", jMap);
-payload.setAttachments(iMap);
+payload.setSigns(iMap);
 InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
 ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
 Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
@@ -90,7 +90,7 @@ factoids = new ArrayList<>();
 factoid = new Factoid();
 User user = new User();
 user.setName("张三");
-user.setRegistered_at("2015.06.23");
+user.setRegistered_at("1466674609");
 user.setUsername("tom");
 user.setPhone_number("13452345987");
 factoid.setType("user");
@@ -147,3 +147,5 @@ try {
   System.out.println(e.getMessage());
 }
 ```
+
+You can look at the unit test for more examples.
