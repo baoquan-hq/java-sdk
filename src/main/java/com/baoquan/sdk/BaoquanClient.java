@@ -23,8 +23,11 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.bouncycastle.openssl.PEMParser;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -41,6 +44,8 @@ public class BaoquanClient {
   private RequestIdGenerator requestIdGenerator = new DefaultRequestIdGenerator();
 
   private String pemPath;
+
+  private byte[] privateKeyData;
 
   public String getHost() {
     return host;
@@ -81,7 +86,13 @@ public class BaoquanClient {
     return pemPath;
   }
 
-  public void setPemPath(String pemPath) {
+  public void setPemPath(String pemPath) throws IOException {
+    if (StringUtils.isEmpty(pemPath)) {
+      throw new IllegalArgumentException("pemPath can not be empty");
+    }
+    PEMParser pemParser = new PEMParser(new InputStreamReader(new FileInputStream(pemPath)));
+    this.privateKeyData = pemParser.readPemObject().getContent();
+    pemParser.close();
     this.pemPath = pemPath;
   }
 
@@ -265,7 +276,17 @@ public class BaoquanClient {
   private Map<String, List<ByteArrayBody>> buildStreamBodyMap(Map<String, List<ByteArrayBody>> attachments) {
     Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
     if (attachments != null) {
-      attachments.forEach((i, list)->streamBodyMap.put(String.format("attachments[%s][]", i), list));
+      attachments.forEach((i, list)->{
+        list.forEach(item->{
+          if (item.getContentType() != ContentType.DEFAULT_BINARY) {
+            throw new IllegalArgumentException("attachment content type is invalid");
+          }
+          if (StringUtils.isEmpty(item.getFilename())) {
+            throw new IllegalArgumentException("attachment filename can not be empty");
+          }
+        });
+        streamBodyMap.put(String.format("attachments[%s][]", i), list);
+      });
     }
     return streamBodyMap;
   }
@@ -331,7 +352,7 @@ public class BaoquanClient {
     String data = "POST" + path + requestId + accessKey + tonce + payloadString;
     String signature;
     try {
-      signature = Utils.sign(pemPath, data);
+      signature = Utils.sign(privateKeyData, data);
     } catch (Exception e) {
       throw new ClientException(e);
     }

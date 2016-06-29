@@ -33,7 +33,11 @@ public class BaoquanClientTest {
     client = new BaoquanClient();
     client.setHost("http://localhost:8080");
     client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
-    client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+    try {
+      client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**

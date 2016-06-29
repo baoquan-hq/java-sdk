@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.openssl.PEMParser;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -22,25 +19,19 @@ public class Utils {
 
   /**
    * use rsa 256 to sign data
-   * @param pemPath private key pem file path
+   * @param encodedKey private key bytes
    * @param data data to sign
    * @return signed data
-   * @throws IOException
    * @throws NoSuchAlgorithmException
    * @throws InvalidKeySpecException
    * @throws InvalidKeyException
    * @throws SignatureException
    */
-  public static String sign(String pemPath, String data) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
-    if (StringUtils.isEmpty(pemPath)) {
-      throw new IllegalArgumentException("pem path can not be empty");
-    }
+  public static String sign(byte[] encodedKey, String data) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, SignatureException {
     if (data == null) {
       return null;
     }
-    PEMParser pemParser = new PEMParser(new InputStreamReader(new FileInputStream(pemPath)));
-    PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(pemParser.readPemObject().getContent());
-    pemParser.close();
+    PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encodedKey);
     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
     PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
     Signature signature = Signature.getInstance("SHA256WithRSA");

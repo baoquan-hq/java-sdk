@@ -6,7 +6,7 @@ Welcome to use Baoquan.com API SDK.
 
 ```java
 BaoquanClient client = new BaoquanClient();
-client.setHost("http://baoquan.com");
+client.setHost("https://stg.baoquan.com");
 client.setAccessKey("fsBswNzfECKZH9aWyh47fc"); // replace it with your access key
 client.setPemPath("path/to/rsa_private.pem");
 ```
