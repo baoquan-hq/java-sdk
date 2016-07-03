@@ -128,7 +128,9 @@ if you just want to get the block chain hash you should set null of the second p
 try {
   DownloadFile downloadFile = client.downloadAttestation("7FF4E8F6A6764CD0895146581B2B28AA");
   System.out.println(response.getData().getFileName());
-  System.out.println(response.getData().getFile());
+  FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
+  IOUtils.copy(downloadFile.getFile(), fileOutputStream);
+  fileOutputStream.close();
 } catch (ServerException e) {
   System.out.println(e.getMessage());
 }

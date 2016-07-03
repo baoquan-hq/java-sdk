@@ -146,26 +146,6 @@ public class BaoquanClient {
   }
 
   /**
-   * apply ca
-   * @param payload {@link ApplyCaPayload}
-   * @param seal the seal of enterprise
-   * @return {@link ApplyCaResponse}
-   * @throws ServerException
-   */
-  public ApplyCaResponse applyCa(ApplyCaPayload payload, ByteArrayBody seal) throws ServerException {
-    checkApplyCaPayload(payload);
-    if (payload.getType() == CaType.ENTERPRISE) {
-      checkSeal(seal);
-    }
-    Map<String, Object> payloadMap = buildApplyCaPayloadMap(payload);
-    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
-    if (seal != null) {
-      streamBodyMap.put("seal", Collections.singletonList(seal));
-    }
-    return json("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
-  }
-
-  /**
    * get attestation raw data
    * @param ano attestation no
    * @param fields attestation field
@@ -183,7 +163,7 @@ public class BaoquanClient {
   }
 
   /**
-   * file attestation file which is hashed to block chain
+   * download attestation file which is hashed to block chain
    * @param ano
    * @return
    * @throws ServerException
@@ -195,6 +175,26 @@ public class BaoquanClient {
     Map<String, Object> payload = new HashMap<>();
     payload.put("ano", ano);
     return file("attestation/download", payload);
+  }
+
+  /**
+   * apply ca
+   * @param payload {@link ApplyCaPayload}
+   * @param seal the seal of enterprise
+   * @return {@link ApplyCaResponse}
+   * @throws ServerException
+   */
+  public ApplyCaResponse applyCa(ApplyCaPayload payload, ByteArrayBody seal) throws ServerException {
+    checkApplyCaPayload(payload);
+    if (payload.getType() == CaType.ENTERPRISE) {
+      checkSeal(seal);
+    }
+    Map<String, Object> payloadMap = buildApplyCaPayloadMap(payload);
+    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
+    if (seal != null) {
+      streamBodyMap.put("seal", Collections.singletonList(seal));
+    }
+    return json("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
   }
 
   private void checkCreateAttestationPayload(CreateAttestationPayload payload) {
