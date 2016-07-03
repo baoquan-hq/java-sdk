@@ -105,9 +105,38 @@ try {
 }
 ```
 
-## Apply Ca
+## Get attestation data
 
-### Apply personal Ca
+```java
+try {
+  GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", Collections.singletonList("factoids"));
+  System.out.println(response.getData().getFactoids());
+} catch (ServerException e) {
+  System.out.println(e.getMessage());
+}
+```
+
+The second param value of getAttestation can be null, empty array, array of field "identities", "factoids", "attachments"
+if null, the response contains all filed value
+if empty array, the response contains all filed value except for field "identities", "factoids", "attachments"
+if array of one or more value in "identities", "factoids", "attachments", the response contains the respond field value
+if you just want to get the block chain hash you should set null of the second param, because server need more time to connect database, decrypt data when you want to get "identities", "factoids", "attachments" 
+
+## Download attestation
+
+```java
+try {
+  DownloadFile downloadFile = client.downloadAttestation("7FF4E8F6A6764CD0895146581B2B28AA");
+  System.out.println(response.getData().getFileName());
+  System.out.println(response.getData().getFile());
+} catch (ServerException e) {
+  System.out.println(e.getMessage());
+}
+```
+
+## Apply ca
+
+### Apply personal ca
 
 ```java
 ApplyCaPayload payload = new ApplyCaPayload();
@@ -124,7 +153,7 @@ try {
 }
 ```
 
-### Apply enterprise Ca
+### Apply enterprise ca
 
 ```java
 ApplyCaPayload payload = new ApplyCaPayload();

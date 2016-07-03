@@ -2,18 +2,20 @@ package com.baoquan.sdk;
 
 import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
-import com.baoquan.sdk.pojos.response.AddFactoidsResponse;
 import com.baoquan.sdk.pojos.response.ApplyCaResponse;
 import com.baoquan.sdk.pojos.response.CreateAttestationResponse;
-import com.sun.tools.javac.util.Assert;
+import com.baoquan.sdk.pojos.response.DownloadFile;
+import com.baoquan.sdk.pojos.response.GetAttestationResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -352,9 +354,9 @@ public class BaoquanClientTest {
     factoids.add(factoid);
     createAttestationPayload.setFactoids(factoids);
     CreateAttestationResponse response = client.createAttestation(createAttestationPayload);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
 
     String ano = response.getData().getNo();
     AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
@@ -396,28 +398,28 @@ public class BaoquanClientTest {
     factoids.add(factoid);
     createAttestationPayload.setFactoids(factoids);
     CreateAttestationResponse createAttestationResponse = client.createAttestation(createAttestationPayload);
-    Assert.checkNonNull(createAttestationResponse.getRequest_id());
-    Assert.checkNonNull(createAttestationResponse.getData());
-    Assert.checkNonNull(createAttestationResponse.getData().getNo());
+    Assert.assertNotNull(createAttestationResponse.getRequest_id());
+    Assert.assertNotNull(createAttestationResponse.getData());
+    Assert.assertNotNull(createAttestationResponse.getData().getNo());
 
-    String ano = createAttestationResponse.getData().getNo();
-    AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
-    addFactoidsPayload.setAno(ano);
-    factoids = new ArrayList<>();
-    factoid = new Factoid();
-    User user = new User();
-    user.setName("张三");
-    user.setRegistered_at("1466674609");
-    user.setUsername("tom");
-    user.setPhone_number("13452345987");
-    factoid.setType("user");
-    factoid.setData(user);
-    factoids.add(factoid);
-    addFactoidsPayload.setFactoids(factoids);
-    AddFactoidsResponse addFactoidsResponse = client.addFactoids(addFactoidsPayload);
-    Assert.checkNonNull(addFactoidsResponse.getRequest_id());
-    Assert.checkNonNull(addFactoidsResponse.getData());
-    Assert.check(addFactoidsResponse.getData().isSuccess());
+//    String ano = createAttestationResponse.getData().getNo();
+//    AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
+//    addFactoidsPayload.setAno(ano);
+//    factoids = new ArrayList<>();
+//    factoid = new Factoid();
+//    User user = new User();
+//    user.setName("张三");
+//    user.setRegistered_at("1466674609");
+//    user.setUsername("tom");
+//    user.setPhone_number("13452345987");
+//    factoid.setType("user");
+//    factoid.setData(user);
+//    factoids.add(factoid);
+//    addFactoidsPayload.setFactoids(factoids);
+//    AddFactoidsResponse addFactoidsResponse = client.addFactoids(addFactoidsPayload);
+//    Assert.assertNotNull(addFactoidsResponse.getRequest_id());
+//    Assert.assertNotNull(addFactoidsResponse.getData());
+//    Assert.assertTrue(addFactoidsResponse.getData().isSuccess());
   }
 
   /**
@@ -502,9 +504,9 @@ public class BaoquanClientTest {
     payload.setLinkPhone(randomPhone());
     payload.setLinkEmail(randomPhone() + "@qq.com");
     ApplyCaResponse response = client.applyCa(payload, null);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -549,9 +551,9 @@ public class BaoquanClientTest {
     InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
     ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
     ApplyCaResponse response = client.applyCa(payload, byteArrayBody);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -591,9 +593,9 @@ public class BaoquanClientTest {
     Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -635,9 +637,9 @@ public class BaoquanClientTest {
     Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
     byteStreamBodyMap.put("0", Arrays.asList(byteArrayBody, byteArrayBody1));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -691,9 +693,9 @@ public class BaoquanClientTest {
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody0));
     byteStreamBodyMap.put("1", Arrays.asList(byteArrayBody1, byteArrayBody2));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -744,9 +746,58 @@ public class BaoquanClientTest {
     Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
     byteStreamBodyMap.put("1", Arrays.asList(byteArrayBody1, byteArrayBody2));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
-    Assert.checkNonNull(response.getRequest_id());
-    Assert.checkNonNull(response.getData());
-    Assert.checkNonNull(response.getData().getNo());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertNotNull(response.getData().getNo());
+  }
+
+  @Test
+  public void testGetAttestation0() throws ServerException {
+    expectedException.expect(ServerException.class);
+    expectedException.expectMessage("保全不存在");
+    client.getAttestation("DB0C8DB14E3C44", null);
+  }
+
+  @Test
+  public void testGetAttestation1() throws ServerException {
+    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", null);
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+  }
+
+  @Test
+  public void testGetAttestation2() throws ServerException {
+    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", new ArrayList<>());
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+    Assert.assertNull(response.getData().getIdentities());
+    Assert.assertNull(response.getData().getFactoids());
+    Assert.assertNull(response.getData().getAttachments());
+  }
+
+  @Test
+  public void testGetAttestation3() throws ServerException {
+    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", Collections.singletonList("factoids"));
+    Assert.assertNotNull(response.getRequest_id());
+    Assert.assertNotNull(response.getData());
+    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+    Assert.assertNull(response.getData().getIdentities());
+    Assert.assertNotNull(response.getData().getFactoids());
+    Assert.assertNull(response.getData().getAttachments());
+  }
+
+  @Test
+  public void testDownloadAttestation0() throws ServerException, IOException {
+    DownloadFile downloadFile = client.downloadAttestation("7FF4E8F6A6764CD0895146581B2B28AA");
+    Assert.assertNotNull(downloadFile);
+    Assert.assertNotNull(downloadFile.getFileName());
+    Assert.assertNotNull(downloadFile.getFile());
+
+    FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
+    IOUtils.copy(downloadFile.getFile(), fileOutputStream);
+    fileOutputStream.close();
   }
 
   private String randomIDCard() {

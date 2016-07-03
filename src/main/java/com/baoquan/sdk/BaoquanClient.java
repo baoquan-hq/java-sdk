@@ -3,22 +3,21 @@ package com.baoquan.sdk;
 import com.baoquan.sdk.exceptions.ClientException;
 import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
-import com.baoquan.sdk.pojos.response.AddFactoidsResponse;
-import com.baoquan.sdk.pojos.response.ApplyCaResponse;
-import com.baoquan.sdk.pojos.response.CreateAttestationResponse;
-import com.baoquan.sdk.pojos.response.ExceptionResponse;
+import com.baoquan.sdk.pojos.response.*;
 import com.baoquan.sdk.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MIME;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -29,6 +28,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by sbwdlihao on 6/17/16.
@@ -117,7 +118,7 @@ public class BaoquanClient {
     checkCreateAttestationPayload(payload);
     Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, attachments);
     Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
-    return post("attestations", payloadMap, streamBodyMap, CreateAttestationResponse.class);
+    return json("attestations", payloadMap, streamBodyMap, CreateAttestationResponse.class);
   }
 
   /**
@@ -141,7 +142,7 @@ public class BaoquanClient {
     checkAddFactoidsPayload(payload);
     Map<String, Object> payloadMap = buildAddFactoidsPayloadMap(payload, attachments);
     Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
-    return post("factoids", payloadMap, streamBodyMap, AddFactoidsResponse.class);
+    return json("factoids", payloadMap, streamBodyMap, AddFactoidsResponse.class);
   }
 
   /**
@@ -161,7 +162,39 @@ public class BaoquanClient {
     if (seal != null) {
       streamBodyMap.put("seal", Collections.singletonList(seal));
     }
-    return post("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
+    return json("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
+  }
+
+  /**
+   * get attestation raw data
+   * @param ano attestation no
+   * @param fields attestation field
+   * @return {@link GetAttestationResponse}
+   * @throws ServerException
+   */
+  public GetAttestationResponse getAttestation(String ano, List<String> fields) throws ServerException {
+    if (StringUtils.isEmpty(ano)) {
+      throw new IllegalArgumentException("ano can not be null");
+    }
+    Map<String, Object> payload = new HashMap<>();
+    payload.put("ano", ano);
+    payload.put("fields", fields);
+    return json("attestation", payload, null, GetAttestationResponse.class);
+  }
+
+  /**
+   * file attestation file which is hashed to block chain
+   * @param ano
+   * @return
+   * @throws ServerException
+   */
+  public DownloadFile downloadAttestation(String ano) throws ServerException {
+    if (StringUtils.isEmpty(ano)) {
+      throw new IllegalArgumentException("ano can not be null");
+    }
+    Map<String, Object> payload = new HashMap<>();
+    payload.put("ano", ano);
+    return file("attestation/download", payload);
   }
 
   private void checkCreateAttestationPayload(CreateAttestationPayload payload) {
@@ -332,9 +365,55 @@ public class BaoquanClient {
     return payloadAttachments;
   }
 
-  private <T>T post(String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap, Class<T> responseClass) throws ServerException {
-    String path = String.format("/api/%s/%s", version, apiName);
+  private <T>T json(String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap, Class<T> responseClass) throws ServerException {
     String requestId = requestIdGenerator.createRequestId();
+    CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
+    int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+    HttpEntity httpEntity = closeableHttpResponse.getEntity();
+    if (statusCode != HttpStatus.SC_OK) {
+      throwServerException(requestId, httpEntity);
+    }
+    String response;
+    try {
+      response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+      closeableHttpResponse.close();
+    } catch (IOException e) {
+      throw new ClientException(e);
+    }
+    T responseObject;
+    try {
+      responseObject = Utils.jsonToObject(response, responseClass);
+    } catch (IOException e) {
+      throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
+    }
+    return responseObject;
+  }
+
+  private DownloadFile file(String apiName, Map<String, Object> payload) throws ServerException {
+    String requestId = requestIdGenerator.createRequestId();
+    CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, null);
+    int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+    HttpEntity httpEntity = closeableHttpResponse.getEntity();
+    if (statusCode != HttpStatus.SC_OK) {
+      throwServerException(requestId, httpEntity);
+    }
+    DownloadFile downloadFile = new DownloadFile();
+    Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
+    Pattern pattern = Pattern.compile(".*filename=\"(.*)\".*");
+    Matcher matcher = pattern.matcher(header.getValue());
+    if (matcher.matches()) {
+      downloadFile.setFileName(matcher.group(1));
+    }
+    try {
+      downloadFile.setFile(httpEntity.getContent());
+    } catch (IOException e) {
+      throw new ServerException(requestId, e.getMessage(), System.currentTimeMillis());
+    }
+    return downloadFile;
+  }
+
+  private CloseableHttpResponse post(String requestId, String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap) {
+    String path = String.format("/api/%s/%s", version, apiName);
     if (StringUtils.isEmpty(requestId)) {
       throw new ClientException("request id can not be empty");
     }
@@ -356,7 +435,7 @@ public class BaoquanClient {
     } catch (Exception e) {
       throw new ClientException(e);
     }
-    // build post request
+    // build json request
     String uri = host + path;
     HttpPost httpPost = new HttpPost(uri);
     MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
@@ -372,7 +451,7 @@ public class BaoquanClient {
       streamBodyMap.forEach((name, list)-> list.forEach(item-> multipartEntityBuilder.addPart(name, item)));
     }
     httpPost.setEntity(multipartEntityBuilder.build());
-    // execute http post
+    // execute http json
     CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
     CloseableHttpResponse closeableHttpResponse;
     try {
@@ -380,31 +459,22 @@ public class BaoquanClient {
     } catch (IOException e) {
       throw new ClientException(e);
     }
-    int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
-    HttpEntity httpEntity = closeableHttpResponse.getEntity();
+    return closeableHttpResponse;
+  }
+
+  private void throwServerException(String requestId, HttpEntity httpEntity) throws ServerException {
     String response;
     try {
-      response = IOUtils.toString(httpEntity.getContent(), "UTF-8");
-      closeableHttpResponse.close();
-      closeableHttpClient.close();
+      response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
     } catch (IOException e) {
       throw new ClientException(e);
     }
-    if (statusCode != HttpStatus.SC_OK) {
-      ExceptionResponse exceptionResponse;
-      try {
-        exceptionResponse = Utils.jsonToObject(response, ExceptionResponse.class);
-      } catch (IOException e) {
-        throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
-      }
-      throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage(), exceptionResponse.getTimestamp());
-    }
-    T responseObject;
+    ExceptionResponse exceptionResponse;
     try {
-      responseObject = Utils.jsonToObject(response, responseClass);
+      exceptionResponse = Utils.jsonToObject(response, ExceptionResponse.class);
     } catch (IOException e) {
       throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
     }
-    return responseObject;
+    throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage(), exceptionResponse.getTimestamp());
   }
 }

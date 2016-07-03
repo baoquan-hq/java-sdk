@@ -1,5 +1,5 @@
 group 'com.baoquan'
-version '1.0.0'
+version '1.0.3'
 description 'Api sdk of Baoquan.com'
 
 apply plugin: 'java'
@@ -43,6 +43,7 @@ uploadArchives {
 
             pom.project {
                 name 'Eagle java sdk'
+                artifactId 'eagle-sdk'
                 packaging 'jar'
                 // optionally artifactId can be defined here
                 description 'Baoquan api sdk for members to use the services of Baoquan.com'
