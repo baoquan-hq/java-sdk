@@ -156,7 +156,7 @@ public class BaoquanClient {
     if (StringUtils.isEmpty(ano)) {
       throw new IllegalArgumentException("ano can not be null");
     }
-    Map<String, Object> payload = new HashMap<>();
+    Map<String, Object> payload = new HashMap<String, Object>();
     payload.put("ano", ano);
     payload.put("fields", fields);
     return json("attestation", payload, null, GetAttestationResponse.class);
@@ -172,7 +172,7 @@ public class BaoquanClient {
     if (StringUtils.isEmpty(ano)) {
       throw new IllegalArgumentException("ano can not be null");
     }
-    Map<String, Object> payload = new HashMap<>();
+    Map<String, Object> payload = new HashMap<String, Object>();
     payload.put("ano", ano);
     return file("attestation/download", payload);
   }
@@ -190,7 +190,7 @@ public class BaoquanClient {
       checkSeal(seal);
     }
     Map<String, Object> payloadMap = buildApplyCaPayloadMap(payload);
-    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     if (seal != null) {
       streamBodyMap.put("seal", Collections.singletonList(seal));
     }
@@ -274,7 +274,7 @@ public class BaoquanClient {
   }
 
   private Map<String, Object> buildCreateAttestationPayloadMap(CreateAttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) {
-    Map<String, Object> payloadMap = new HashMap<>();
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
     payloadMap.put("template_id", payload.getTemplateId());
     payloadMap.put("identities", payload.getIdentities());
     payloadMap.put("factoids", payload.getFactoids());
@@ -284,7 +284,7 @@ public class BaoquanClient {
   }
 
   private Map<String, Object> buildAddFactoidsPayloadMap(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) {
-    Map<String, Object> payloadMap = new HashMap<>();
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
     payloadMap.put("ano", payload.getAno());
     payloadMap.put("factoids", payload.getFactoids());
     payloadMap.put("completed", payload.isCompleted());
@@ -293,7 +293,7 @@ public class BaoquanClient {
   }
 
   private Map<String, Object> buildApplyCaPayloadMap(ApplyCaPayload payload) {
-    Map<String, Object> payloadMap = new HashMap<>();
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
     payloadMap.put("type", payload.getType());
     payloadMap.put("name", payload.getName());
     payloadMap.put("ic_code", payload.getIcCode());
@@ -307,25 +307,28 @@ public class BaoquanClient {
   }
 
   private Map<String, List<ByteArrayBody>> buildStreamBodyMap(Map<String, List<ByteArrayBody>> attachments) {
-    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> streamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     if (attachments != null) {
-      attachments.forEach((i, list)->{
-        list.forEach(item->{
+      for (String i :
+              attachments.keySet()) {
+        List<ByteArrayBody> list = attachments.get(i);
+        for (ByteArrayBody item :
+                list) {
           if (item.getContentType() != ContentType.DEFAULT_BINARY) {
             throw new IllegalArgumentException("attachment content type is invalid");
           }
           if (StringUtils.isEmpty(item.getFilename())) {
             throw new IllegalArgumentException("attachment filename can not be empty");
           }
-        });
+        }
         streamBodyMap.put(String.format("attachments[%s][]", i), list);
-      });
+      }
     }
     return streamBodyMap;
   }
 
   private Map<String, List<Object>> buildChecksum(AttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) {
-    Map<String, List<Object>> payloadAttachments = new HashMap<>();
+    Map<String, List<Object>> payloadAttachments = new HashMap<String, List<Object>>();
     if (attachments != null) {
       Map<String, Map<String, Map<String, List<String>>>> signs = payload.getSigns();
       for (int i = 0; i < payload.getFactoids().size(); i++) {
@@ -333,7 +336,7 @@ public class BaoquanClient {
         List<ByteArrayBody> byteArrayBodies = attachments.get(is);
         Map<String, Map<String, List<String>>> iSigns = signs.get(is);
         if (byteArrayBodies != null && byteArrayBodies.size() > 0) {
-          List<Object> objects = new ArrayList<>();
+          List<Object> objects = new ArrayList<Object>();
           for (int j = 0; j < byteArrayBodies.size(); j++) {
             ByteArrayBody byteArrayBody = byteArrayBodies.get(j);
             String checksum;
@@ -352,7 +355,7 @@ public class BaoquanClient {
             if (jSigns == null) {
               objects.add(checksum);
             } else {
-              Map<String, Object> checksumSign = new HashMap<>();
+              Map<String, Object> checksumSign = new HashMap<String, Object>();
               checksumSign.put("checksum", checksum);
               checksumSign.put("sign", jSigns);
               objects.add(checksumSign);
@@ -448,7 +451,14 @@ public class BaoquanClient {
             .addTextBody("payload", payloadString, ContentType.create("text/plain", Consts.UTF_8)) // avoid chinese garbled
             .addTextBody("signature", signature);
     if (streamBodyMap != null) {
-      streamBodyMap.forEach((name, list)-> list.forEach(item-> multipartEntityBuilder.addPart(name, item)));
+      for (String name :
+              streamBodyMap.keySet()) {
+        List<ByteArrayBody> list = streamBodyMap.get(name);
+        for (ByteArrayBody item :
+                list) {
+          multipartEntityBuilder.addPart(name, item);
+        }
+      }
     }
     httpPost.setEntity(multipartEntityBuilder.build());
     // execute http json

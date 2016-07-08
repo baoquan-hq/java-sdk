@@ -2,10 +2,7 @@ package com.baoquan.sdk;
 
 import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
-import com.baoquan.sdk.pojos.response.ApplyCaResponse;
-import com.baoquan.sdk.pojos.response.CreateAttestationResponse;
-import com.baoquan.sdk.pojos.response.DownloadFile;
-import com.baoquan.sdk.pojos.response.GetAttestationResponse;
+import com.baoquan.sdk.pojos.response.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -87,7 +84,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("payload.identities can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    payload.setIdentities(new HashMap<>());
+    payload.setIdentities(new HashMap<IdentityType, String>());
     client.createAttestation(payload);
   }
 
@@ -101,7 +98,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("payload.factoids can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
@@ -118,11 +115,11 @@ public class BaoquanClientTest {
     expectedException.expectMessage("payload.factoids can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    payload.setFactoids(new ArrayList<>());
+    payload.setFactoids(new ArrayList<Factoid>());
     client.createAttestation(payload);
   }
 
@@ -136,11 +133,11 @@ public class BaoquanClientTest {
     expectedException.expectMessage("模板不存在");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJ");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
@@ -166,11 +163,11 @@ public class BaoquanClientTest {
     expectedException.expectMessage("invalid data : user.phone_number required");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
@@ -194,11 +191,11 @@ public class BaoquanClientTest {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     payload.setCompleted(false);
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -222,11 +219,11 @@ public class BaoquanClientTest {
     expectedException.expectMessage("invalid data : user.phone_number required");
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -283,7 +280,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("payload.factoids can not be empty");
     AddFactoidsPayload payload = new AddFactoidsPayload();
     payload.setAno("D58FFFD28A8949969611883B6EABA148");
-    payload.setFactoids(new ArrayList<>());
+    payload.setFactoids(new ArrayList<Factoid>());
     client.addFactoids(payload);
   }
 
@@ -297,7 +294,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("保全不存在");
     AddFactoidsPayload payload = new AddFactoidsPayload();
     payload.setAno("D58FFFD28A8949");
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -319,7 +316,7 @@ public class BaoquanClientTest {
     expectedException.expectMessage("保全已完成,不能继续追加陈述");
     AddFactoidsPayload payload = new AddFactoidsPayload();
     payload.setAno("4E6457A5A9B94FBFB64E0D08BDFA2BD4");
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -340,11 +337,11 @@ public class BaoquanClientTest {
     CreateAttestationPayload createAttestationPayload = new CreateAttestationPayload();
     createAttestationPayload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     createAttestationPayload.setCompleted(false);
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     createAttestationPayload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -361,7 +358,7 @@ public class BaoquanClientTest {
     String ano = response.getData().getNo();
     AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
     addFactoidsPayload.setAno(ano);
-    factoids = new ArrayList<>();
+    factoids = new ArrayList<Factoid>();
     factoid = new Factoid();
     product = new Product();
     product.setName("浙金网");
@@ -380,15 +377,15 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testAddFactoids7() throws ServerException {
+  public void testAddFactoids7() throws ServerException, IOException {
     CreateAttestationPayload createAttestationPayload = new CreateAttestationPayload();
     createAttestationPayload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     createAttestationPayload.setCompleted(false);
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     createAttestationPayload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     Product product = new Product();
     product.setName("浙金网");
@@ -402,24 +399,24 @@ public class BaoquanClientTest {
     Assert.assertNotNull(createAttestationResponse.getData());
     Assert.assertNotNull(createAttestationResponse.getData().getNo());
 
-//    String ano = createAttestationResponse.getData().getNo();
-//    AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
-//    addFactoidsPayload.setAno(ano);
-//    factoids = new ArrayList<>();
-//    factoid = new Factoid();
-//    User user = new User();
-//    user.setName("张三");
-//    user.setRegistered_at("1466674609");
-//    user.setUsername("tom");
-//    user.setPhone_number("13452345987");
-//    factoid.setType("user");
-//    factoid.setData(user);
-//    factoids.add(factoid);
-//    addFactoidsPayload.setFactoids(factoids);
-//    AddFactoidsResponse addFactoidsResponse = client.addFactoids(addFactoidsPayload);
-//    Assert.assertNotNull(addFactoidsResponse.getRequest_id());
-//    Assert.assertNotNull(addFactoidsResponse.getData());
-//    Assert.assertTrue(addFactoidsResponse.getData().isSuccess());
+    String ano = createAttestationResponse.getData().getNo();
+    AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
+    addFactoidsPayload.setAno(ano);
+    factoids = new ArrayList<Factoid>();
+    factoid = new Factoid();
+    User user = new User();
+    user.setName("张三");
+    user.setRegistered_at("1466674609");
+    user.setUsername("tom");
+    user.setPhone_number("13452345987");
+    factoid.setType("user");
+    factoid.setData(user);
+    factoids.add(factoid);
+    addFactoidsPayload.setFactoids(factoids);
+    AddFactoidsResponse addFactoidsResponse = client.addFactoids(addFactoidsPayload);
+    Assert.assertNotNull(addFactoidsResponse.getRequest_id());
+    Assert.assertNotNull(addFactoidsResponse.getData());
+    Assert.assertTrue(addFactoidsResponse.getData().isSuccess());
   }
 
   /**
@@ -565,11 +562,11 @@ public class BaoquanClientTest {
   public void testSign0() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
@@ -580,9 +577,9 @@ public class BaoquanClientTest {
     factoid.setData(user);
     factoids.add(factoid);
     payload.setFactoids(factoids);
-    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
-    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
-    Map<String, List<String>> signs = new HashMap<>();
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<String, Map<String, Map<String, List<String>>>>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<String, Map<String, List<String>>>();
+    Map<String, List<String>> signs = new HashMap<String, List<String>>();
     signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
     signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
     jMap.put("0", signs);
@@ -590,7 +587,7 @@ public class BaoquanClientTest {
     payload.setSigns(iMap);
     InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
     ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
     Assert.assertNotNull(response.getRequest_id());
@@ -607,11 +604,11 @@ public class BaoquanClientTest {
   public void testSign1() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
     User user = new User();
     user.setName("张三");
@@ -622,9 +619,9 @@ public class BaoquanClientTest {
     factoid.setData(user);
     factoids.add(factoid);
     payload.setFactoids(factoids);
-    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
-    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
-    Map<String, List<String>> signs = new HashMap<>();
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<String, Map<String, Map<String, List<String>>>>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<String, Map<String, List<String>>>();
+    Map<String, List<String>> signs = new HashMap<String, List<String>>();
     signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
     signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
     jMap.put("0", signs);
@@ -634,7 +631,7 @@ public class BaoquanClientTest {
     ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
     InputStream inputStream1 = getClass().getClassLoader().getResourceAsStream("seal.png");
     ByteArrayBody byteArrayBody1 = new ByteArrayBody(IOUtils.toByteArray(inputStream1), ContentType.DEFAULT_BINARY, "seal.png");
-    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     byteStreamBodyMap.put("0", Arrays.asList(byteArrayBody, byteArrayBody1));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
     Assert.assertNotNull(response.getRequest_id());
@@ -651,11 +648,11 @@ public class BaoquanClientTest {
   public void testSign2() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     // add product
     Factoid factoid = new Factoid();
     Product product = new Product();
@@ -675,9 +672,9 @@ public class BaoquanClientTest {
     factoid.setData(user);
     factoids.add(factoid);
     payload.setFactoids(factoids);
-    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
-    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
-    Map<String, List<String>> signs = new HashMap<>();
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<String, Map<String, Map<String, List<String>>>>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<String, Map<String, List<String>>>();
+    Map<String, List<String>> signs = new HashMap<String, List<String>>();
     signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
     signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
     jMap.put("1", signs);
@@ -689,7 +686,7 @@ public class BaoquanClientTest {
     ByteArrayBody byteArrayBody1 = new ByteArrayBody(IOUtils.toByteArray(inputStream1), ContentType.DEFAULT_BINARY, "seal.png");
     InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream("contract.pdf");
     ByteArrayBody byteArrayBody2 = new ByteArrayBody(IOUtils.toByteArray(inputStream2), ContentType.DEFAULT_BINARY, "contract.pdf");
-    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody0));
     byteStreamBodyMap.put("1", Arrays.asList(byteArrayBody1, byteArrayBody2));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
@@ -707,11 +704,11 @@ public class BaoquanClientTest {
   public void testSign3() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
-    Map<IdentityType, String> identities = new HashMap<>();
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
     payload.setIdentities(identities);
-    List<Factoid> factoids = new ArrayList<>();
+    List<Factoid> factoids = new ArrayList<Factoid>();
     // add product
     Factoid factoid = new Factoid();
     Product product = new Product();
@@ -731,9 +728,9 @@ public class BaoquanClientTest {
     factoid.setData(user);
     factoids.add(factoid);
     payload.setFactoids(factoids);
-    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<>();
-    Map<String, Map<String, List<String>>> jMap = new HashMap<>();
-    Map<String, List<String>> signs = new HashMap<>();
+    Map<String, Map<String, Map<String, List<String>>>> iMap = new HashMap<String, Map<String, Map<String, List<String>>>>();
+    Map<String, Map<String, List<String>>> jMap = new HashMap<String, Map<String, List<String>>>();
+    Map<String, List<String>> signs = new HashMap<String, List<String>>();
     signs.put("F98F99A554E944B6996882E8A68C60B2", Collections.singletonList("甲方（签章）"));
     signs.put("0A68783469E04CAC95ADEAE995A92E65", Collections.singletonList("乙方（签章）"));
     jMap.put("1", signs);
@@ -743,7 +740,7 @@ public class BaoquanClientTest {
     ByteArrayBody byteArrayBody1 = new ByteArrayBody(IOUtils.toByteArray(inputStream1), ContentType.DEFAULT_BINARY, "seal.png");
     InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream("contract.pdf");
     ByteArrayBody byteArrayBody2 = new ByteArrayBody(IOUtils.toByteArray(inputStream2), ContentType.DEFAULT_BINARY, "contract.pdf");
-    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<>();
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
     byteStreamBodyMap.put("1", Arrays.asList(byteArrayBody1, byteArrayBody2));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
     Assert.assertNotNull(response.getRequest_id());
@@ -768,7 +765,7 @@ public class BaoquanClientTest {
 
   @Test
   public void testGetAttestation2() throws ServerException {
-    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", new ArrayList<>());
+    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", new ArrayList<String>());
     Assert.assertNotNull(response.getRequest_id());
     Assert.assertNotNull(response.getData());
     Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
@@ -790,7 +787,7 @@ public class BaoquanClientTest {
 
   @Test
   public void testDownloadAttestation0() throws ServerException, IOException {
-    DownloadFile downloadFile = client.downloadAttestation("7FF4E8F6A6764CD0895146581B2B28AA");
+    DownloadFile downloadFile = client.downloadAttestation("220271AF2CB94E67AB36E6D9341AB053");
     Assert.assertNotNull(downloadFile);
     Assert.assertNotNull(downloadFile.getFileName());
     Assert.assertNotNull(downloadFile.getFile());

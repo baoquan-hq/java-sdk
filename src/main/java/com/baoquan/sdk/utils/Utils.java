@@ -2,6 +2,7 @@ package com.baoquan.sdk.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -10,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
 
 /**
  * Created by sbwdlihao on 6/18/16.
@@ -37,7 +37,7 @@ public class Utils {
     Signature signature = Signature.getInstance("SHA256WithRSA");
     signature.initSign(privateKey);
     signature.update(data.getBytes("UTF-8"));
-    return Base64.getEncoder().encodeToString(signature.sign());
+    return Base64.encodeBase64String(signature.sign());
   }
 
   /**
