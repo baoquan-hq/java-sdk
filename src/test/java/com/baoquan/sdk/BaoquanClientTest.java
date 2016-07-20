@@ -235,6 +235,33 @@ public class BaoquanClientTest {
     client.createAttestation(payload);
   }
 
+  @Test
+  public void testCreateAttestation10() throws ServerException, IOException {
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+    identities.put(IdentityType.ID, "42012319800127691X");
+    identities.put(IdentityType.MO, "15857112383");
+    payload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<Factoid>();
+    Factoid factoid = new Factoid();
+    User user = new User();
+    user.setName("张三");
+    user.setPhone_number("13234568732");
+    user.setRegistered_at("1466674609");
+    user.setUsername("tom");
+    factoid.setType("user");
+    factoid.setData(user);
+    factoids.add(factoid);
+    payload.setFactoids(factoids);
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+    ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+    byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+    CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
+    Assert.assertNotNull(response.getData().getNo());
+  }
+
   /**
    * payload can not be null
    * @throws ServerException

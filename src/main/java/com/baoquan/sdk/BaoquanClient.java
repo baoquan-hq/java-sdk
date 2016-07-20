@@ -334,7 +334,10 @@ public class BaoquanClient {
       for (int i = 0; i < payload.getFactoids().size(); i++) {
         String is = "" + i;
         List<ByteArrayBody> byteArrayBodies = attachments.get(is);
-        Map<String, Map<String, List<String>>> iSigns = signs.get(is);
+        Map<String, Map<String, List<String>>> iSigns = null;
+        if (signs != null) {
+          iSigns = signs.get(is);
+        }
         if (byteArrayBodies != null && byteArrayBodies.size() > 0) {
           List<Object> objects = new ArrayList<Object>();
           for (int j = 0; j < byteArrayBodies.size(); j++) {
