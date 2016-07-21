@@ -235,12 +235,6 @@ public class BaoquanClient {
       if (StringUtils.isEmpty(payload.getIcCode())) {
         throw new IllegalArgumentException("payload.icCode can not be empty");
       }
-      if (StringUtils.isEmpty(payload.getOrgCode())) {
-        throw new IllegalArgumentException("payload.orgCode can not be empty");
-      }
-      if (StringUtils.isEmpty(payload.getTaxCode())) {
-        throw new IllegalArgumentException("payload.taxCode can not be empty");
-      }
     }
     if (StringUtils.isEmpty(payload.getLinkName())) {
       throw new IllegalArgumentException("payload.linkName can not be empty");
