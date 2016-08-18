@@ -198,6 +198,9 @@ public class BaoquanClient {
     if (payload == null) {
       throw new IllegalArgumentException("payload can not be null");
     }
+    if (StringUtils.isEmpty(payload.getUniqueId())) {
+      throw new IllegalArgumentException("payload.uniqueId can not be empty");
+    }
     if (StringUtils.isEmpty(payload.getTemplateId())) {
       throw new IllegalArgumentException("payload.templateId can not be empty");
     }
@@ -252,6 +255,7 @@ public class BaoquanClient {
 
   private Map<String, Object> buildCreateAttestationPayloadMap(CreateAttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) {
     Map<String, Object> payloadMap = new HashMap<String, Object>();
+    payloadMap.put("unique_id", payload.getUniqueId());
     payloadMap.put("template_id", payload.getTemplateId());
     payloadMap.put("identities", payload.getIdentities());
     payloadMap.put("factoids", payload.getFactoids());

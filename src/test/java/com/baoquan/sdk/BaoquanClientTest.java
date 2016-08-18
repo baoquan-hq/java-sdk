@@ -51,26 +51,26 @@ public class BaoquanClientTest {
   }
 
   /**
-   * payload.templateId can not be empty
+   * unique id can not be null
    * @throws ServerException
    */
   @Test
   public void testCreateAttestation1() throws ServerException {
     expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("payload.templateId can not be empty");
+    expectedException.expectMessage("payload.uniqueId can not be empty");
     client.createAttestation(new CreateAttestationPayload());
   }
 
   /**
-   * payload.identities can not be empty
+   * payload.templateId can not be empty
    * @throws ServerException
    */
   @Test
   public void testCreateAttestation2() throws ServerException {
     expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("payload.identities can not be empty");
+    expectedException.expectMessage("payload.templateId can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
-    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    payload.setUniqueId(randomUniqueId());
     client.createAttestation(payload);
   }
 
@@ -83,6 +83,21 @@ public class BaoquanClientTest {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("payload.identities can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
+    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    client.createAttestation(payload);
+  }
+
+  /**
+   * payload.identities can not be empty
+   * @throws ServerException
+   */
+  @Test
+  public void testCreateAttestation4() throws ServerException {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("payload.identities can not be empty");
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     payload.setIdentities(new HashMap<IdentityType, String>());
     client.createAttestation(payload);
@@ -93,10 +108,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation4() throws ServerException {
+  public void testCreateAttestation5() throws ServerException {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("payload.factoids can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -110,10 +126,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation5() throws ServerException {
+  public void testCreateAttestation6() throws ServerException {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("payload.factoids can not be empty");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -128,10 +145,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation6() throws ServerException {
+  public void testCreateAttestation7() throws ServerException {
     expectedException.expect(ServerException.class);
     expectedException.expectMessage("模板不存在");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJ");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -144,6 +162,7 @@ public class BaoquanClientTest {
     user.setPhone_number("13234568732");
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -158,10 +177,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation7() throws ServerException {
+  public void testCreateAttestation8() throws ServerException {
     expectedException.expect(ServerException.class);
     expectedException.expectMessage("invalid data : user.phone_number required");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -173,6 +193,7 @@ public class BaoquanClientTest {
     user.setName("张三");
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -185,10 +206,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation8() throws ServerException {
+  public void testCreateAttestation9() throws ServerException {
     expectedException.expect(ServerException.class);
     expectedException.expectMessage("invalid factoid type: product corresponding schema not exist");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     payload.setCompleted(false);
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
@@ -200,6 +222,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -214,10 +237,11 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testCreateAttestation9() throws ServerException {
+  public void testCreateAttestation10() throws ServerException {
     expectedException.expect(ServerException.class);
     expectedException.expectMessage("invalid data : user.phone_number required");
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -228,6 +252,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -236,12 +261,13 @@ public class BaoquanClientTest {
   }
 
   @Test
-  public void testCreateAttestation10() throws ServerException, IOException {
+  public void testCreateAttestation11() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
+    payload.setUniqueId(randomUniqueId());
     payload.setIdentities(identities);
     List<Factoid> factoids = new ArrayList<Factoid>();
     Factoid factoid = new Factoid();
@@ -250,6 +276,7 @@ public class BaoquanClientTest {
     user.setPhone_number("13234568732");
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -260,6 +287,43 @@ public class BaoquanClientTest {
     byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
     CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
     Assert.assertNotNull(response.getData().getNo());
+  }
+
+  /**
+   * create attestation with the same unique id will return the same attestation no
+   * @throws ServerException
+   * @throws IOException
+   */
+  @Test
+  public void testCreateAttestation12() throws ServerException, IOException {
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+    identities.put(IdentityType.ID, "42012319800127691X");
+    identities.put(IdentityType.MO, "15857112383");
+    payload.setUniqueId(randomUniqueId());
+    payload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<Factoid>();
+    Factoid factoid = new Factoid();
+    User user = new User();
+    user.setName("张三");
+    user.setPhone_number("13234568732");
+    user.setRegistered_at("1466674609");
+    user.setUsername("tom");
+    factoid.setUnique_id(randomUniqueId());
+    factoid.setType("user");
+    factoid.setData(user);
+    factoids.add(factoid);
+    payload.setFactoids(factoids);
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+    ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+    Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+    byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+    CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
+    Assert.assertNotNull(response.getData().getNo());
+
+    CreateAttestationResponse response1 = client.createAttestation(payload, byteStreamBodyMap);
+    Assert.assertEquals(response1.getData().getNo(), response.getData().getNo());
   }
 
   /**
@@ -326,6 +390,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -348,6 +413,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -362,6 +428,7 @@ public class BaoquanClientTest {
   @Test
   public void testAddFactoids6() throws ServerException {
     CreateAttestationPayload createAttestationPayload = new CreateAttestationPayload();
+    createAttestationPayload.setUniqueId(randomUniqueId());
     createAttestationPayload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     createAttestationPayload.setCompleted(false);
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
@@ -373,6 +440,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -390,6 +458,7 @@ public class BaoquanClientTest {
     product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -400,12 +469,13 @@ public class BaoquanClientTest {
   }
 
   /**
-   * create attestation and then add factoid
+   * same unique id will return success
    * @throws ServerException
    */
   @Test
-  public void testAddFactoids7() throws ServerException, IOException {
+  public void testAddFactoids7() throws ServerException {
     CreateAttestationPayload createAttestationPayload = new CreateAttestationPayload();
+    createAttestationPayload.setUniqueId(randomUniqueId());
     createAttestationPayload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     createAttestationPayload.setCompleted(false);
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
@@ -417,6 +487,57 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    String fuid = randomUniqueId();
+    factoid.setUnique_id(fuid);
+    factoid.setType("product");
+    factoid.setData(product);
+    factoids.add(factoid);
+    createAttestationPayload.setFactoids(factoids);
+    CreateAttestationResponse createAttestationResponse = client.createAttestation(createAttestationPayload);
+    Assert.assertNotNull(createAttestationResponse.getRequest_id());
+    Assert.assertNotNull(createAttestationResponse.getData());
+    Assert.assertNotNull(createAttestationResponse.getData().getNo());
+
+    String ano = createAttestationResponse.getData().getNo();
+    AddFactoidsPayload addFactoidsPayload = new AddFactoidsPayload();
+    addFactoidsPayload.setAno(ano);
+    addFactoidsPayload.setCompleted(false);
+    factoids = new ArrayList<Factoid>();
+    factoid = new Factoid();
+    product = new Product();
+    product.setName("浙金网");
+    product.setDescription("p2g理财平台");
+    factoid.setUnique_id(fuid);
+    factoid.setType("product");
+    factoid.setData(product);
+    factoids.add(factoid);
+    addFactoidsPayload.setFactoids(factoids);
+    AddFactoidsResponse addFactoidsResponse = client.addFactoids(addFactoidsPayload);
+    Assert.assertNotNull(addFactoidsResponse.getRequest_id());
+    Assert.assertNotNull(addFactoidsResponse.getData());
+    Assert.assertTrue(addFactoidsResponse.getData().isSuccess());
+  }
+
+  /**
+   * create attestation and then add factoid
+   * @throws ServerException
+   */
+  @Test
+  public void testAddFactoids8() throws ServerException, IOException {
+    CreateAttestationPayload createAttestationPayload = new CreateAttestationPayload();
+    createAttestationPayload.setUniqueId(randomUniqueId());
+    createAttestationPayload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
+    createAttestationPayload.setCompleted(false);
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+    identities.put(IdentityType.ID, "42012319800127691X");
+    identities.put(IdentityType.MO, "15857112383");
+    createAttestationPayload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<Factoid>();
+    Factoid factoid = new Factoid();
+    Product product = new Product();
+    product.setName("浙金网");
+    product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -436,6 +557,7 @@ public class BaoquanClientTest {
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -495,32 +617,11 @@ public class BaoquanClientTest {
   }
 
   /**
-   * seal can not be null when ca type is enterprise
-   * @throws ServerException
-   */
-  @Test
-  public void testApplyCa4() throws ServerException {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("seal can not be null when ca type is enterprise");
-    ApplyCaPayload payload = new ApplyCaPayload();
-    payload.setType(CaType.ENTERPRISE);
-    payload.setName("浙金网");
-    payload.setIcCode("91330105311263043J");
-    payload.setOrgCode("311263043");
-    payload.setTaxCode("330105311263043");
-    payload.setLinkName("张三");
-    payload.setLinkIdCard(randomIDCard());
-    payload.setLinkPhone(randomPhone());
-    payload.setLinkEmail(randomPhone() + "@qq.com");
-    client.applyCa(payload, null);
-  }
-
-  /**
    * apply personal ca
    * @throws ServerException
    */
   @Test
-  public void testApplyCa5() throws ServerException {
+  public void testApplyCa4() throws ServerException {
     ApplyCaPayload payload = new ApplyCaPayload();
     payload.setType(CaType.PERSONAL);
     payload.setLinkName("张三");
@@ -538,30 +639,7 @@ public class BaoquanClientTest {
    * @throws ServerException
    */
   @Test
-  public void testApplyCa6() throws ServerException, IOException {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("seal file name extension must be png or jpg");
-    ApplyCaPayload payload = new ApplyCaPayload();
-    payload.setType(CaType.ENTERPRISE);
-    payload.setName("浙金网");
-    payload.setIcCode("91330105311263043J");
-    payload.setOrgCode("311263043");
-    payload.setTaxCode("330105311263043");
-    payload.setLinkName("张三");
-    payload.setLinkIdCard(randomIDCard());
-    payload.setLinkPhone(randomPhone());
-    payload.setLinkEmail(randomPhone() + "@qq.com");
-    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
-    ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.gif");
-    client.applyCa(payload, byteArrayBody);
-  }
-
-  /**
-   * apply enterprise ca
-   * @throws ServerException
-   */
-  @Test
-  public void testApplyCa7() throws ServerException, IOException {
+  public void testApplyCa5() throws ServerException, IOException {
     ApplyCaPayload payload = new ApplyCaPayload();
     payload.setType(CaType.ENTERPRISE);
     payload.setName("浙金网");
@@ -588,6 +666,7 @@ public class BaoquanClientTest {
   @Test
   public void testSign0() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -600,6 +679,7 @@ public class BaoquanClientTest {
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -630,6 +710,7 @@ public class BaoquanClientTest {
   @Test
   public void testSign1() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -642,6 +723,7 @@ public class BaoquanClientTest {
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -674,6 +756,7 @@ public class BaoquanClientTest {
   @Test
   public void testSign2() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -685,6 +768,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -695,6 +779,7 @@ public class BaoquanClientTest {
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -730,6 +815,7 @@ public class BaoquanClientTest {
   @Test
   public void testSign3() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setUniqueId(randomUniqueId());
     payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
@@ -741,6 +827,7 @@ public class BaoquanClientTest {
     Product product = new Product();
     product.setName("浙金网");
     product.setDescription("p2g理财平台");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("product");
     factoid.setData(product);
     factoids.add(factoid);
@@ -751,6 +838,7 @@ public class BaoquanClientTest {
     user.setRegistered_at("1466674609");
     user.setUsername("tom");
     user.setPhone_number("13452345987");
+    factoid.setUnique_id(randomUniqueId());
     factoid.setType("user");
     factoid.setData(user);
     factoids.add(factoid);
@@ -822,6 +910,10 @@ public class BaoquanClientTest {
     FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
     IOUtils.copy(downloadFile.getFile(), fileOutputStream);
     fileOutputStream.close();
+  }
+
+  private String randomUniqueId() {
+    return UUID.randomUUID().toString();
   }
 
   private String randomIDCard() {

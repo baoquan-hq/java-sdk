@@ -10,6 +10,11 @@ import java.util.Map;
 public class CreateAttestationPayload extends AttestationPayload{
 
   /**
+   * unique id is used to avoid create same attestation when net exception
+   */
+  private String uniqueId;
+
+  /**
    * template id
    */
   private String templateId;
@@ -19,6 +24,14 @@ public class CreateAttestationPayload extends AttestationPayload{
    * the key of identities is one of {@link IdentityType}
    */
   private Map<IdentityType, String> identities;
+
+  public String getUniqueId() {
+    return uniqueId;
+  }
+
+  public void setUniqueId(String uniqueId) {
+    this.uniqueId = uniqueId;
+  }
 
   public String getTemplateId() {
     return templateId;

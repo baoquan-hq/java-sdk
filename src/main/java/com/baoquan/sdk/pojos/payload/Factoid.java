@@ -9,6 +9,11 @@ package com.baoquan.sdk.pojos.payload;
 public class Factoid {
 
   /**
+   * unique id is used to avoid create same attestation when net exception
+   */
+  private String unique_id;
+
+  /**
    * the type of the factoid
    */
   private String type;
@@ -17,6 +22,14 @@ public class Factoid {
    * the data of the factoid
    */
   private Object data;
+
+  public String getUnique_id() {
+    return unique_id;
+  }
+
+  public void setUnique_id(String unique_id) {
+    this.unique_id = unique_id;
+  }
 
   public String getType() {
     return type;
