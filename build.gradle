@@ -1,10 +1,13 @@
 group 'com.baoquan'
-version '1.0.8'
+version '1.0.9'
 description 'Api sdk of Baoquan.com'
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 repositories {
     mavenCentral()
