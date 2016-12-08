@@ -30,7 +30,7 @@ public class BaoquanClientTest {
   @Before
   public void initClient() {
     client = new BaoquanClient();
-    client.setHost("http://localhost:8080");
+    client.setHost("http://localhost:80");
     client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
     try {
       client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
@@ -324,6 +324,28 @@ public class BaoquanClientTest {
 
     CreateAttestationResponse response1 = client.createAttestation(payload, byteStreamBodyMap);
     Assert.assertEquals(response1.getData().getNo(), response.getData().getNo());
+  }
+
+  @Test
+  public void testCreateAttestationWithSha256() throws ServerException {
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    payload.setTemplateId("filehash");
+    payload.setUniqueId(randomUniqueId());
+    Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+    identities.put(IdentityType.MO, "15857112383");
+    payload.setIdentities(identities);
+    List<Factoid> factoids = new ArrayList<Factoid>();
+    Factoid factoid = new Factoid();
+    factoid.setUnique_id(randomUniqueId());
+    factoid.setType("file");
+    Map<String,String> map = new HashMap<String, String>();
+    factoid.setData(map);
+    map.put("owner_name","李三");
+    map.put("owner_id","330124199501017791");
+    factoids.add(factoid);
+    payload.setFactoids(factoids);
+    CreateAttestationResponse response = client.createAttestationWithSha256(payload,"654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
+    Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
@@ -872,10 +894,10 @@ public class BaoquanClientTest {
 
   @Test
   public void testGetAttestation1() throws ServerException {
-    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", null);
+    GetAttestationResponse response = client.getAttestation("07B396B60AE3476CAE0F1AF06CE47C50", null);
     Assert.assertNotNull(response.getRequest_id());
     Assert.assertNotNull(response.getData());
-    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+    Assert.assertEquals("07B396B60AE3476CAE0F1AF06CE47C50", response.getData().getNo());
   }
 
   @Test

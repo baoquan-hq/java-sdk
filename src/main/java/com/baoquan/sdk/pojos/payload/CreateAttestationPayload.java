@@ -20,6 +20,11 @@ public class CreateAttestationPayload extends AttestationPayload{
   private String templateId;
 
   /**
+   * sha256
+   */
+  private String sha256;
+
+  /**
    * identity used to determine who own this attestation
    * the key of identities is one of {@link IdentityType}
    */
@@ -47,5 +52,13 @@ public class CreateAttestationPayload extends AttestationPayload{
 
   public void setIdentities(Map<IdentityType, String> identities) {
     this.identities = identities;
+  }
+
+  public String getSha256() {
+    return sha256;
+  }
+
+  public void setSha256(String sha256) {
+    this.sha256 = sha256;
   }
 }

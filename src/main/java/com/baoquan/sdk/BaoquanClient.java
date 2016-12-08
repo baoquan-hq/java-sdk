@@ -101,10 +101,24 @@ public class BaoquanClient {
    * create attestation with no attachments
    * @param payload {@link CreateAttestationPayload}
    * @return {@link CreateAttestationResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public CreateAttestationResponse createAttestation(CreateAttestationPayload payload) throws ServerException {
     return createAttestation(payload, null);
+  }
+
+  /**
+   * create attestation with sha256
+   * @param payload  payload
+   * @param sha256 the algorithm is SHA256WithRSA
+   * @return {@link CreateAttestationResponse}
+   * @throws ServerException {@link ServerException}
+   */
+  public CreateAttestationResponse createAttestationWithSha256(CreateAttestationPayload payload, String sha256 ) throws ServerException {
+    checkSha256(sha256);
+    payload.setSha256(sha256);
+    Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
+    return json("attestations/hash", payloadMap, null, CreateAttestationResponse.class);
   }
 
   /**
@@ -112,7 +126,7 @@ public class BaoquanClient {
    * @param payload {@link CreateAttestationPayload}
    * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
    * @return {@link CreateAttestationResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public CreateAttestationResponse createAttestation(CreateAttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
     checkCreateAttestationPayload(payload);
@@ -125,7 +139,7 @@ public class BaoquanClient {
    * add factoids to attestation with no attachments
    * @param payload {@link AddFactoidsPayload}
    * @return {@link AddFactoidsResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public AddFactoidsResponse addFactoids(AddFactoidsPayload payload) throws ServerException {
     return addFactoids(payload, null);
@@ -136,7 +150,7 @@ public class BaoquanClient {
    * @param payload {@link AddFactoidsPayload}
    * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
    * @return {@link AddFactoidsResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public AddFactoidsResponse addFactoids(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
     checkAddFactoidsPayload(payload);
@@ -150,7 +164,7 @@ public class BaoquanClient {
    * @param ano attestation no
    * @param fields attestation field
    * @return {@link GetAttestationResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public GetAttestationResponse getAttestation(String ano, List<String> fields) throws ServerException {
     if (StringUtils.isEmpty(ano)) {
@@ -164,9 +178,9 @@ public class BaoquanClient {
 
   /**
    * download attestation file which is hashed to block chain
-   * @param ano
-   * @return
-   * @throws ServerException
+   * @param ano  attestation id
+   * @return {@link DownloadFile}
+   * @throws ServerException {@link ServerException}
    */
   public DownloadFile downloadAttestation(String ano) throws ServerException {
     if (StringUtils.isEmpty(ano)) {
@@ -182,7 +196,7 @@ public class BaoquanClient {
    * @param payload {@link ApplyCaPayload}
    * @param seal the seal of enterprise
    * @return {@link ApplyCaResponse}
-   * @throws ServerException
+   * @throws ServerException {@link ServerException}
    */
   public ApplyCaResponse applyCa(ApplyCaPayload payload, ByteArrayBody seal) throws ServerException {
     checkApplyCaPayload(payload);
@@ -260,6 +274,10 @@ public class BaoquanClient {
     payloadMap.put("identities", payload.getIdentities());
     payloadMap.put("factoids", payload.getFactoids());
     payloadMap.put("completed", payload.isCompleted());
+    String sha256 = payload.getSha256();
+    if(StringUtils.isNotBlank(sha256)){
+      payloadMap.put("sha256",sha256);
+    }
     payloadMap.put("attachments", buildChecksum(payload, attachments));
     return payloadMap;
   }
@@ -471,4 +489,11 @@ public class BaoquanClient {
     }
     throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage(), exceptionResponse.getTimestamp());
   }
+
+  private void checkSha256(String sha256){
+    if(StringUtils.isBlank(sha256) || sha256.length()  != 64 || !sha256.matches("[a-z0-9]*") ){
+      throw new ClientException("invalid sha256 hash!");
+    }
+  }
+
 }

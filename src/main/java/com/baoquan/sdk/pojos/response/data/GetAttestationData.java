@@ -17,6 +17,7 @@ public class GetAttestationData {
   private boolean completed;
   private Map<String, List<String>> attachments;
   private String blockchain_hash;
+  private String unique_id;
 
   public String getNo() {
     return no;
@@ -72,5 +73,13 @@ public class GetAttestationData {
 
   public void setBlockchain_hash(String blockchain_hash) {
     this.blockchain_hash = blockchain_hash;
+  }
+
+  public String getUnique_id() {
+    return unique_id;
+  }
+
+  public void setUnique_id(String unique_id) {
+    this.unique_id = unique_id;
   }
 }

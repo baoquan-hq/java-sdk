@@ -22,10 +22,11 @@ public class Utils {
    * @param encodedKey private key bytes
    * @param data data to sign
    * @return signed data
-   * @throws NoSuchAlgorithmException
-   * @throws InvalidKeySpecException
-   * @throws InvalidKeyException
-   * @throws SignatureException
+   * @throws NoSuchAlgorithmException  NoSuchAlgorithmException
+   * @throws InvalidKeySpecException InvalidKeySpecException
+   * @throws InvalidKeyException InvalidKeyException
+   * @throws SignatureException SignatureException
+   * @throws UnsupportedEncodingException UnsupportedEncodingException
    */
   public static String sign(byte[] encodedKey, String data) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, SignatureException {
     if (data == null) {
@@ -54,7 +55,7 @@ public class Utils {
    * convert object to json string
    * @param object object
    * @return json string
-   * @throws JsonProcessingException
+   * @throws JsonProcessingException JsonProcessingException
    */
   public static String objectToJson(Object object) throws JsonProcessingException {
     if (object == null) {
@@ -70,7 +71,7 @@ public class Utils {
    * @param t t
    * @param <T> T
    * @return target object
-   * @throws IOException
+   * @throws IOException IOException
    */
   public static <T>T jsonToObject(String json, Class<T> t) throws IOException {
     if (json == null) {
