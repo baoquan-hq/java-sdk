@@ -41,6 +41,7 @@ public class BaoquanClientTest {
 
   /**
    * payload can not be null
+   *
    * @throws ServerException
    */
   @Test
@@ -52,6 +53,7 @@ public class BaoquanClientTest {
 
   /**
    * unique id can not be null
+   *
    * @throws ServerException
    */
   @Test
@@ -63,6 +65,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.templateId can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -76,6 +79,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.identities can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -90,6 +94,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.identities can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -105,6 +110,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.factoids can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -123,6 +129,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.factoids can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -142,6 +149,7 @@ public class BaoquanClientTest {
 
   /**
    * template should be exist
+   *
    * @throws ServerException
    */
   @Test
@@ -174,6 +182,7 @@ public class BaoquanClientTest {
    * factoid data should meet with template schema
    * when you edit template schemas on line and set user.phone_number is required
    * you must give a valid phone_number value in user factoid
+   *
    * @throws ServerException
    */
   @Test
@@ -203,6 +212,7 @@ public class BaoquanClientTest {
 
   /**
    * factoid data type should be in template schemas
+   *
    * @throws ServerException
    */
   @Test
@@ -234,6 +244,7 @@ public class BaoquanClientTest {
    * factoid data should meet with template schema
    * when user.phone_number is required but you only upload product
    * you must call addFactoids api to upload user later
+   *
    * @throws ServerException
    */
   @Test
@@ -263,7 +274,7 @@ public class BaoquanClientTest {
   @Test
   public void testCreateAttestation11() throws ServerException, IOException {
     CreateAttestationPayload payload = new CreateAttestationPayload();
-    payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
+    payload.setTemplateId("5e4G1Kdr8ThS71HBdW64A");
     Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
     identities.put(IdentityType.ID, "42012319800127691X");
     identities.put(IdentityType.MO, "15857112383");
@@ -291,6 +302,7 @@ public class BaoquanClientTest {
 
   /**
    * create attestation with the same unique id will return the same attestation no
+   *
    * @throws ServerException
    * @throws IOException
    */
@@ -338,18 +350,19 @@ public class BaoquanClientTest {
     Factoid factoid = new Factoid();
     factoid.setUnique_id(randomUniqueId());
     factoid.setType("file");
-    Map<String,String> map = new HashMap<String, String>();
+    Map<String, String> map = new HashMap<String, String>();
     factoid.setData(map);
-    map.put("owner_name","李三");
-    map.put("owner_id","330124199501017791");
+    map.put("owner_name", "李三");
+    map.put("owner_id", "330124199501017791");
     factoids.add(factoid);
     payload.setFactoids(factoids);
-    CreateAttestationResponse response = client.createAttestationWithSha256(payload,"654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
+    CreateAttestationResponse response = client.createAttestationWithSha256(payload, "654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
     Assert.assertNotNull(response.getData().getNo());
   }
 
   /**
    * payload can not be null
+   *
    * @throws ServerException
    */
   @Test
@@ -361,6 +374,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.ano can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -372,6 +386,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.factoids can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -385,6 +400,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.factoids can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -399,6 +415,7 @@ public class BaoquanClientTest {
 
   /**
    * attestation must be exist
+   *
    * @throws ServerException
    */
   @Test
@@ -422,6 +439,7 @@ public class BaoquanClientTest {
 
   /**
    * attestation completed and can not add factoids
+   *
    * @throws ServerException
    */
   @Test
@@ -445,6 +463,7 @@ public class BaoquanClientTest {
 
   /**
    * when complete attestation, factoids should meet with schemas
+   *
    * @throws ServerException
    */
   @Test
@@ -492,6 +511,7 @@ public class BaoquanClientTest {
 
   /**
    * same unique id will return success
+   *
    * @throws ServerException
    */
   @Test
@@ -542,6 +562,7 @@ public class BaoquanClientTest {
 
   /**
    * create attestation and then add factoid
+   *
    * @throws ServerException
    */
   @Test
@@ -592,6 +613,7 @@ public class BaoquanClientTest {
 
   /**
    * payload can not be null
+   *
    * @throws ServerException
    */
   @Test
@@ -603,6 +625,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.type can not be null
+   *
    * @throws ServerException
    */
   @Test
@@ -614,6 +637,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.linkName can not be empty
+   *
    * @throws ServerException
    */
   @Test
@@ -627,6 +651,7 @@ public class BaoquanClientTest {
 
   /**
    * payload.name can not be empty when type is enterprise
+   *
    * @throws ServerException
    */
   @Test
@@ -640,6 +665,7 @@ public class BaoquanClientTest {
 
   /**
    * apply personal ca
+   *
    * @throws ServerException
    */
   @Test
@@ -658,6 +684,7 @@ public class BaoquanClientTest {
 
   /**
    * apply enterprise ca
+   *
    * @throws ServerException
    */
   @Test
@@ -682,6 +709,7 @@ public class BaoquanClientTest {
 
   /**
    * add one factoid with one attachment that need to sign
+   *
    * @throws ServerException
    * @throws IOException
    */
@@ -726,6 +754,7 @@ public class BaoquanClientTest {
 
   /**
    * add one factoid with two attachments and one of them need to sign
+   *
    * @throws ServerException
    * @throws IOException
    */
@@ -772,6 +801,7 @@ public class BaoquanClientTest {
 
   /**
    * add two factoids with attachments and one of the factoids has attachment need to sign
+   *
    * @throws ServerException
    * @throws IOException
    */
@@ -831,6 +861,7 @@ public class BaoquanClientTest {
 
   /**
    * add two factoids with attachments and one of the factoids has attachment need to sign
+   *
    * @throws ServerException
    * @throws IOException
    */
@@ -894,18 +925,18 @@ public class BaoquanClientTest {
 
   @Test
   public void testGetAttestation1() throws ServerException {
-    GetAttestationResponse response = client.getAttestation("07B396B60AE3476CAE0F1AF06CE47C50", null);
+    GetAttestationResponse response = client.getAttestation("0E9A26E72C51453BB8F8A0C4FEE9BE3F", null);
     Assert.assertNotNull(response.getRequest_id());
     Assert.assertNotNull(response.getData());
-    Assert.assertEquals("07B396B60AE3476CAE0F1AF06CE47C50", response.getData().getNo());
+    Assert.assertEquals("0E9A26E72C51453BB8F8A0C4FEE9BE3F", response.getData().getNo());
   }
 
   @Test
   public void testGetAttestation2() throws ServerException {
-    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", new ArrayList<String>());
+    GetAttestationResponse response = client.getAttestation("0E9A26E72C51453BB8F8A0C4FEE9BE3F", new ArrayList<String>());
     Assert.assertNotNull(response.getRequest_id());
     Assert.assertNotNull(response.getData());
-    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+    Assert.assertEquals("0E9A26E72C51453BB8F8A0C4FEE9BE3F", response.getData().getNo());
     Assert.assertNull(response.getData().getIdentities());
     Assert.assertNull(response.getData().getFactoids());
     Assert.assertNull(response.getData().getAttachments());
@@ -913,10 +944,10 @@ public class BaoquanClientTest {
 
   @Test
   public void testGetAttestation3() throws ServerException {
-    GetAttestationResponse response = client.getAttestation("DB0C8DB14E3C44C7B9FBBE30EB179241", Collections.singletonList("factoids"));
+    GetAttestationResponse response = client.getAttestation("0E9A26E72C51453BB8F8A0C4FEE9BE3F", Collections.singletonList("factoids"));
     Assert.assertNotNull(response.getRequest_id());
     Assert.assertNotNull(response.getData());
-    Assert.assertEquals("DB0C8DB14E3C44C7B9FBBE30EB179241", response.getData().getNo());
+    Assert.assertEquals("0E9A26E72C51453BB8F8A0C4FEE9BE3F", response.getData().getNo());
     Assert.assertNull(response.getData().getIdentities());
     Assert.assertNotNull(response.getData().getFactoids());
     Assert.assertNull(response.getData().getAttachments());
@@ -932,6 +963,21 @@ public class BaoquanClientTest {
     FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
     IOUtils.copy(downloadFile.getFile(), fileOutputStream);
     fileOutputStream.close();
+  }
+
+  @Test
+  public void testUserKyc() throws ServerException {
+    UserKycResponse response = client.userKyc("15822222224", "用户一", "42012319800127691X");
+    String userId = response.getData().getUserId();
+    System.out.println(userId);
+    Assert.assertNotNull(response.getData().getUserId());
+
+  }
+
+  @Test
+  public void testAttestationUrl() throws ServerException {
+    String accessUrl = client.attestationAccessUrl("35F79C28AC244202B0AA0A4E3E316AEC");
+    System.out.println(accessUrl);
   }
 
   private String randomUniqueId() {
@@ -954,8 +1000,7 @@ public class BaoquanClientTest {
     String b = Integer.toString(rand(0, 999));
     if (b.length() == 1) {
       b = "00" + b;
-    }
-    else if (b.length() == 2) {
+    } else if (b.length() == 2) {
       b = "0" + b;
     }
 
@@ -983,6 +1028,6 @@ public class BaoquanClientTest {
   }
 
   private int rand(int min, int max) {
-    return (int)((double)(max - min + 1) * Math.random() + (double)min);
+    return (int) ((double) (max - min + 1) * Math.random() + (double) min);
   }
 }

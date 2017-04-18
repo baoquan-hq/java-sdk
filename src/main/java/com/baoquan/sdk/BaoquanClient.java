@@ -99,6 +99,7 @@ public class BaoquanClient {
 
   /**
    * create attestation with no attachments
+   *
    * @param payload {@link CreateAttestationPayload}
    * @return {@link CreateAttestationResponse}
    * @throws ServerException {@link ServerException}
@@ -109,12 +110,13 @@ public class BaoquanClient {
 
   /**
    * create attestation with sha256
-   * @param payload  payload
-   * @param sha256 the algorithm is SHA256WithRSA
+   *
+   * @param payload payload
+   * @param sha256  the algorithm is SHA256WithRSA
    * @return {@link CreateAttestationResponse}
    * @throws ServerException {@link ServerException}
    */
-  public CreateAttestationResponse createAttestationWithSha256(CreateAttestationPayload payload, String sha256 ) throws ServerException {
+  public CreateAttestationResponse createAttestationWithSha256(CreateAttestationPayload payload, String sha256) throws ServerException {
     checkSha256(sha256);
     payload.setSha256(sha256);
     Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
@@ -123,7 +125,8 @@ public class BaoquanClient {
 
   /**
    * create attestation with attachments, one factoid can have more than one attachments
-   * @param payload {@link CreateAttestationPayload}
+   *
+   * @param payload     {@link CreateAttestationPayload}
    * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
    * @return {@link CreateAttestationResponse}
    * @throws ServerException {@link ServerException}
@@ -137,6 +140,7 @@ public class BaoquanClient {
 
   /**
    * add factoids to attestation with no attachments
+   *
    * @param payload {@link AddFactoidsPayload}
    * @return {@link AddFactoidsResponse}
    * @throws ServerException {@link ServerException}
@@ -147,7 +151,8 @@ public class BaoquanClient {
 
   /**
    * add factoids to attestation with attachments, one factoid can have more than one attachments
-   * @param payload {@link AddFactoidsPayload}
+   *
+   * @param payload     {@link AddFactoidsPayload}
    * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
    * @return {@link AddFactoidsResponse}
    * @throws ServerException {@link ServerException}
@@ -161,7 +166,8 @@ public class BaoquanClient {
 
   /**
    * get attestation raw data
-   * @param ano attestation no
+   *
+   * @param ano    attestation no
    * @param fields attestation field
    * @return {@link GetAttestationResponse}
    * @throws ServerException {@link ServerException}
@@ -178,7 +184,8 @@ public class BaoquanClient {
 
   /**
    * download attestation file which is hashed to block chain
-   * @param ano  attestation id
+   *
+   * @param ano attestation id
    * @return {@link DownloadFile}
    * @throws ServerException {@link ServerException}
    */
@@ -193,8 +200,9 @@ public class BaoquanClient {
 
   /**
    * apply ca
+   *
    * @param payload {@link ApplyCaPayload}
-   * @param seal the seal of enterprise
+   * @param seal    the seal of enterprise
    * @return {@link ApplyCaResponse}
    * @throws ServerException {@link ServerException}
    */
@@ -207,6 +215,29 @@ public class BaoquanClient {
     }
     return json("cas", payloadMap, streamBodyMap, ApplyCaResponse.class);
   }
+
+
+  public UserKycResponse userKyc(String phoneNumber, String name, String idCard) throws ServerException {
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
+    payloadMap.put("phone", phoneNumber);
+    payloadMap.put("name", name);
+    payloadMap.put("idCard", idCard);
+    return json("users/kyc", payloadMap, null, UserKycResponse.class);
+  }
+
+  public String attestationAccessUrl(String ano) throws ServerException {
+    String signature = "";
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("attestationId", ano);
+      String data = Utils.objectToJson(map);
+      signature = Utils.sign(privateKeyData, data);
+    } catch (Exception e) {
+      throw new ServerException("", "签名失败", System.currentTimeMillis());
+    }
+    return String.format("%s/attestations/%s?accessKey=%s&signature=%s", getHost(), ano, getAccessKey(), signature);
+  }
+
 
   private void checkCreateAttestationPayload(CreateAttestationPayload payload) {
     if (payload == null) {
@@ -275,8 +306,8 @@ public class BaoquanClient {
     payloadMap.put("factoids", payload.getFactoids());
     payloadMap.put("completed", payload.isCompleted());
     String sha256 = payload.getSha256();
-    if(StringUtils.isNotBlank(sha256)){
-      payloadMap.put("sha256",sha256);
+    if (StringUtils.isNotBlank(sha256)) {
+      payloadMap.put("sha256", sha256);
     }
     payloadMap.put("attachments", buildChecksum(payload, attachments));
     return payloadMap;
@@ -370,7 +401,7 @@ public class BaoquanClient {
     return payloadAttachments;
   }
 
-  private <T>T json(String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap, Class<T> responseClass) throws ServerException {
+  private <T> T json(String apiName, Map<String, Object> payload, Map<String, List<ByteArrayBody>> streamBodyMap, Class<T> responseClass) throws ServerException {
     String requestId = requestIdGenerator.createRequestId();
     CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
     int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
@@ -387,7 +418,7 @@ public class BaoquanClient {
     }
     T responseObject;
     try {
-      responseObject = Utils.jsonToObject(response, responseClass);
+        responseObject = Utils.jsonToObject(response, responseClass);
     } catch (IOException e) {
       throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
     }
@@ -425,7 +456,7 @@ public class BaoquanClient {
     if (StringUtils.isEmpty(accessKey)) {
       throw new ClientException("accessKey can not be empty");
     }
-    int tonce = (int) (System.currentTimeMillis()/1000);
+    int tonce = (int) (System.currentTimeMillis() / 1000);
     String payloadString;
     try {
       payloadString = Utils.objectToJson(payload);
@@ -490,8 +521,8 @@ public class BaoquanClient {
     throw new ServerException(exceptionResponse.getRequest_id(), exceptionResponse.getMessage(), exceptionResponse.getTimestamp());
   }
 
-  private void checkSha256(String sha256){
-    if(StringUtils.isBlank(sha256) || sha256.length()  != 64 || !sha256.matches("[a-z0-9]*") ){
+  private void checkSha256(String sha256) {
+    if (StringUtils.isBlank(sha256) || sha256.length() != 64 || !sha256.matches("[a-z0-9]*")) {
       throw new ClientException("invalid sha256 hash!");
     }
   }

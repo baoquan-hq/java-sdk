@@ -6,5 +6,7 @@ package com.baoquan.sdk.pojos.payload;
 public enum IdentityType {
   MO, // mobile phone
   ID, // identity card no of china
-  USCID // union society company code of china
+  USCID,  // union society company code of china
+  ORGCODE, // org code
+  USERID // userId
 }
