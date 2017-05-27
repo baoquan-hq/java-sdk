@@ -24,6 +24,8 @@ public class CreateAttestationPayload extends AttestationPayload{
    */
   private String sha256;
 
+  private String openStatusKey;
+
   /**
    * identity used to determine who own this attestation
    * the key of identities is one of {@link IdentityType}
@@ -60,5 +62,13 @@ public class CreateAttestationPayload extends AttestationPayload{
 
   public void setSha256(String sha256) {
     this.sha256 = sha256;
+  }
+
+  public String getOpenStatusKey() {
+    return openStatusKey;
+  }
+
+  public void setOpenStatusKey(String openStatusKey) {
+    this.openStatusKey = openStatusKey;
   }
 }

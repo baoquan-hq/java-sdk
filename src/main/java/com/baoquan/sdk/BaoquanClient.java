@@ -227,15 +227,17 @@ public class BaoquanClient {
 
   public String attestationAccessUrl(String ano) throws ServerException {
     String signature = "";
+    long tonce = System.currentTimeMillis();
     try {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("attestationId", ano);
+      map.put("tonce",tonce);
       String data = Utils.objectToJson(map);
       signature = Utils.sign(privateKeyData, data);
     } catch (Exception e) {
       throw new ServerException("", "签名失败", System.currentTimeMillis());
     }
-    return String.format("%s/attestations/%s?accessKey=%s&signature=%s", getHost(), ano, getAccessKey(), signature);
+    return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature,tonce);
   }
 
 
@@ -305,6 +307,9 @@ public class BaoquanClient {
     payloadMap.put("identities", payload.getIdentities());
     payloadMap.put("factoids", payload.getFactoids());
     payloadMap.put("completed", payload.isCompleted());
+    if(StringUtils.isNotBlank(payload.getOpenStatusKey())){
+      payloadMap.put("openStatusKey",payload.getOpenStatusKey());
+    }
     String sha256 = payload.getSha256();
     if (StringUtils.isNotBlank(sha256)) {
       payloadMap.put("sha256", sha256);
