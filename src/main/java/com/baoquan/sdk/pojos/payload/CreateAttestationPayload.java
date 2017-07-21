@@ -24,6 +24,8 @@ public class CreateAttestationPayload extends AttestationPayload{
    */
   private String sha256;
 
+  private String url;
+
   private String openStatusKey;
 
   /**
@@ -62,6 +64,14 @@ public class CreateAttestationPayload extends AttestationPayload{
 
   public void setSha256(String sha256) {
     this.sha256 = sha256;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public String getOpenStatusKey() {

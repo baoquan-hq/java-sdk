@@ -123,6 +123,21 @@ public class BaoquanClient {
     return json("attestations/hash", payloadMap, null, CreateAttestationResponse.class);
   }
 
+
+  /**
+   * create attestation with sha256
+   *
+   * @param payload payload
+   * @param url
+   * @return {@link CreateAttestationResponse}
+   * @throws ServerException {@link ServerException}
+   */
+  public CreateAttestationResponse createAttestationWithUrl(CreateAttestationPayload payload, String url) throws ServerException {
+    payload.setUrl(url);
+    Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
+    return json("attestations/url", payloadMap, null, CreateAttestationResponse.class);
+  }
+
   /**
    * create attestation with attachments, one factoid can have more than one attachments
    *
@@ -313,6 +328,10 @@ public class BaoquanClient {
     String sha256 = payload.getSha256();
     if (StringUtils.isNotBlank(sha256)) {
       payloadMap.put("sha256", sha256);
+    }
+    String url = payload.getUrl();
+    if(StringUtils.isNoneBlank(url)){
+      payloadMap.put("url", url);
     }
     payloadMap.put("attachments", buildChecksum(payload, attachments));
     return payloadMap;
