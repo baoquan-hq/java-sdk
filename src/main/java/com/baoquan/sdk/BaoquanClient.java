@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 public class BaoquanClient {
 
   private String host = "https://baoquan.com";
+  //private String host = "http://127.0.0.1:8080"
 
   private String version = "v1";
 
@@ -551,4 +552,22 @@ public class BaoquanClient {
     }
   }
 
+
+  /**
+   *
+   * @param userId
+   * @param contractId
+   * @param posX 印章x轴
+   * @param posY 印章y轴
+   * @return CloseableHttpResponse
+   * @throws ServerException
+   */
+  public CloseableHttpResponse signContract(String userId,String contractId,String posX ,String posY) throws ServerException {
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
+    payloadMap.put("user_id", userId);
+    payloadMap.put("contract_id", contractId);
+    payloadMap.put("posX", posX);
+    payloadMap.put("posY", posY);
+    return json("userSignature/signContract", payloadMap, null, null);
+  }
 }

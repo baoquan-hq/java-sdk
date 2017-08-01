@@ -980,6 +980,12 @@ public class BaoquanClientTest {
     System.out.println(accessUrl);
   }
 
+  @Test
+  public void testSignContract()throws ServerException {
+    client.signContract("aRm7lUnYJU3C6MbXzoT3tVTbaoA","czGLupGNc9yXtLY38E7vRT","10","10");
+  }
+
+
   private String randomUniqueId() {
     return UUID.randomUUID().toString();
   }
