@@ -1060,6 +1060,24 @@ public class BaoquanClientTest {
      * @throws IOException
      */
     @Test
+    public void testUploadContract1() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+      //  byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        String response = client.uploadContract(payload, byteStreamBodyMap);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
     public void testSetContractuDetail() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
 
@@ -1069,7 +1087,7 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+        payload.setContract_id("weQNxhYZEDBVFREZtVCX2d");
 
         List<String> usePhones = new ArrayList();
         usePhones.add("15844444444");
@@ -1087,12 +1105,210 @@ public class BaoquanClientTest {
      * @throws IOException
      */
     @Test
+    public void testSetContractuDetail1() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setRemark("");
+
+        payload.setTitle("ssss合同");
+
+        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15844444444");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail2() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setTitle("ssss合同");
+
+        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15844444444");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail3() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setRemark("awef");
+
+
+        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15844444444");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail4() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setRemark("ewfw");
+
+        payload.setTitle("ssss合同");
+
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15844444444");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail5() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setRemark("dfvawsde");
+
+        payload.setTitle("ssss合同");
+
+        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+
+        List<String> usePhones = new ArrayList();
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail6() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setRemark("sas");
+
+        payload.setTitle("ssss合同");
+
+        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15333344");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testSetContractuDetail7() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        payload.setEnd_at(new Date());
+
+        payload.setRemark("sas");
+
+        payload.setTitle("ssss合同");
+
+        payload.setContract_id("bvN6zPZJMd9ZGALRNF");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("15844444444");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
     public void testUploadSignature() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        client.uploadSignature(payload, byteStreamBodyMap);
+        //  Assert.assertNotNull(response);
+    }
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testUploadSignature1() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
+        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+        //byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
         client.uploadSignature(payload, byteStreamBodyMap);
         //  Assert.assertNotNull(response);
     }
@@ -1106,10 +1322,39 @@ public class BaoquanClientTest {
     @Test
     public void SetSignatureDefaultId() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-        payload.setSignature_id("e12UdCis3omkaBNxaAS991");
+        payload.setSignature_id("p3CJKg13nUutpdxrjjMRAT");
         client.setSignatureDefaultId(payload);
         //  Assert.assertNotNull(response);
     }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void SetSignatureDefaultId1() throws ServerException, IOException {
+        SignaturePayload payload = new SignaturePayload();
+        payload.setSignature_id("e12UdCis3omk991");
+        client.setSignatureDefaultId(payload);
+        //  Assert.assertNotNull(response);
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void SetSignatureDefaultId2() throws ServerException, IOException {
+        SignaturePayload payload = new SignaturePayload();
+        payload.setSignature_id("");
+        client.setSignatureDefaultId(payload);
+        //  Assert.assertNotNull(response);
+    }
+
 
     /**
      * create attestation with the same unique id will return the same attestation no
@@ -1124,6 +1369,36 @@ public class BaoquanClientTest {
         client.deleteSignature(payload);
         //  Assert.assertNotNull(response);
     }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void deleteSignature1() throws ServerException, IOException {
+        SignaturePayload payload = new SignaturePayload();
+        payload.setSignature_id("");
+        client.deleteSignature(payload);
+        //  Assert.assertNotNull(response);
+    }
+
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void deleteSignature2() throws ServerException, IOException {
+        SignaturePayload payload = new SignaturePayload();
+        payload.setSignature_id("nePd7macVgt");
+        client.deleteSignature(payload);
+        //  Assert.assertNotNull(response);
+    }
+
 
     /**
      * create attestation with the same unique id will return the same attestation no
