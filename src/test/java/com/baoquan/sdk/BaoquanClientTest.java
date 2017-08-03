@@ -983,7 +983,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSignContract() throws ServerException {
-        client.signContract("aRm7lUnYJU3C6MbXzoT3tVTbaoA", "czGLupGNc9yXtLY38E7vRT", "10", "10");
+        client.signContract("aRm7lUnYJU3C6MbXzoT3tVTbaoA","","", "DONE", "4","400","550");
     }
 
     @Test
