@@ -981,25 +981,20 @@ public class BaoquanClientTest {
         System.out.println(accessUrl);
     }
 
-  @Test
-  public void testSignContract()throws ServerException {
-    client.signContract("d8ZhqgMdXLYoEgiuhvq6ef","18106500602","1018","DONE","1","10","10");
-  }
+    @Test
+    public void testSignContract() throws ServerException {
+        client.signContract("iUuYWkVVSfaSbY3nKg1dL4", "15822222222", "7373", "REJECT", "4", "400", "550");
+    }
 
-  @Test
-  public void testSendVerifyCode()throws ServerException {
-    client.sendVerifyCode("d8ZhqgMdXLYoEgiuhvq6ef","18106500602");
-  }
-
-
-
-
+    @Test
+    public void testSendVerifyCode() throws ServerException {
+        client.sendVerifyCode("iUuYWkVVSfaSbY3nKg1dL4", "15822222222");
+    }
 
     @Test
     public void testListSignature() throws ServerException {
         client.listSignature();
     }
-
 
 
 //    @Test
@@ -1043,6 +1038,7 @@ public class BaoquanClientTest {
 //        CreateAttestationResponse response = client.uploadContract(payload, byteArrayBody);
 //        Assert.assertNotNull(response.getData().getNo());
 //    }
+
     /**
      * create attestation with the same unique id will return the same attestation no
      *
@@ -1073,18 +1069,18 @@ public class BaoquanClientTest {
 
         payload.setEnd_at(new Date());
 
-        payload.setRemark("zheshixxxxxxxxxxxxxxx");
+        payload.setRemark("test");
 
-        payload.setTitle("ssss合同");
+        payload.setTitle("测试合同");
 
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+        payload.setContract_id("iUuYWkVVSfaSbY3nKg1dL4");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
+        usePhones.add("15822222222");
         payload.setUserPhones(usePhones);
 
 
-         client.setContractDetail(payload);
+        client.setContractDetail(payload);
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1142,7 +1138,7 @@ public class BaoquanClientTest {
     @Test
     public void signatureList() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-         client.signatureList(payload);
+        client.signatureList(payload);
         //  Assert.assertNotNull(response);
     }
 
