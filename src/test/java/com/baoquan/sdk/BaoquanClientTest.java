@@ -30,7 +30,7 @@ public class BaoquanClientTest {
   @Before
   public void initClient() {
     client = new BaoquanClient();
-    client.setHost("http://localhost:80");
+    client.setHost("http://localhost:8080");
     client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
     try {
       client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
@@ -982,8 +982,16 @@ public class BaoquanClientTest {
 
   @Test
   public void testSignContract()throws ServerException {
-    client.signContract("aRm7lUnYJU3C6MbXzoT3tVTbaoA","czGLupGNc9yXtLY38E7vRT","10","10");
+    client.signContract("d8ZhqgMdXLYoEgiuhvq6ef","18106500602","1018","DONE","1","10","10");
   }
+
+  @Test
+  public void testSendVerifyCode()throws ServerException {
+    client.sendVerifyCode("d8ZhqgMdXLYoEgiuhvq6ef","18106500602");
+  }
+
+
+
 
 
   private String randomUniqueId() {

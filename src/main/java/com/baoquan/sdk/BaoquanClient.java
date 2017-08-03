@@ -37,7 +37,6 @@ import java.util.regex.Pattern;
 public class BaoquanClient {
 
   private String host = "https://baoquan.com";
-  //private String host = "http://127.0.0.1:8080"
 
   private String version = "v1";
 
@@ -553,21 +552,43 @@ public class BaoquanClient {
   }
 
 
+
   /**
-   *
-   * @param userId
+   * 发送校验码
    * @param contractId
-   * @param posX 印章x轴
-   * @param posY 印章y轴
-   * @return CloseableHttpResponse
+   * @param phone
+   * @return
    * @throws ServerException
    */
-  public CloseableHttpResponse signContract(String userId,String contractId,String posX ,String posY) throws ServerException {
+  public CloseableHttpResponse sendVerifyCode(String contractId,String phone) throws ServerException {
     Map<String, Object> payloadMap = new HashMap<String, Object>();
-    payloadMap.put("user_id", userId);
     payloadMap.put("contract_id", contractId);
+    payloadMap.put("phone", phone);
+    return json("contract/verifyCode", payloadMap, null, null);
+  }
+
+
+  /**
+   *
+   * @param contractId
+   * @param phone 手机号
+   * @param verifyCode 验证码
+   * @param ecsStatus
+   * @param page 页码
+   * @param posX x轴坐标
+   * @param posY y轴坐标
+   * @return
+   * @throws ServerException
+   */
+  public CloseableHttpResponse signContract(String contractId,String phone,String verifyCode,String ecsStatus,String page,String posX,String posY) throws ServerException {
+    Map<String, Object> payloadMap = new HashMap<String, Object>();
+    payloadMap.put("contract_id", contractId);
+    payloadMap.put("phone", phone);
+    payloadMap.put("verify_code", verifyCode);
+    payloadMap.put("ecs_status", ecsStatus);
+    payloadMap.put("page", page);
     payloadMap.put("posX", posX);
     payloadMap.put("posY", posY);
-    return json("userSignature/signContract", payloadMap, null, null);
+    return json("contract/sign", payloadMap, null, null);
   }
 }
