@@ -14,11 +14,21 @@ public class AddFactoidsPayload extends AttestationPayload {
    */
   private String ano;
 
+  private String templateId;
+
   public String getAno() {
     return ano;
   }
 
   public void setAno(String ano) {
     this.ano = ano;
+  }
+
+  public String getTemplateId() {
+    return templateId;
+  }
+
+  public void setTemplateId(String templateId) {
+    this.templateId = templateId;
   }
 }

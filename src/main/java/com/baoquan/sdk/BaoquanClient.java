@@ -125,7 +125,7 @@ public class BaoquanClient {
 
 
   /**
-   * create attestation with sha256
+   * create attestation with url
    *
    * @param payload payload
    * @param url
@@ -333,6 +333,12 @@ public class BaoquanClient {
     if(StringUtils.isNoneBlank(url)){
       payloadMap.put("url", url);
     }
+    String ano = payload.getAno();
+    if(StringUtils.isNoneBlank(ano)){
+      payloadMap.put("ano", ano);
+    }else{
+      throw new IllegalArgumentException("payload.ano can not be empty");
+    }
     payloadMap.put("attachments", buildChecksum(payload, attachments));
     return payloadMap;
   }
@@ -340,6 +346,7 @@ public class BaoquanClient {
   private Map<String, Object> buildAddFactoidsPayloadMap(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) {
     Map<String, Object> payloadMap = new HashMap<String, Object>();
     payloadMap.put("ano", payload.getAno());
+    payloadMap.put("templateId",payload.getTemplateId());
     payloadMap.put("factoids", payload.getFactoids());
     payloadMap.put("completed", payload.isCompleted());
     payloadMap.put("attachments", buildChecksum(payload, attachments));

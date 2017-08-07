@@ -28,6 +28,8 @@ public class CreateAttestationPayload extends AttestationPayload{
 
   private String openStatusKey;
 
+  private String ano;
+
   /**
    * identity used to determine who own this attestation
    * the key of identities is one of {@link IdentityType}
@@ -80,5 +82,13 @@ public class CreateAttestationPayload extends AttestationPayload{
 
   public void setOpenStatusKey(String openStatusKey) {
     this.openStatusKey = openStatusKey;
+  }
+
+  public String getAno() {
+    return ano;
+  }
+
+  public void setAno(String ano) {
+    this.ano = ano;
   }
 }
