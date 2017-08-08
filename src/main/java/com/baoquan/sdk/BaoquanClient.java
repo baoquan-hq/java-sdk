@@ -129,7 +129,7 @@ public class BaoquanClient {
      * create attestation with sha256
      *
      * @param payload payload
-     * @param url
+     * @param url url
      * @return {@link CreateAttestationResponse}
      * @throws ServerException {@link ServerException}
      */
@@ -144,6 +144,7 @@ public class BaoquanClient {
      * create attestation with attachments, one factoid can have more than one attachments
      *
      * @param payload     {@link ContractPayload}
+     * @param attachments attachments
      * @return {@link String}
      * @throws ServerException {@link ServerException}
      */
@@ -156,7 +157,7 @@ public class BaoquanClient {
 
     /**
      * create attestation with attachments, one factoid can have more than one attachments
-     *
+     * @param payload payload
      * @return {@link String}
      * @throws ServerException {@link ServerException}
      */
@@ -181,7 +182,7 @@ public class BaoquanClient {
 
     /**
      * create attestation with attachments, one factoid can have more than one attachments
-     *
+     * @param payload payload
      * @return {@link String}
      * @throws ServerException {@link ServerException}
      */
@@ -193,7 +194,7 @@ public class BaoquanClient {
 
     /**
      * create attestation with attachments, one factoid can have more than one attachments
-     *
+     * @param payload payload
      * @return {@link String}
      * @throws ServerException {@link ServerException}
      */
@@ -206,7 +207,7 @@ public class BaoquanClient {
 
     /**
      * create attestation with attachments, one factoid can have more than one attachments
-     *
+     * @param attachments attachments
      * @param payload     {@link ContractPayload}
      * @return {@link String}
      * @throws ServerException {@link ServerException}
@@ -810,11 +811,11 @@ public class BaoquanClient {
 
 
   /**
-   * 发送校验码
-   * @param contractId
-   * @param phone
-   * @return
-   * @throws ServerException
+   * send VerifyCode
+   * @param contractId  contractId
+   * @param phone  phone
+   * @return CloseableHttpResponse
+   * @throws ServerException  ServerException
    */
   public CloseableHttpResponse sendVerifyCode(String contractId,String phone) throws ServerException {
     Map<String, Object> payloadMap = new HashMap<String, Object>();
@@ -826,15 +827,15 @@ public class BaoquanClient {
 
   /**
    *
-   * @param contractId
-   * @param phone 手机号
-   * @param verifyCode 验证码
-   * @param ecsStatus
-   * @param page 页码
-   * @param posX x轴坐标
-   * @param posY y轴坐标
-   * @return
-   * @throws ServerException
+   * @param contractId  contractId
+   * @param phone phone
+   * @param verifyCode verifyCode
+   * @param ecsStatus  ecsStatus
+   * @param page page
+   * @param posX posX
+   * @param posY posY
+   * @return CloseableHttpResponse
+   * @throws ServerException  ServerException
    */
   public CloseableHttpResponse signContract(String contractId,String phone,String verifyCode,String ecsStatus,String page,String posX,String posY) throws ServerException {
     Map<String, Object> payloadMap = new HashMap<String, Object>();
