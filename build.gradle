@@ -81,7 +81,7 @@ dependencies {
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.54'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
     compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
-    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'commons-io', name: 'commons-io', version: '1.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.5'
 

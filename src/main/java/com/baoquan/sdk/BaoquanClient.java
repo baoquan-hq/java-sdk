@@ -22,6 +22,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.bouncycastle.openssl.PEMParser;
 
 import java.io.FileInputStream;
@@ -442,7 +443,7 @@ public class BaoquanClient {
     }
     String response;
     try {
-      response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+      response =  EntityUtils.toString(httpEntity);
       closeableHttpResponse.close();
     } catch (IOException e) {
       throw new ClientException(e);
@@ -539,7 +540,7 @@ public class BaoquanClient {
   private void throwServerException(String requestId, HttpEntity httpEntity) throws ServerException {
     String response;
     try {
-      response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+      response = EntityUtils.toString(httpEntity);;
     } catch (IOException e) {
       throw new ClientException(e);
     }
