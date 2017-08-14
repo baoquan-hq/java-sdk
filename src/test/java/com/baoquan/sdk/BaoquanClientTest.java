@@ -30,8 +30,9 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://localhost:8080");
-        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
+        // client.setHost("http://localhost:8080");
+        client.setHost("https://baoquan.com");
+        client.setAccessKey("f2frxKzDyp2tycaau6bs9E");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
         } catch (IOException e) {
@@ -983,19 +984,18 @@ public class BaoquanClientTest {
 
     @Test
     public void testSignContract() throws ServerException {
-        client.signContract("aRm7lUnYJU3C6MbXzoT3tVTbaoA","","", "DONE", "4","400","550");
+        client.signContract("txL4oWLDbE2hmgxjAgtE48", "15869196114", "9490", "DONE", "4", "400", "550");
     }
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("iUuYWkVVSfaSbY3nKg1dL4", "15822222222");
+        client.sendVerifyCode("txL4oWLDbE2hmgxjAgtE48", "15869196114");
     }
 
     @Test
     public void testListSignature() throws ServerException {
         client.listSignature();
     }
-
 
 
 //    @Test
@@ -1054,7 +1054,8 @@ public class BaoquanClientTest {
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        String response = client.uploadContract(payload, byteStreamBodyMap);
+        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
+        System.out.println(u.getContractId());
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1071,8 +1072,8 @@ public class BaoquanClientTest {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
-      //  byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        String response = client.uploadContract(payload, byteStreamBodyMap);
+        //  byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1085,22 +1086,28 @@ public class BaoquanClientTest {
     @Test
     public void testSetContractuDetail() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(System.currentTimeMillis());
+        calendar.setTime(date);
+//        calendar.add(Calendar.WEEK_OF_YEAR, -1);
+        calendar.add(Calendar.YEAR, +1);
+        date = calendar.getTime();
+        System.out.println(date);
+        payload.setEnd_at(date);
 
-        payload.setEnd_at(new Date());
+        payload.setRemark("zheshixxxxxxxxxxxxxxx");
 
-        payload.setRemark("test");
+        payload.setTitle("ssss合同");
 
-        payload.setTitle("测试合同");
-
-        payload.setContract_id("iUuYWkVVSfaSbY3nKg1dL4");
-        payload.setContract_id("weQNxhYZEDBVFREZtVCX2d");
+        payload.setContract_id("txL4oWLDbE2hmgxjAgtE48");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
+        usePhones.add("18272161340");
+        usePhones.add("18551824340");
         payload.setUserPhones(usePhones);
 
 
-         client.setContractDetail(payload);
+        client.setContractDetail(payload);
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1121,13 +1128,14 @@ public class BaoquanClientTest {
         payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("15822222222");
+        usePhones.add("15844444444");
         payload.setUserPhones(usePhones);
 
 
         client.setContractDetail(payload);
         //Assert.assertNotNull(response.getData().getNo());
     }
+
     /**
      * create attestation with the same unique id will return the same attestation no
      *
@@ -1299,9 +1307,10 @@ public class BaoquanClientTest {
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        client.uploadSignature(payload, byteStreamBodyMap);
+        UploadSignatureResponse u=client.uploadSignature(payload, byteStreamBodyMap);
         //  Assert.assertNotNull(response);
     }
+
     /**
      * create attestation with the same unique id will return the same attestation no
      *
@@ -1315,7 +1324,7 @@ public class BaoquanClientTest {
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         //byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        client.uploadSignature(payload, byteStreamBodyMap);
+        UploadSignatureResponse u =client.uploadSignature(payload, byteStreamBodyMap);
         //  Assert.assertNotNull(response);
     }
 
@@ -1328,7 +1337,7 @@ public class BaoquanClientTest {
     @Test
     public void SetSignatureDefaultId() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-        payload.setSignature_id("p3CJKg13nUutpdxrjjMRAT");
+        payload.setSignature_id("cey4FBLpqbsUNaLp3SENdp");
         client.setSignatureDefaultId(payload);
         //  Assert.assertNotNull(response);
     }
@@ -1415,7 +1424,7 @@ public class BaoquanClientTest {
     @Test
     public void signatureList() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-         client.signatureList(payload);
+        client.signatureList(payload);
         //  Assert.assertNotNull(response);
     }
 
