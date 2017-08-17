@@ -839,7 +839,8 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY) throws ServerException {
+    public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
+                                       List<PayloadFactoid> factoids, Boolean completed) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);
@@ -848,6 +849,11 @@ public class BaoquanClient {
         payloadMap.put("page", page);
         payloadMap.put("posX", posX);
         payloadMap.put("posY", posY);
+        payloadMap.put("template_id", templateId);
+        payloadMap.put("identities",identities);
+        payloadMap.put("factoids",factoids);
+        payloadMap.put("completed", completed);
+
         return json("contract/sign", payloadMap, null, ResultResponse.class);
     }
 }

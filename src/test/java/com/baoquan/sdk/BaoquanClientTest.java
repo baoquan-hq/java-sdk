@@ -30,9 +30,9 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        // client.setHost("http://localhost:8080");
-        client.setHost("https://baoquan.com");
-        client.setAccessKey("f2frxKzDyp2tycaau6bs9E");
+         client.setHost("http://localhost:8080");
+//        client.setHost("https://baoquan.com");
+        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
         } catch (IOException e) {
@@ -984,12 +984,23 @@ public class BaoquanClientTest {
 
     @Test
     public void testSignContract() throws ServerException {
-        client.signContract("txL4oWLDbE2hmgxjAgtE48", "15869196114", "9490", "DONE", "4", "400", "550");
+        Map<String, String> identitiesMap = new HashMap<String, String>();
+        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
+        PayloadFactoid payloadFactoid = new PayloadFactoid();
+        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
+        linkedHashMap.put("userTruename","张三");
+        linkedHashMap.put("address", "hangzhou");
+        payloadFactoid.setType("product");
+        payloadFactoid.setData(linkedHashMap);
+        list.add(payloadFactoid);
+        identitiesMap.put("MO","15611111111");
+        identitiesMap.put("ID", "430426198401361452");
+        client.signContract("vcVuhR2e1odTShZnJug7cg", "15866666666", "2560", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
     }
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("txL4oWLDbE2hmgxjAgtE48", "15869196114");
+        client.sendVerifyCode("vcVuhR2e1odTShZnJug7cg", "15866666666");
     }
 
     @Test
@@ -1099,11 +1110,10 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 
-        payload.setContract_id("txL4oWLDbE2hmgxjAgtE48");
+        payload.setContract_id("vcVuhR2e1odTShZnJug7cg");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("18272161340");
-        usePhones.add("18551824340");
+        usePhones.add("15866666666");
         payload.setUserPhones(usePhones);
 
 
