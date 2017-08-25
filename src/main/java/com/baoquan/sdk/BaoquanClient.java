@@ -233,7 +233,6 @@ public class BaoquanClient {
     public ResultResponse setContractDetail(ContractPayload payload) throws ServerException {
 
         Map<String, Object> payloadMap = buildSetContractPayloadMap(payload);
-//        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
         return json("contract/setDetail", payloadMap, null, ResultResponse.class);
     }
 
@@ -303,11 +302,9 @@ public class BaoquanClient {
      * @return {@link GetAttestationResponse}
      * @throws ServerException {@link ServerException}
      */
-    public GetAttestationResponse listSignature() throws ServerException {
+    public ListSignatureResponse listSignature() throws ServerException {
         Map<String, Object> payload = new HashMap<String, Object>();
-
-        return json("contract/signature/list", payload, null, GetAttestationResponse.class);
-        // json(, payload, null, GetAttestationResponse.class);
+        return json("contract/signature/list", payload, null, ListSignatureResponse.class);
     }
 
     /**

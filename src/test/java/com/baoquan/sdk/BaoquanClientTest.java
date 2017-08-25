@@ -1005,7 +1005,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testListSignature() throws ServerException {
-        client.listSignature();
+        ListSignatureResponse list = client.listSignature();
     }
 
 
