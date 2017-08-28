@@ -856,4 +856,30 @@ public class BaoquanClient {
 
         return json("contract/sign", payloadMap, null, ResultResponse.class);
     }
+
+    /**
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse queryList(ContractListPayload payload) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("start", payload.getStart());
+        payloadMap.put("end", payload.getEnd());
+        payloadMap.put("status", payload.getStatus());
+        payloadMap.put("keyWord", payload.getKeyWord());
+
+        return json("contract/list", payloadMap, null, ResultResponse.class);
+    }
+
+    /**
+     * @param contractId contractId
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse getDetail(String contractId) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("contract_id", contractId);
+
+        return json("contract/detail", payloadMap, null, ResultResponse.class);
+    }
 }

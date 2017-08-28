@@ -995,7 +995,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO","15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("vcVuhR2e1odTShZnJug7cg", "15866666666", "2560", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
+        client.signContract("vcVuhR2e1odTShZnJug7cg", "15866666666", "4285", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
     }
 
     @Test
@@ -1282,6 +1282,22 @@ public class BaoquanClientTest {
      * @throws ServerException
      * @throws IOException
      */
+    @Test
+    public void testQueryList() throws ServerException, IOException {
+        ContractListPayload payload = new ContractListPayload();
+//        payload.setStatus("EXPIRE");
+//        payload.setKeyWord("张");
+//        payload.setStart(new Date());
+//        payload.setEnd(new Date());
+        client.queryList(payload);
+    }
+
+
+    @Test
+    public void testgetDetail() throws ServerException {
+        client.getDetail("03");
+    }
+
     @Test
     public void testSetContractuDetail7() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
