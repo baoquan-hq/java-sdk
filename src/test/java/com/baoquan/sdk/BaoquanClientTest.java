@@ -32,6 +32,7 @@ public class BaoquanClientTest {
         client = new BaoquanClient();
          client.setHost("http://localhost:8080");
 //        client.setHost("https://baoquan.com");
+//        client.setAccessKey("x8TjNAtBjE7qnKc9R1HeYc");
         client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
@@ -1285,7 +1286,7 @@ public class BaoquanClientTest {
     @Test
     public void testQueryList() throws ServerException, IOException {
         ContractListPayload payload = new ContractListPayload();
-//        payload.setStatus("EXPIRE");
+        payload.setStatus("DONE");
 //        payload.setKeyWord("张");
 //        payload.setStart(new Date());
 //        payload.setEnd(new Date());
@@ -1295,7 +1296,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testgetDetail() throws ServerException {
-        client.getDetail("03");
+        client.getDetail("uqg9hB2JQg61g22ma2bFY2");
     }
 
     @Test
