@@ -1,5 +1,7 @@
 package com.baoquan.sdk.pojos.payload;
 
+import java.util.Map;
+
 /**
  * Created by sbwdlihao on 6/17/16.
  *
@@ -23,6 +25,8 @@ public class Factoid {
    */
   private Object data;
 
+  private Map<IdentityType, String> identities;
+
   public String getUnique_id() {
     return unique_id;
   }
@@ -45,5 +49,13 @@ public class Factoid {
 
   public void setData(Object data) {
     this.data = data;
+  }
+
+  public Map<IdentityType, String> getIdentities() {
+    return identities;
+  }
+
+  public void setIdentities(Map<IdentityType, String> identities) {
+    this.identities = identities;
   }
 }

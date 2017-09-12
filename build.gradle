@@ -1,5 +1,5 @@
 group 'com.baoquan'
-version '1.0.11_hzbank'
+version '1.0.13_hzbank'
 description 'Api sdk of Baoquan.com'
 
 apply plugin: 'java'
@@ -27,55 +27,55 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'Eagle java sdk'
-                artifactId 'eagle-sdk'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'Baoquan api sdk for members to use the services of Baoquan.com'
-                url 'https://baoquan.com'
-
-                scm {
-                    connection 'scm:git:git@github.com:baoquan-hq/java-sdk.git'
-                    developerConnection 'scm:git:git@github.com:baoquan-hq/java-sdk.git'
-                    url 'git@github.com:baoquan-hq/java-sdk.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The GNU General Public License, Version 3'
-                        url 'http://www.gnu.org/licenses/gpl-3.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'lihao'
-                        name 'lihao'
-                        email 'lih@baoquan.com'
-                    }
-                }
-            }
-        }
-    }
-}
+//signing {
+//    sign configurations.archives
+//}
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            pom.project {
+//                name 'Eagle java sdk'
+//                artifactId 'eagle-sdk'
+//                packaging 'jar'
+//                // optionally artifactId can be defined here
+//                description 'Baoquan api sdk for members to use the services of Baoquan.com'
+//                url 'https://baoquan.com'
+//
+//                scm {
+//                    connection 'scm:git:git@github.com:baoquan-hq/java-sdk.git'
+//                    developerConnection 'scm:git:git@github.com:baoquan-hq/java-sdk.git'
+//                    url 'git@github.com:baoquan-hq/java-sdk.git'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'The GNU General Public License, Version 3'
+//                        url 'http://www.gnu.org/licenses/gpl-3.0.txt'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id 'lihao'
+//                        name 'lihao'
+//                        email 'lih@baoquan.com'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.54'
