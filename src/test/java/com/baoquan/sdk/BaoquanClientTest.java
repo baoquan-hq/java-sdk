@@ -30,7 +30,7 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-         client.setHost("http://localhost:8080");
+        client.setHost("http://localhost:8080");
 //        client.setHost("https://baoquan.com");
 //        client.setAccessKey("x8TjNAtBjE7qnKc9R1HeYc");
         client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
@@ -988,20 +988,20 @@ public class BaoquanClientTest {
         Map<String, String> identitiesMap = new HashMap<String, String>();
         List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
         PayloadFactoid payloadFactoid = new PayloadFactoid();
-        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
-        linkedHashMap.put("userTruename","张三");
+        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<String, Object>();
+        linkedHashMap.put("userTruename", "张三");
         linkedHashMap.put("address", "hangzhou");
         payloadFactoid.setType("product");
         payloadFactoid.setData(linkedHashMap);
         list.add(payloadFactoid);
-        identitiesMap.put("MO","15611111111");
+        identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("vcVuhR2e1odTShZnJug7cg", "15866666666", "4285", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
+        client.signContract("afnEMxJzjturBBvfcjqtMg", "17696526777", "1359", "DONE", "4", "200", "550", "_priv_template_2", identitiesMap, list, false,"","enterprise");
     }
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("vcVuhR2e1odTShZnJug7cg", "15866666666");
+        client.sendVerifyCode("afnEMxJzjturBBvfcjqtMg", "17696526777");
     }
 
     @Test
@@ -1111,10 +1111,10 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 
-        payload.setContract_id("vcVuhR2e1odTShZnJug7cg");
+        payload.setContract_id("afnEMxJzjturBBvfcjqtMg");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("15866666666");
+        usePhones.add("17696526777");
         payload.setUserPhones(usePhones);
 
 
@@ -1334,7 +1334,7 @@ public class BaoquanClientTest {
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        UploadSignatureResponse u=client.uploadSignature(payload, byteStreamBodyMap);
+        UploadSignatureResponse u = client.uploadSignature(payload, byteStreamBodyMap);
         //  Assert.assertNotNull(response);
     }
 
@@ -1351,7 +1351,7 @@ public class BaoquanClientTest {
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         //byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        UploadSignatureResponse u =client.uploadSignature(payload, byteStreamBodyMap);
+        UploadSignatureResponse u = client.uploadSignature(payload, byteStreamBodyMap);
         //  Assert.assertNotNull(response);
     }
 
@@ -1453,6 +1453,29 @@ public class BaoquanClientTest {
         SignaturePayload payload = new SignaturePayload();
         client.signatureList(payload);
         //  Assert.assertNotNull(response);
+    }
+
+    /**
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testKycEnterprise() throws ServerException, IOException {
+        KycEnterprisePayload payload = new KycEnterprisePayload();
+        payload.setAccountName("潇潇公司");
+        payload.setBank("中国银行");
+        payload.setBankAccount("111111111111");
+        payload.setName("这是我的新公司");
+        payload.setOrgcode("123456");
+        payload.setPhone("17696526777");
+        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+        ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        // Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+        //byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        // CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
+        InputStream letterInputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+        ByteArrayBody letterFile = new ByteArrayBody(IOUtils.toByteArray(letterInputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile, letterFile);
     }
 
 
