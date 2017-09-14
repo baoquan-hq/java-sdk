@@ -393,6 +393,21 @@ public class BaoquanClient {
         return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
     }
 
+    /**
+     * create attestation with attachments, one factoid can have more than one attachments
+     *
+     * @param payload {@link CreateAttestationPayload}
+     *                //   * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
+     * @return {@link CreateAttestationResponse}
+     * @throws ServerException {@link ServerException}
+     */
+    public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile, ByteArrayBody letterFile) throws ServerException {
+        // checkCreateAttestationPayload(payload);
+        Map<String, Object> payloadMap = buildKycEnterprisePayloadMap(payload);
+        Map<String, ByteArrayBody> streamBodyMap = buildKycEnterpriseFile(businessFile, letterFile);
+        return jsonKycEnterprise("organizations/kyc", payloadMap, streamBodyMap, kycEnterpriseResponse.class);
+    }
+
 
     private void checkCreateAttestationPayload(CreateAttestationPayload payload) {
         if (payload == null) {
@@ -546,6 +561,17 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildKycEnterprisePayloadMap(KycEnterprisePayload payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phone", payload.getPhone());
+        payloadMap.put("name", payload.getName());
+        payloadMap.put("orgcode", payload.getOrgcode());
+        payloadMap.put("accountName", payload.getAccountName());
+        payloadMap.put("bank", payload.getBank());
+        payloadMap.put("bankAccount", payload.getBankAccount());
+        return payloadMap;
+    }
+
     private Map<String, Object> buildAddFactoidsPayloadMap(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("ano", payload.getAno());
@@ -587,6 +613,25 @@ public class BaoquanClient {
                 streamBodyMap.put(String.format("attachments[%s][]", i), list);
             }
         }
+        return streamBodyMap;
+    }
+
+    private Map<String, ByteArrayBody> buildKycEnterpriseFile(ByteArrayBody businessFile, ByteArrayBody letterFile) {
+        Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
+        if (businessFile.getContentType() != ContentType.DEFAULT_BINARY) {
+            throw new IllegalArgumentException("attachment content type is invalid");
+        }
+        if (StringUtils.isEmpty(businessFile.getFilename())) {
+            throw new IllegalArgumentException("attachment filename can not be empty");
+        }
+        streamBodyMap.put("businessFile", businessFile);
+        if (letterFile.getContentType() != ContentType.DEFAULT_BINARY) {
+            throw new IllegalArgumentException("attachment content type is invalid");
+        }
+        if (StringUtils.isEmpty(letterFile.getFilename())) {
+            throw new IllegalArgumentException("attachment filename can not be empty");
+        }
+        streamBodyMap.put("letterFile", letterFile);
         return streamBodyMap;
     }
 
@@ -658,6 +703,32 @@ public class BaoquanClient {
         }
         return responseObject;
     }
+
+    private <T> T jsonKycEnterprise(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+        String requestId = requestIdGenerator.createRequestId();
+        CloseableHttpResponse closeableHttpResponse = postKycEnterprise(requestId, apiName, payload, streamBodyMap);
+        int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+        HttpEntity httpEntity = closeableHttpResponse.getEntity();
+        if (statusCode != HttpStatus.SC_OK) {
+            throwServerException(requestId, httpEntity);
+        }
+        String response;
+        try {
+            response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+            closeableHttpResponse.close();
+        } catch (IOException e) {
+            throw new ClientException(e);
+        }
+        System.out.println(response);
+        T responseObject;
+        try {
+            responseObject = Utils.jsonToObject(response, responseClass);
+        } catch (IOException e) {
+            throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
+        }
+        return responseObject;
+    }
+
 
     private String jsonfile(String apiName, Map<String, Object> payload, ByteArrayBody streamBody) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
@@ -750,6 +821,59 @@ public class BaoquanClient {
                         list) {
                     multipartEntityBuilder.addPart(name, item);
                 }
+            }
+        }
+        httpPost.setEntity(multipartEntityBuilder.build());
+        // execute http json
+        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+        CloseableHttpResponse closeableHttpResponse;
+        try {
+            closeableHttpResponse = closeableHttpClient.execute(httpPost);
+        } catch (IOException e) {
+            throw new ClientException(e);
+        }
+        return closeableHttpResponse;
+    }
+
+    private CloseableHttpResponse postKycEnterprise(String requestId, String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap) {
+        String path = String.format("/api/%s/%s", version, apiName);
+        if (StringUtils.isEmpty(requestId)) {
+            throw new ClientException("request id can not be empty");
+        }
+        if (StringUtils.isEmpty(accessKey)) {
+            throw new ClientException("accessKey can not be empty");
+        }
+        int tonce = (int) (System.currentTimeMillis() / 1000);
+        String payloadString;
+        try {
+            payloadString = Utils.objectToJson(payload);
+        } catch (JsonProcessingException e) {
+            throw new ClientException(e);
+        }
+        // build the data to sign
+        String data = "POST" + path + requestId + accessKey + tonce + payloadString;
+        String signature;
+        try {
+            signature = Utils.sign(privateKeyData, data);
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        // build json request
+        String uri = host + path;
+        HttpPost httpPost = new HttpPost(uri);
+        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
+                .create()
+                .setMode(HttpMultipartMode.RFC6532) // avoid chinese garbled
+                .setCharset(Consts.UTF_8) // avoid chinese garbled
+                .addTextBody("request_id", requestId)
+                .addTextBody("access_key", accessKey)
+                .addTextBody("tonce", "" + tonce)
+                .addTextBody("payload", payloadString, ContentType.create("text/plain", Consts.UTF_8)) // avoid chinese garbled
+                .addTextBody("signature", signature);
+        if (streamBodyMap != null) {
+            for (String name :
+                    streamBodyMap.keySet()) {
+                multipartEntityBuilder.addPart(name, streamBodyMap.get(name));
             }
         }
         httpPost.setEntity(multipartEntityBuilder.build());
@@ -882,7 +1006,7 @@ public class BaoquanClient {
      * @throws ServerException ServerException
      */
     public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed) throws ServerException {
+                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);
@@ -892,10 +1016,11 @@ public class BaoquanClient {
         payloadMap.put("posX", posX);
         payloadMap.put("posY", posY);
         payloadMap.put("template_id", templateId);
-        payloadMap.put("identities",identities);
-        payloadMap.put("factoids",factoids);
+        payloadMap.put("identities", identities);
+        payloadMap.put("factoids", factoids);
         payloadMap.put("completed", completed);
-
+        payloadMap.put("signature_id", signatureId);
+        payloadMap.put("type", type);
         return json("contract/sign", payloadMap, null, ResultResponse.class);
     }
 
