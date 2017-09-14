@@ -1025,7 +1025,7 @@ public class BaoquanClient {
     }
 
     public ResultResponse setContractGroupStatus(String groupId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed) throws ServerException {
+                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("group_id", groupId);
         payloadMap.put("phone", phone);

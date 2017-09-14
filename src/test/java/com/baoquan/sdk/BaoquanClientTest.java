@@ -1014,7 +1014,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO","15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
+        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
     }
 
     @Test
