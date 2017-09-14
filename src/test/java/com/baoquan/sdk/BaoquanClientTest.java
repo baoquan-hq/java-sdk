@@ -15,6 +15,8 @@ import org.junit.rules.ExpectedException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -996,12 +998,33 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO","15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("vcVuhR2e1odTShZnJug7cg", "15866666666", "4285", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
+        client.signContract("n4tM4xadA4uhDiwoQaRQrq", "18322222222", "1822", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
+    }
+
+    @Test
+    public void testSetContractGroupStatus() throws ServerException {
+        Map<String, String> identitiesMap = new HashMap<String, String>();
+        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
+        PayloadFactoid payloadFactoid = new PayloadFactoid();
+        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
+        linkedHashMap.put("userTruename","张三");
+        linkedHashMap.put("address", "hangzhou");
+        payloadFactoid.setType("product");
+        payloadFactoid.setData(linkedHashMap);
+        list.add(payloadFactoid);
+        identitiesMap.put("MO","15611111111");
+        identitiesMap.put("ID", "430426198401361452");
+        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false);
     }
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("vcVuhR2e1odTShZnJug7cg", "15866666666");
+        client.sendVerifyCode("n4tM4xadA4uhDiwoQaRQrq", "18322222222");
+    }
+
+    @Test
+    public void testSendVerifyCodeForGroup() throws ServerException {
+        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340");
     }
 
     @Test
@@ -1078,6 +1101,25 @@ public class BaoquanClientTest {
      * @throws IOException
      */
     @Test
+    public void testCreateGroup() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        CreateGroupResponse u = client.createGroup(payload, byteStreamBodyMap);
+        System.out.println(u.getGroupId());
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
     public void testUploadContract1() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
 
@@ -1096,7 +1138,7 @@ public class BaoquanClientTest {
      * @throws IOException
      */
     @Test
-    public void testSetContractuDetail() throws ServerException, IOException {
+    public void testSetContractDetail() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
         Calendar calendar = Calendar.getInstance();
         Date date = new Date(System.currentTimeMillis());
@@ -1107,18 +1149,47 @@ public class BaoquanClientTest {
         System.out.println(date);
         payload.setEnd_at(date);
 
-        payload.setRemark("zheshixxxxxxxxxxxxxxx");
+        payload.setRemark("zheshi");
 
-        payload.setTitle("ssss合同");
+        payload.setTitle("s合同");
 
-        payload.setContract_id("vcVuhR2e1odTShZnJug7cg");
+        payload.setContract_id("3Y9DXWH1XVJ6ZYUXw6mbNk");
 
         List<String> usePhones = new ArrayList();
-        usePhones.add("15866666666");
+        usePhones.add("18311111111");
         payload.setUserPhones(usePhones);
 
 
-        client.setContractDetail(payload);
+        ResultResponse u  = client.setContractDetail(payload);
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    @Test
+    public void testSetContractGroupDetail() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(System.currentTimeMillis());
+        calendar.setTime(date);
+//        calendar.add(Calendar.WEEK_OF_YEAR, -1);
+        calendar.add(Calendar.YEAR, +1);
+        date = calendar.getTime();
+        System.out.println(date);
+        payload.setEnd_at(date);
+
+        payload.setRemark("zhes");
+
+        payload.setTitle("ss添加2");
+
+//        payload.setContract_id("vcVuhR2e1odTShZnJug7cg");
+
+        payload.setGroup_id("kRcDGVqwxrKmjG1oBjH5BN");
+
+        List<String> usePhones = new ArrayList();
+        usePhones.add("18322222222");
+        payload.setUserPhones(usePhones);
+
+
+        client.setContractGroupDetail(payload);
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1161,10 +1232,11 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
+        payload.setContract_id("gtvJ21kZxZoh8Gmpw999Ek");
 
         List<String> usePhones = new ArrayList();
         usePhones.add("15844444444");
+        usePhones.add("18811111111");
         payload.setUserPhones(usePhones);
 
 
@@ -1296,7 +1368,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testgetDetail() throws ServerException {
-        client.getDetail("uqg9hB2JQg61g22ma2bFY2");
+        client.getDetail("01");
     }
 
     @Test
@@ -1313,6 +1385,7 @@ public class BaoquanClientTest {
 
         List<String> usePhones = new ArrayList();
         usePhones.add("15844444444");
+        usePhones.add("18811111111");
         payload.setUserPhones(usePhones);
 
 

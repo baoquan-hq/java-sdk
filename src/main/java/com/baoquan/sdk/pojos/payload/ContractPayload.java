@@ -19,6 +19,7 @@ public class ContractPayload extends CreateAttestationPayload {
 //    private String status;
 //    private String name;
     private String contract_id;
+    private String group_id;
 
     public String getContract_id() {
         return contract_id;
@@ -60,7 +61,15 @@ public class ContractPayload extends CreateAttestationPayload {
         this.userPhones = userPhones;
     }
 
-//    public String getName() {
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
+    //    public String getName() {
 //        return name;
 //    }
 //
