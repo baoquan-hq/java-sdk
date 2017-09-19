@@ -1067,4 +1067,16 @@ public class BaoquanClient {
 
         return json("contract/detail", payloadMap, null, ContractDetailResponse.class);
     }
+
+    /**
+     * @param contractId contractId
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse downloadContract(String contractId) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("contract_id", contractId);
+
+        return json("contract/download", payloadMap, null, ResultResponse.class);
+    }
 }

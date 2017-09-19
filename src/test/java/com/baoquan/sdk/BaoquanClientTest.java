@@ -1094,6 +1094,11 @@ public class BaoquanClientTest {
         //Assert.assertNotNull(response.getData().getNo());
     }
 
+    @Test
+    public void testDownloadContract() throws ServerException {
+        client.downloadContract("ecGTfom67dNxn9LcT9MgjZ");
+    }
+
     /**
      * create attestation with the same unique id will return the same attestation no
      *
