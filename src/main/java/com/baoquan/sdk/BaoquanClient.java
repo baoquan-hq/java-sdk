@@ -351,6 +351,15 @@ public class BaoquanClient {
         return file("attestation/download", payload);
     }
 
+    public DownloadFile downloadContract(String contractId) throws ServerException {
+        if (StringUtils.isEmpty(contractId)) {
+            throw new IllegalArgumentException("contractId can not be null");
+        }
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("contract_id", contractId);
+        return file("contract/download", payload);
+    }
+
     /**
      * apply ca
      *
@@ -1066,17 +1075,5 @@ public class BaoquanClient {
         payloadMap.put("contract_id", contractId);
 
         return json("contract/detail", payloadMap, null, ContractDetailResponse.class);
-    }
-
-    /**
-     * @param contractId contractId
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
-    public ResultResponse downloadContract(String contractId) throws ServerException {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("contract_id", contractId);
-
-        return json("contract/download", payloadMap, null, ResultResponse.class);
     }
 }

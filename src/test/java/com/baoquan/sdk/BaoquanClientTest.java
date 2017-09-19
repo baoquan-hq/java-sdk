@@ -960,7 +960,19 @@ public class BaoquanClientTest {
 
     @Test
     public void testDownloadAttestation0() throws ServerException, IOException {
-        DownloadFile downloadFile = client.downloadAttestation("220271AF2CB94E67AB36E6D9341AB053");
+        DownloadFile downloadFile = client.downloadAttestation("01E89E0D2E3A46F8AE271A532D56F7FD");
+        Assert.assertNotNull(downloadFile);
+        Assert.assertNotNull(downloadFile.getFileName());
+        Assert.assertNotNull(downloadFile.getFile());
+
+        FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
+        IOUtils.copy(downloadFile.getFile(), fileOutputStream);
+        fileOutputStream.close();
+    }
+
+    @Test
+    public void testDownloadContract() throws ServerException, IOException {
+        DownloadFile downloadFile = client.downloadContract("jVef7CWtiFTvGRZ9ZG6ndD");
         Assert.assertNotNull(downloadFile);
         Assert.assertNotNull(downloadFile.getFileName());
         Assert.assertNotNull(downloadFile.getFile());
@@ -1092,11 +1104,6 @@ public class BaoquanClientTest {
         UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
         System.out.println(u.getContractId());
         //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    @Test
-    public void testDownloadContract() throws ServerException {
-        client.downloadContract("ecGTfom67dNxn9LcT9MgjZ");
     }
 
     /**
