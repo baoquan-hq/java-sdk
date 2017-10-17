@@ -373,10 +373,10 @@ public class BaoquanClient {
      * @return {@link CreateAttestationResponse}
      * @throws ServerException {@link ServerException}
      */
-    public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile, ByteArrayBody letterFile) throws ServerException {
+    public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile) throws ServerException {
         // checkCreateAttestationPayload(payload);
         Map<String, Object> payloadMap = buildKycEnterprisePayloadMap(payload);
-        Map<String, ByteArrayBody> streamBodyMap = buildKycEnterpriseFile(businessFile, letterFile);
+        Map<String, ByteArrayBody> streamBodyMap = buildKycEnterpriseFile(businessFile);
         return jsonKycEnterprise("organizations/kyc", payloadMap, streamBodyMap, kycEnterpriseResponse.class);
     }
 
@@ -578,7 +578,7 @@ public class BaoquanClient {
         return streamBodyMap;
     }
 
-    private Map<String, ByteArrayBody> buildKycEnterpriseFile(ByteArrayBody businessFile, ByteArrayBody letterFile) {
+    private Map<String, ByteArrayBody> buildKycEnterpriseFile(ByteArrayBody businessFile) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
         if (businessFile.getContentType() != ContentType.DEFAULT_BINARY) {
             throw new IllegalArgumentException("attachment content type is invalid");
@@ -587,13 +587,6 @@ public class BaoquanClient {
             throw new IllegalArgumentException("attachment filename can not be empty");
         }
         streamBodyMap.put("businessFile", businessFile);
-        if (letterFile.getContentType() != ContentType.DEFAULT_BINARY) {
-            throw new IllegalArgumentException("attachment content type is invalid");
-        }
-        if (StringUtils.isEmpty(letterFile.getFilename())) {
-            throw new IllegalArgumentException("attachment filename can not be empty");
-        }
-        streamBodyMap.put("letterFile", letterFile);
         return streamBodyMap;
     }
 

@@ -1468,14 +1468,9 @@ public class BaoquanClientTest {
         payload.setName("这是我的新公司");
         payload.setOrgcode("123456");
         payload.setPhone("17696526777");
-        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
-        ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-        // Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
-        //byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        // CreateAttestationResponse response = client.createAttestation(payload, byteStreamBodyMap);
-        InputStream letterInputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
-        ByteArrayBody letterFile = new ByteArrayBody(IOUtils.toByteArray(letterInputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-        kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile, letterFile);
+        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+        ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
+        kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
     }
 
 
