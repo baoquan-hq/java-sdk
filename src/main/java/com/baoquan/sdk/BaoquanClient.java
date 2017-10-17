@@ -226,6 +226,21 @@ public class BaoquanClient {
     /**
      * create attestation with attachments, one factoid can have more than one attachments
      *
+     * @param attachments attachments
+     * @param payload     {@link ContractPayload}
+     * @return {@link String}
+     * @throws ServerException {@link ServerException}
+     */
+    public CreateGroupResponse createGroup(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
+        // checkCreateAttestationPayload(payload);
+        Map<String, Object> payloadMap = buildUploadContractPayloadMap(payload);
+        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+        return json("contract/group", payloadMap, streamBodyMap, CreateGroupResponse.class);
+    }
+
+    /**
+     * create attestation with attachments, one factoid can have more than one attachments
+     *
      * @param payload {@link ContractPayload}
      * @return {@link String}
      * @throws ServerException {@link ServerException}
@@ -234,6 +249,19 @@ public class BaoquanClient {
 
         Map<String, Object> payloadMap = buildSetContractPayloadMap(payload);
         return json("contract/setDetail", payloadMap, null, ResultResponse.class);
+    }
+
+    /**
+     * create attestation with attachments, one factoid can have more than one attachments
+     *
+     * @param payload {@link ContractPayload}
+     * @return {@link String}
+     * @throws ServerException {@link ServerException}
+     */
+    public UploadContractResponse setContractGroupDetail(ContractPayload payload) throws ServerException {
+
+        Map<String, Object> payloadMap = buildSetContractGroupPayloadMap(payload);
+        return json("contract/setGroupDetail", payloadMap, null, UploadContractResponse.class);
     }
 
 
@@ -321,6 +349,15 @@ public class BaoquanClient {
         Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("ano", ano);
         return file("attestation/download", payload);
+    }
+
+    public DownloadFile downloadContract(String contractId) throws ServerException {
+        if (StringUtils.isEmpty(contractId)) {
+            throw new IllegalArgumentException("contractId can not be null");
+        }
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("contract_id", contractId);
+        return file("contract/download", payload);
     }
 
     /**
@@ -497,6 +534,16 @@ public class BaoquanClient {
         payloadMap.put("remark", payload.getRemark());
         payloadMap.put("userPhones", payload.getUserPhones());
         payloadMap.put("contract_id", payload.getContract_id());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildSetContractGroupPayloadMap(ContractPayload payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("title", payload.getTitle());
+        payloadMap.put("end_at", payload.getEnd_at());
+        payloadMap.put("remark", payload.getRemark());
+        payloadMap.put("userPhones", payload.getUserPhones());
+        payloadMap.put("group_id", payload.getGroup_id());
         return payloadMap;
     }
 
@@ -941,6 +988,13 @@ public class BaoquanClient {
         return json("contract/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
+    public ResultResponse sendVerifyCodeForGroup(String groupId, String phone) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("group_id", groupId);
+        payloadMap.put("phone", phone);
+        return json("contract/verifyCodeForGroup", payloadMap, null, ResultResponse.class);
+    }
+
 
     /**
      * @param contractId contractId
@@ -970,6 +1024,24 @@ public class BaoquanClient {
         payloadMap.put("signature_id", signatureId);
         payloadMap.put("type", type);
         return json("contract/sign", payloadMap, null, ResultResponse.class);
+    }
+
+    public ResultResponse setContractGroupStatus(String groupId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
+                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId,String type) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("group_id", groupId);
+        payloadMap.put("phone", phone);
+        payloadMap.put("verify_code", verifyCode);
+        payloadMap.put("ecs_status", ecsStatus);
+        payloadMap.put("page", page);
+        payloadMap.put("posX", posX);
+        payloadMap.put("posY", posY);
+        payloadMap.put("template_id", templateId);
+        payloadMap.put("identities",identities);
+        payloadMap.put("factoids",factoids);
+        payloadMap.put("completed", completed);
+
+        return json("contract/signGroup", payloadMap, null, ResultResponse.class);
     }
 
     /**
