@@ -33,14 +33,14 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://localhost:8080");
-        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
-//        client.setHost("https://baoquan.com");
-//        client.setAccessKey("dPdaYQnKjM8kpnqdyqfkhA");
+//        client.setHost("http://localhost:8080");
+//        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
+        client.setHost("https://baoquan.com");
+        client.setAccessKey("dPdaYQnKjM8kpnqdyqfkhA");
 
         try {
-//            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
-            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key_bak.pem");
+            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+//            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key_bak.pem");
 //            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key.pem");
         } catch (IOException e) {
             e.printStackTrace();
@@ -1016,7 +1016,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testDownloadAttestation0() throws ServerException, IOException {
-        DownloadFile downloadFile = client.downloadAttestation("220271AF2CB94E67AB36E6D9341AB053");
+        DownloadFile downloadFile = client.downloadAttestation("CB09F9130AB04695A4D483896FED3EBE");
         Assert.assertNotNull(downloadFile);
         Assert.assertNotNull(downloadFile.getFileName());
         Assert.assertNotNull(downloadFile.getFile());
