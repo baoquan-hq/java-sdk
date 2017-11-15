@@ -1558,6 +1558,16 @@ public class BaoquanClientTest {
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
     }
 
+    @Test
+    public void testSenduthorizationVerifyCode() throws ServerException {
+        client.senduthorizationVerifyCode( "15811111111");
+    }
+
+    @Test
+    public void testauthorized() throws ServerException {
+        client.authorized( "15811111111","7333");
+    }
+
 
     private String randomUniqueId() {
         return UUID.randomUUID().toString();

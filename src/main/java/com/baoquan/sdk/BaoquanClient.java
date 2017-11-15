@@ -1069,4 +1069,24 @@ public class BaoquanClient {
 
         return json("contract/detail", payloadMap, null, ContractDetailResponse.class);
     }
+
+    /**
+     * senduthorizationVerifyCode
+     *
+     * @param phone      phone
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse senduthorizationVerifyCode(String phone) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phone", phone);
+        return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
+    }
+
+    public ResultResponse authorized(String phone,String verifyCode) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phone", phone);
+        payloadMap.put("verfiy_code", verifyCode);
+        return json("authorization", payloadMap, null, ResultResponse.class);
+    }
 }
