@@ -351,6 +351,15 @@ public class BaoquanClient {
         return file("attestation/download", payload);
     }
 
+    public DownloadFile downloadContract(String contractId) throws ServerException {
+        if (StringUtils.isEmpty(contractId)) {
+            throw new IllegalArgumentException("contractId can not be null");
+        }
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("contract_id", contractId);
+        return file("contract/download", payload);
+    }
+
     /**
      * apply ca
      *
@@ -401,10 +410,10 @@ public class BaoquanClient {
      * @return {@link CreateAttestationResponse}
      * @throws ServerException {@link ServerException}
      */
-    public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile, ByteArrayBody letterFile) throws ServerException {
+    public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile) throws ServerException {
         // checkCreateAttestationPayload(payload);
         Map<String, Object> payloadMap = buildKycEnterprisePayloadMap(payload);
-        Map<String, ByteArrayBody> streamBodyMap = buildKycEnterpriseFile(businessFile, letterFile);
+        Map<String, ByteArrayBody> streamBodyMap = buildKycEnterpriseFile(businessFile);
         return jsonKycEnterprise("organizations/kyc", payloadMap, streamBodyMap, kycEnterpriseResponse.class);
     }
 
@@ -616,7 +625,7 @@ public class BaoquanClient {
         return streamBodyMap;
     }
 
-    private Map<String, ByteArrayBody> buildKycEnterpriseFile(ByteArrayBody businessFile, ByteArrayBody letterFile) {
+    private Map<String, ByteArrayBody> buildKycEnterpriseFile(ByteArrayBody businessFile) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
         if (businessFile.getContentType() != ContentType.DEFAULT_BINARY) {
             throw new IllegalArgumentException("attachment content type is invalid");
@@ -625,13 +634,6 @@ public class BaoquanClient {
             throw new IllegalArgumentException("attachment filename can not be empty");
         }
         streamBodyMap.put("businessFile", businessFile);
-        if (letterFile.getContentType() != ContentType.DEFAULT_BINARY) {
-            throw new IllegalArgumentException("attachment content type is invalid");
-        }
-        if (StringUtils.isEmpty(letterFile.getFilename())) {
-            throw new IllegalArgumentException("attachment filename can not be empty");
-        }
-        streamBodyMap.put("letterFile", letterFile);
         return streamBodyMap;
     }
 
@@ -1066,5 +1068,25 @@ public class BaoquanClient {
         payloadMap.put("contract_id", contractId);
 
         return json("contract/detail", payloadMap, null, ContractDetailResponse.class);
+    }
+
+    /**
+     * senduthorizationVerifyCode
+     *
+     * @param phone      phone
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse senduthorizationVerifyCode(String phone) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phone", phone);
+        return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
+    }
+
+    public ResultResponse authorized(String phone,String verifyCode) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phone", phone);
+        payloadMap.put("verfiy_code", verifyCode);
+        return json("authorization", payloadMap, null, ResultResponse.class);
     }
 }

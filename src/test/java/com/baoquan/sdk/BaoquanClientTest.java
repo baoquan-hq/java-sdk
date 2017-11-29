@@ -1016,7 +1016,19 @@ public class BaoquanClientTest {
 
     @Test
     public void testDownloadAttestation0() throws ServerException, IOException {
-        DownloadFile downloadFile = client.downloadAttestation("CB09F9130AB04695A4D483896FED3EBE");
+        DownloadFile downloadFile = client.downloadAttestation("01E89E0D2E3A46F8AE271A532D56F7FD");
+        Assert.assertNotNull(downloadFile);
+        Assert.assertNotNull(downloadFile.getFileName());
+        Assert.assertNotNull(downloadFile.getFile());
+
+        FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
+        IOUtils.copy(downloadFile.getFile(), fileOutputStream);
+        fileOutputStream.close();
+    }
+
+    @Test
+    public void testDownloadContract() throws ServerException, IOException {
+        DownloadFile downloadFile = client.downloadContract("jVef7CWtiFTvGRZ9ZG6ndD");
         Assert.assertNotNull(downloadFile);
         Assert.assertNotNull(downloadFile.getFileName());
         Assert.assertNotNull(downloadFile.getFile());
@@ -1076,7 +1088,12 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("eAC3xP4CjGY845KVr3zeie", "18311111111");
+        client.sendVerifyCode("n4tM4xadA4uhDiwoQaRQrq", "18322222222");
+    }
+
+    @Test
+    public void testSendVerifyCodeForGroup() throws ServerException {
+        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340");
     }
 
     @Test
@@ -1143,6 +1160,25 @@ public class BaoquanClientTest {
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
         UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
         System.out.println(u.getContractId());
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testCreateGroup() throws ServerException, IOException {
+        ContractPayload payload = new ContractPayload();
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        CreateGroupResponse u = client.createGroup(payload, byteStreamBodyMap);
+        System.out.println(u.getGroupId());
         //Assert.assertNotNull(response.getData().getNo());
     }
 
@@ -1394,6 +1430,22 @@ public class BaoquanClientTest {
      * @throws IOException
      */
     @Test
+    public void testQueryList() throws ServerException, IOException {
+        ContractListPayload payload = new ContractListPayload();
+        payload.setStatus("DONE");
+//        payload.setKeyWord("张");
+//        payload.setStart(new Date());
+//        payload.setEnd(new Date());
+        client.queryList(payload);
+    }
+
+
+    @Test
+    public void testgetDetail() throws ServerException {
+        client.getDetail("01");
+    }
+
+    @Test
     public void testSetContractuDetail7() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
 
@@ -1407,6 +1459,7 @@ public class BaoquanClientTest {
 
         List<String> usePhones = new ArrayList();
         usePhones.add("15844444444");
+        usePhones.add("18811111111");
         payload.setUserPhones(usePhones);
 
 
@@ -1549,6 +1602,23 @@ public class BaoquanClientTest {
         //  Assert.assertNotNull(response);
     }
 
+    /**
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testKycEnterprise() throws ServerException, IOException {
+        KycEnterprisePayload payload = new KycEnterprisePayload();
+        payload.setAccountName("潇潇公司");
+        payload.setBank("中国银行");
+        payload.setBankAccount("111111111111");
+        payload.setName("这是我的新公司");
+        payload.setOrgcode("123456");
+        payload.setPhone("17696526777");
+        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+        ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
+        kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
+    }
 
     @Test
     public void testcreateAttestationWithUrl() throws ServerException, IOException {
@@ -1578,6 +1648,16 @@ public class BaoquanClientTest {
         Assert.assertNotNull(response.getData().getNo());
     }
 
+
+    @Test
+    public void testSenduthorizationVerifyCode() throws ServerException {
+        client.senduthorizationVerifyCode( "15811111111");
+    }
+
+    @Test
+    public void testauthorized() throws ServerException {
+        client.authorized( "15811111111","7333");
+    }
 
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
