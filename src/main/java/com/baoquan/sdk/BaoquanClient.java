@@ -1077,7 +1077,7 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse senduthorizationVerifyCode(String phone) throws ServerException {
+    public ResultResponse sendAuthorizationVerifyCode(String phone) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
