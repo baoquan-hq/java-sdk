@@ -1559,8 +1559,8 @@ public class BaoquanClientTest {
     }
 
     @Test
-    public void testSenduthorizationVerifyCode() throws ServerException {
-        client.senduthorizationVerifyCode( "15811111111");
+    public void testSendAuthorizationVerifyCode() throws ServerException {
+        client.sendAuthorizationVerifyCode( "15811111111");
     }
 
     @Test
