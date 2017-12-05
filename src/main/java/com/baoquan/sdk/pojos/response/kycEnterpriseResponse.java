@@ -11,16 +11,6 @@ public class kycEnterpriseResponse  {
 
   private Map<String, Object> kycEnterprise  ;
 
-  private String returnMsg;
-
-  public String getReturnMsg() {
-    return returnMsg;
-  }
-
-  public void setReturnMsg(String returnMsg) {
-    this.returnMsg = returnMsg;
-  }
-
   public Map<String, Object> getKycEnterprise() {
     return kycEnterprise;
   }
