@@ -7,6 +7,28 @@ public class UserKycData {
 
   private String userId;
 
+  private String returnMsg;
+
+  public UserKycData() {
+     }
+
+  public UserKycData(String returnMsg) {
+    this.returnMsg = returnMsg;
+  }
+
+  public UserKycData(String userId, String returnMsg) {
+    this.userId = userId;
+    this.returnMsg = returnMsg;
+  }
+
+  public String getReturnMsg() {
+     return returnMsg;
+  }
+
+  public void setReturnMsg(String returnMsg) {
+    this.returnMsg = returnMsg;
+  }
+
   public String getUserId() {
     return userId;
   }

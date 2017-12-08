@@ -984,7 +984,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testUserKyc() throws ServerException {
-        UserKycResponse response = client.userKyc("18355555555", "用户一", "430426199309121393");
+        UserKycResponse response = client.userKyc("18355555553", "用户一", "210682199505041375");
         String userId = response.getData().getUserId();
 //        System.out.println(userId);
 //        Assert.assertNotNull(response.getData().getUserId());
@@ -1551,8 +1551,8 @@ public class BaoquanClientTest {
         payload.setBank("中国银行");
         payload.setBankAccount("111111111111");
         payload.setName("这是我的新公");
-        payload.setOrgcode("123459");
-        payload.setPhone("18312455556");
+        payload.setOrgcode("123457");
+        payload.setPhone("18312455557");
         InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
