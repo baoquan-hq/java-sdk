@@ -365,6 +365,8 @@ public class BaoquanClientTest {
         Assert.assertNotNull(response.getData().getNo());
     }
 
+
+
     /**
      * payload can not be null
      *
@@ -1010,7 +1012,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("n4tM4xadA4uhDiwoQaRQrq", "18322222222", "1822", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
+        client.signContract("ojUGgCzuj9HixPSTDUEQpM", "18333333333", "1418", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise","131111222");
     }
 
     @Test
@@ -1031,7 +1033,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("n4tM4xadA4uhDiwoQaRQrq", "18322222222");
+        client.sendVerifyCode("ojUGgCzuj9HixPSTDUEQpM", "18333333333");
     }
 
     @Test
@@ -1551,8 +1553,8 @@ public class BaoquanClientTest {
         payload.setBank("中国银行");
         payload.setBankAccount("111111111111");
         payload.setName("这是我的新公");
-        payload.setOrgcode("123457");
-        payload.setPhone("18312455557");
+        payload.setOrgcode("124243254255345");
+        payload.setPhone("18272161340");
         InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);

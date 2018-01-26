@@ -1008,7 +1008,7 @@ public class BaoquanClient {
      * @throws ServerException ServerException
      */
     public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type) throws ServerException {
+                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type, String orgcode) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);
@@ -1023,6 +1023,7 @@ public class BaoquanClient {
         payloadMap.put("completed", completed);
         payloadMap.put("signature_id", signatureId);
         payloadMap.put("type", type);
+        payloadMap.put("orgcode", orgcode);
         return json("contract/sign", payloadMap, null, ResultResponse.class);
     }
 
