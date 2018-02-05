@@ -32,10 +32,10 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://localhost:8080");
-//        client.setHost("https://baoquan.com");
-//        client.setAccessKey("x8TjNAtBjE7qnKc9R1HeYc");
-        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
+//        client.setHost("http://localhost:8080");
+        client.setHost("https://baoquan.com");
+        client.setAccessKey("x8TjNAtBjE7qnKc9R1HeYc");
+//        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
         } catch (IOException e) {
