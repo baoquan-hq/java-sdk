@@ -33,14 +33,14 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://localhost:8080");
-//        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
-        client.setHost("https://baoquan.com");
-        client.setAccessKey("dPdaYQnKjM8kpnqdyqfkhA");
+        client.setHost("http://localhost:8080");
+        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
+//        client.setHost("https://baoquan.com");
+//        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 
         try {
-            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
-//            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key_bak.pem");
+//            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key_bak.pem");
 //            client.setPemPath("D:/baoquan/java-sdk/out/test/resources/private_key.pem");
         } catch (IOException e) {
             e.printStackTrace();
@@ -263,8 +263,8 @@ public class BaoquanClientTest {
         payload.setUniqueId(randomUniqueId());
         payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-        identities.put(IdentityType.ID, "42012319800127691X");
-        identities.put(IdentityType.MO, "15852212311");
+        identities.put(IdentityType.ID, "12012319800127621X");
+        identities.put(IdentityType.MO, "15851212311");
         payload.setIdentities(identities);
         List<Factoid> factoids = new ArrayList<Factoid>();
         Factoid factoid = new Factoid();
@@ -282,7 +282,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestation11() throws ServerException, IOException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("jEe8cUBHKsjSoBfUbH4f9n");
+        payload.setTemplateId("b8MKm3tzqXmSzmmuKzoWHP");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319800127691X");
         identities.put(IdentityType.MO, "15852212311");
@@ -292,11 +292,11 @@ public class BaoquanClientTest {
         Factoid factoid = new Factoid();
         User user = new User();
         user.setName("张三");
-        user.setPhone_number("13234568732");
+        user.setPhone_number("1323456732");
         user.setRegistered_at("1466674609");
         user.setUsername("tom");
         factoid.setUnique_id(randomUniqueId());
-        factoid.setType("user");
+        factoid.setType("file");
         factoid.setData(user);
         factoids.add(factoid);
         payload.setFactoids(factoids);
