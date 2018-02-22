@@ -1040,10 +1040,10 @@ public class BaoquanClientTest {
 
     @Test
     public void testUserKyc() throws ServerException {
-        UserKycResponse response = client.userKyc("15822222224", "用户一", "42012319800127691X");
+        UserKycResponse response = client.userKyc("18355555553", "用户一", "210682199505041375");
         String userId = response.getData().getUserId();
-        System.out.println(userId);
-        Assert.assertNotNull(response.getData().getUserId());
+//        System.out.println(userId);
+//        Assert.assertNotNull(response.getData().getUserId());
 
     }
 
@@ -1083,7 +1083,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO","15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("7pYFdi37N6HJvoS3AVVwiH", "15811111111", "6640", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","personal");
+        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
     }
 
     @Test
@@ -1612,9 +1612,9 @@ public class BaoquanClientTest {
         payload.setAccountName("潇潇公司");
         payload.setBank("中国银行");
         payload.setBankAccount("111111111111");
-        payload.setName("这是我的新公司");
-        payload.setOrgcode("123456");
-        payload.setPhone("17696526777");
+        payload.setName("这是我的新公");
+        payload.setOrgcode("123457");
+        payload.setPhone("18312455557");
         InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
@@ -1650,8 +1650,8 @@ public class BaoquanClientTest {
 
 
     @Test
-    public void testSenduthorizationVerifyCode() throws ServerException {
-        client.senduthorizationVerifyCode( "15811111111");
+    public void testSendAuthorizationVerifyCode() throws ServerException {
+        client.sendAuthorizationVerifyCode( "15811111111");
     }
 
     @Test
