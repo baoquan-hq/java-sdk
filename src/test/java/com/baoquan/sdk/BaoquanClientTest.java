@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ public class BaoquanClientTest {
     public void initClient() {
         client = new BaoquanClient();
         client.setHost("http://localhost:8080");
-        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
+        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
 //        client.setHost("https://baoquan.com");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 
@@ -1067,7 +1068,7 @@ public class BaoquanClientTest {
 //        identitiesMap.put("MO", "15869196114");
 //        identitiesMap.put("MO", "18272161340");
 //        identitiesMap.put("ID", "430426198401361452");
-        client.signContract("eAC3xP4CjGY845KVr3zeie", "18311111111", "4331", "DONE", "4", "150", "550","", identitiesMap, list,false,"","enterprise");
+        client.signContract("nrkTJ5BS476sK43XcheFxr", "18272161340", "1433", "DONE", "4", "150", "550","", identitiesMap, list,false,"","personal");
     }
 
     @Test
@@ -1083,12 +1084,12 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO","15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
+        client.setContractGroupStatus("bcfacL8psBiELqdDFoFkYe", "13145205611", "1433", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
     }
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("n4tM4xadA4uhDiwoQaRQrq", "18322222222");
+        client.sendVerifyCode("nrkTJ5BS476sK43XcheFxr", "18272161340");
     }
 
     @Test
@@ -1153,8 +1154,9 @@ public class BaoquanClientTest {
     @Test
     public void testUploadContract() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf"); //  contract.pdf
+        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf") ;//  contract.pdf
+        System.out.println(getClass().getClassLoader());
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
@@ -1222,7 +1224,7 @@ public class BaoquanClientTest {
 
         payload.setTitle("aaaa合同");
 
-        payload.setContract_id("8Kv8Sku7UKZk2z5zMxp2vn");
+        payload.setContract_id("nrkTJ5BS476sK43XcheFxr");
 
         List<String> usePhones = new ArrayList();
 //        usePhones.add("18106500602");
@@ -1231,7 +1233,7 @@ public class BaoquanClientTest {
 //        usePhones.add("15822222222");
 ////        usePhones.add("15833333333");
         usePhones.add("18272161340");
-
+        usePhones.add("18272161340");
         payload.setUserPhones(usePhones);
 
 
@@ -1477,7 +1479,8 @@ public class BaoquanClientTest {
     @Test
     public void testUploadSignature() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("D:/baoquan/java-sdk/out/test/resources/seal.png");
+        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/seal.png");
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
@@ -1611,11 +1614,12 @@ public class BaoquanClientTest {
         KycEnterprisePayload payload = new KycEnterprisePayload();
         payload.setAccountName("潇潇公司");
         payload.setBank("中国银行");
-        payload.setBankAccount("111111111111");
+        payload.setBankAccount("1111111111111");
         payload.setName("这是我的新公");
-        payload.setOrgcode("123457");
-        payload.setPhone("18312455557");
-        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+        payload.setOrgcode("1234157");
+        payload.setPhone("18312455527");
+//        InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
+        InputStream businessInputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
     }
