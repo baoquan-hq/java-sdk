@@ -12,13 +12,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -131,7 +129,7 @@ public class BaoquanClientTest {
         payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319800127691X");
-        identities.put(IdentityType.MO, "15852212311");
+        identities.put(IdentityType.MO, "15857112383");
         payload.setIdentities(identities);
         client.createAttestation(payload);
     }
@@ -150,7 +148,7 @@ public class BaoquanClientTest {
         payload.setTemplateId("2hSWTZ4oqVEJKAmK2RiyT4");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319800127691X");
-        identities.put(IdentityType.MO, "15852212311");
+        identities.put(IdentityType.MO, "15857112383");
         payload.setIdentities(identities);
         payload.setFactoids(new ArrayList<Factoid>());
         client.createAttestation(payload);
@@ -1065,10 +1063,9 @@ public class BaoquanClientTest {
         payloadFactoid.setType("product");
         payloadFactoid.setData(linkedHashMap);
         list.add(payloadFactoid);
-//        identitiesMap.put("MO", "15869196114");
-//        identitiesMap.put("MO", "18272161340");
-//        identitiesMap.put("ID", "430426198401361452");
-        client.signContract("nrkTJ5BS476sK43XcheFxr", "18272161340", "1433", "DONE", "4", "150", "550","", identitiesMap, list,false,"","personal");
+        identitiesMap.put("MO", "15611111111");
+        identitiesMap.put("ID", "430426198401361452");
+        client.signContract("ojUGgCzuj9HixPSTDUEQpM", "18333333333", "1418", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise","131111222");
     }
 
     @Test
@@ -1479,8 +1476,7 @@ public class BaoquanClientTest {
     @Test
     public void testUploadSignature() throws ServerException, IOException {
         ContractPayload payload = new ContractPayload();
-//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("D:/baoquan/java-sdk/out/test/resources/seal.png");
-        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/seal.png");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "seal.png");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
@@ -1662,6 +1658,7 @@ public class BaoquanClientTest {
     public void testauthorized() throws ServerException {
         client.authorized( "15811111111","7333");
     }
+
 
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
