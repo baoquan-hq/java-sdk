@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
  */
 public class BaoquanClient {
 
-    private String host = "https://baoquan.com";
-    //private String host = "http://127.0.0.1:8080"
+    //private String host = "https://baoquan.com";
+    private String host = "http://127.0.0.1:8088";
 
     private String version = "v1";
 
@@ -137,6 +137,11 @@ public class BaoquanClient {
         payload.setUrl(url);
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
         return json("attestations/url", payloadMap, null, CreateAttestationResponse.class);
+    }
+
+    public CreateAttestationResponse fixedEvidence(CreateAttestationPayload payload) throws ServerException{
+      Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
+      return json("/copyright/fixedEvidence", payloadMap, null, CreateAttestationResponse.class);
     }
 
 

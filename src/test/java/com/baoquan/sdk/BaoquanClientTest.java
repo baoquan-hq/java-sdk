@@ -32,9 +32,9 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://localhost:8080");
-        client.setHost("https://baoquan.com");
-        client.setAccessKey("x8TjNAtBjE7qnKc9R1HeYc");
+        client.setHost("http://192.168.3.12:8088");
+        //client.setHost("https://baoquan.com");
+        client.setAccessKey("287oEp2uFKRxJQuPBpQW7S");
 //        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
@@ -1570,7 +1570,44 @@ public class BaoquanClientTest {
         client.authorized( "15811111111","7333");
     }
 
+    @Test
+    public void fixedEvidence() throws  ServerException{
+      CreateAttestationPayload payload = new CreateAttestationPayload();
+      // 设置保全唯一码
+      payload.setUniqueId(UUID.randomUUID().toString());
+      // 设置模板id
+      payload.setTemplateId("_priv_template_web_forensics_v2");
+      // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+      payload.setCompleted(true);
+      // 设置保全所有者的身份标识，标识类型定义在IdentityType中
 
+      Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
+      identities.put(IdentityType.ID,"429006198507104214");
+      identities.put(IdentityType.MO, "18767106890");
+      payload.setIdentities(identities);
+      Factoid qqxxFactoid = new Factoid();
+      // 添加陈述对象列表
+      List<Factoid> factoids = new ArrayList<Factoid>();
+      qqxxFactoid.setUnique_id(UUID.randomUUID().toString());
+      qqxxFactoid.setType("qqxx");
+
+      Map<String, String> loanDataMap = new HashMap<String, String>();
+      qqxxFactoid.setData(loanDataMap);
+      loanDataMap.put("platFormId", "1");
+      loanDataMap.put("ywlj", "https://www.baoquan.com/");
+      loanDataMap.put("ywbt", "hahaha");
+      loanDataMap.put("url", "https://passport.csdn.net/");
+      loanDataMap.put("qqbt", "哈哈哈哈");
+      loanDataMap.put("qqwz", "嘻嘻嘻嘻");
+      loanDataMap.put("bqgs", "杭州日报");
+      loanDataMap.put("qqbh", "qq001");
+      loanDataMap.put("qqzt", "腾讯");
+      loanDataMap.put("matchNum", "99");
+      factoids.add(qqxxFactoid);
+      payload.setFactoids(factoids);
+      CreateAttestationResponse response = client.fixedEvidence(payload);
+      System.out.print(response.getData().getNo());
+    }
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
     }
