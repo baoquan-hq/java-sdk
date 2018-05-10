@@ -1587,26 +1587,35 @@ public class BaoquanClientTest {
       payload.setIdentities(identities);
       Factoid qqxxFactoid = new Factoid();
       // 添加陈述对象列表
-      List<Factoid> factoids = new ArrayList<Factoid>();
-      qqxxFactoid.setUnique_id(UUID.randomUUID().toString());
-      qqxxFactoid.setType("qqxx");
 
-      Map<String, String> loanDataMap = new HashMap<String, String>();
-      qqxxFactoid.setData(loanDataMap);
-      loanDataMap.put("platFormId", "1");
-      loanDataMap.put("ywlj", "https://www.baoquan.com/");
-      loanDataMap.put("ywbt", "hahaha");
-      loanDataMap.put("url", "https://passport.csdn.net/");
-      loanDataMap.put("qqbt", "哈哈哈哈");
-      loanDataMap.put("qqwz", "嘻嘻嘻嘻");
-      loanDataMap.put("bqgs", "杭州日报");
-      loanDataMap.put("qqbh", "qq001");
-      loanDataMap.put("qqzt", "腾讯");
-      loanDataMap.put("matchNum", "99");
-      factoids.add(qqxxFactoid);
-      payload.setFactoids(factoids);
-      CreateAttestationResponse response = client.fixedEvidence(payload);
-      System.out.print(response.getData().getNo());
+
+
+      for (int i = 10; i < 15; i++) {
+        List<Factoid> factoids = new ArrayList<Factoid>();
+        payload.setUniqueId(UUID.randomUUID().toString()+i);
+        qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
+
+        qqxxFactoid.setType("qqxx");
+
+        Map<String, String> loanDataMap = new HashMap<String, String>();
+        qqxxFactoid.setData(loanDataMap);
+        loanDataMap.put("platFormId", "1");
+        loanDataMap.put("ywlj", "https://www.baoquan.com/"+i);
+        loanDataMap.put("ywbt", "hahaha");
+        loanDataMap.put("originalType","1");
+        loanDataMap.put("url", "https://passport.csdn.net/"+i);
+        loanDataMap.put("qqbt", "哈哈哈哈");
+        loanDataMap.put("qqwz", "嘻嘻嘻嘻");
+        loanDataMap.put("bqgs", "杭州日报");
+        loanDataMap.put("qqbh", "qq001");
+        loanDataMap.put("qqzt", "腾讯");
+        loanDataMap.put("matchNum", "99");
+        factoids.add(qqxxFactoid);
+        payload.setFactoids(factoids);
+        CreateAttestationResponse response = client.fixedEvidence(payload);
+        System.out.print(response.getData().getNo());
+      }
+
     }
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
