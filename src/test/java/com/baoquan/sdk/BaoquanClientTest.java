@@ -1590,7 +1590,7 @@ public class BaoquanClientTest {
 
 
 
-      for (int i = 10; i < 15; i++) {
+      for (int i = 29; i < 30; i++) {
         List<Factoid> factoids = new ArrayList<Factoid>();
         payload.setUniqueId(UUID.randomUUID().toString()+i);
         qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
@@ -1609,7 +1609,7 @@ public class BaoquanClientTest {
         loanDataMap.put("bqgs", "杭州日报");
         loanDataMap.put("qqbh", "qq001");
         loanDataMap.put("qqzt", "腾讯");
-        loanDataMap.put("matchNum", "99");
+        loanDataMap.put("matchNum", "0.99");
         factoids.add(qqxxFactoid);
         payload.setFactoids(factoids);
         CreateAttestationResponse response = client.fixedEvidence(payload);
