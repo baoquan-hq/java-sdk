@@ -534,6 +534,10 @@ public class BaoquanClient {
         payloadMap.put("remark", payload.getRemark());
         payloadMap.put("userPhones", payload.getUserPhones());
         payloadMap.put("contract_id", payload.getContract_id());
+        if (payload.getYourself() != null)
+            payloadMap.put("yourself", payload.getYourself());
+        else
+            payloadMap.put("yourself", true);
         return payloadMap;
     }
 
@@ -544,6 +548,7 @@ public class BaoquanClient {
         payloadMap.put("remark", payload.getRemark());
         payloadMap.put("userPhones", payload.getUserPhones());
         payloadMap.put("group_id", payload.getGroup_id());
+
         return payloadMap;
     }
 
@@ -1008,7 +1013,7 @@ public class BaoquanClient {
      * @throws ServerException ServerException
      */
     public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type, String orgcode) throws ServerException {
+                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId, String type, String orgcode) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);
@@ -1028,7 +1033,7 @@ public class BaoquanClient {
     }
 
     public ResultResponse setContractGroupStatus(String groupId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId,String type) throws ServerException {
+                                                 List<PayloadFactoid> factoids, Boolean completed, String signatureId, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("group_id", groupId);
         payloadMap.put("phone", phone);
@@ -1038,8 +1043,8 @@ public class BaoquanClient {
         payloadMap.put("posX", posX);
         payloadMap.put("posY", posY);
         payloadMap.put("template_id", templateId);
-        payloadMap.put("identities",identities);
-        payloadMap.put("factoids",factoids);
+        payloadMap.put("identities", identities);
+        payloadMap.put("factoids", factoids);
         payloadMap.put("completed", completed);
 
         return json("contract/signGroup", payloadMap, null, ResultResponse.class);
@@ -1074,7 +1079,7 @@ public class BaoquanClient {
     /**
      * senduthorizationVerifyCode
      *
-     * @param phone      phone
+     * @param phone phone
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
@@ -1084,7 +1089,7 @@ public class BaoquanClient {
         return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
-    public ResultResponse authorized(String phone,String verifyCode) throws ServerException {
+    public ResultResponse authorized(String phone, String verifyCode) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         payloadMap.put("verfiy_code", verifyCode);
