@@ -20,6 +20,7 @@ public class ContractPayload extends CreateAttestationPayload {
 //    private String name;
     private String contract_id;
     private String group_id;
+    private Boolean yourself;
 
     public String getContract_id() {
         return contract_id;
@@ -67,6 +68,14 @@ public class ContractPayload extends CreateAttestationPayload {
 
     public void setGroup_id(String group_id) {
         this.group_id = group_id;
+    }
+
+    public Boolean getYourself() {
+        return yourself;
+    }
+
+    public void setYourself(Boolean yourself) {
+        this.yourself = yourself;
     }
 
     //    public String getName() {
