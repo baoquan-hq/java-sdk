@@ -1,5 +1,5 @@
 group 'com.baoquan'
-version '1.0.25'
+version '1.0.26'
 description 'Api sdk of Baoquan.com'
 
 apply plugin: 'java'
