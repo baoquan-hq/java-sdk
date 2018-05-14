@@ -1590,7 +1590,7 @@ public class BaoquanClientTest {
 
 
 
-      for (int i = 29; i < 30; i++) {
+      for (int i = 32; i < 33; i++) {
         List<Factoid> factoids = new ArrayList<Factoid>();
         payload.setUniqueId(UUID.randomUUID().toString()+i);
         qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
@@ -1600,15 +1600,15 @@ public class BaoquanClientTest {
         Map<String, String> loanDataMap = new HashMap<String, String>();
         qqxxFactoid.setData(loanDataMap);
         loanDataMap.put("platFormId", "1");
-        loanDataMap.put("ywlj", "https://www.baoquan.com/"+i);
+        loanDataMap.put("ywlj", "https://www.baoquan.com/");
         loanDataMap.put("ywbt", "hahaha");
         loanDataMap.put("originalType","1");
-        loanDataMap.put("url", "https://passport.csdn.net/"+i);
+        loanDataMap.put("url", "https://baoquan.readthedocs.io/zh/latest/api.html#sha256-attestation-hash");
         loanDataMap.put("qqbt", "哈哈哈哈");
         loanDataMap.put("qqwz", "嘻嘻嘻嘻");
-        loanDataMap.put("bqgs", "杭州日报");
+        loanDataMap.put("bqgs", "数秦科技");
         loanDataMap.put("qqbh", "qq001");
-        loanDataMap.put("qqzt", "腾讯");
+        loanDataMap.put("qqzt", "XX网");
         loanDataMap.put("matchNum", "0.99");
         factoids.add(qqxxFactoid);
         payload.setFactoids(factoids);
