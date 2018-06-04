@@ -1033,12 +1033,12 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("ojUGgCzuj9HixPSTDUEQpM", "18333333333");
+        client.sendVerifyCode("ojUGgCzuj9HixPSTDUEQpM", "18333333333","personal");
     }
 
     @Test
     public void testSendVerifyCodeForGroup() throws ServerException {
-        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340");
+        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340","personal");
     }
 
     @Test
@@ -1198,9 +1198,10 @@ public class BaoquanClientTest {
 
         payload.setGroup_id("kRcDGVqwxrKmjG1oBjH5BN");
 
-        List<String> usePhones = new ArrayList();
-        usePhones.add("18322222222");
-        payload.setUserPhones(usePhones);
+        Map users = new HashMap();
+        users.put("18376455527", "enterprise");
+        users.put("19288888881", "personal");
+        payload.setUsers(users);
 
 
         client.setContractGroupDetail(payload);
@@ -1562,12 +1563,12 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendAuthorizationVerifyCode() throws ServerException {
-        client.sendAuthorizationVerifyCode( "15811111111");
+        client.sendAuthorizationVerifyCode( "15811111111","personal");
     }
 
     @Test
     public void testauthorized() throws ServerException {
-        client.authorized( "15811111111","7333");
+        client.authorized( "15811111111","7333","personal");
     }
 
     @Test

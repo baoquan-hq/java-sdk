@@ -537,12 +537,13 @@ public class BaoquanClient {
         payloadMap.put("title", payload.getTitle());
         payloadMap.put("end_at", payload.getEnd_at());
         payloadMap.put("remark", payload.getRemark());
-        payloadMap.put("userPhones", payload.getUserPhones());
+    //    payloadMap.put("userPhones", payload.getUserPhones());
         payloadMap.put("contract_id", payload.getContract_id());
         if (payload.getYourself() != null)
             payloadMap.put("yourself", payload.getYourself());
         else
             payloadMap.put("yourself", true);
+        payloadMap.put("users",payload.getUsers());
         return payloadMap;
     }
 
@@ -990,17 +991,19 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse sendVerifyCode(String contractId, String phone) throws ServerException {
+    public ResultResponse sendVerifyCode(String contractId, String phone,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);
+        payloadMap.put("type", type);
         return json("contract/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
-    public ResultResponse sendVerifyCodeForGroup(String groupId, String phone) throws ServerException {
+    public ResultResponse sendVerifyCodeForGroup(String groupId, String phone,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("group_id", groupId);
         payloadMap.put("phone", phone);
+        payloadMap.put("type", type);
         return json("contract/verifyCodeForGroup", payloadMap, null, ResultResponse.class);
     }
 
@@ -1087,16 +1090,18 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse sendAuthorizationVerifyCode(String phone) throws ServerException {
+    public ResultResponse sendAuthorizationVerifyCode(String phone,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
+        payloadMap.put("type", type);
         return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
-    public ResultResponse authorized(String phone,String verifyCode) throws ServerException {
+    public ResultResponse authorized(String phone,String verifyCode,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         payloadMap.put("verfiy_code", verifyCode);
+        payloadMap.put("type", type);
         return json("authorization", payloadMap, null, ResultResponse.class);
     }
 }
