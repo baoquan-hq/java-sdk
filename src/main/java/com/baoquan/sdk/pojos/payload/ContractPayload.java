@@ -21,7 +21,6 @@ public class ContractPayload extends CreateAttestationPayload {
     private String contract_id;
     private String group_id;
     private Boolean yourself;
-    private Map<String,String> users;
 
     public String getContract_id() {
         return contract_id;
@@ -77,14 +76,6 @@ public class ContractPayload extends CreateAttestationPayload {
 
     public void setYourself(Boolean yourself) {
         this.yourself = yourself;
-    }
-
-    public Map<String, String> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Map<String, String> users) {
-        this.users = users;
     }
 
     //    public String getName() {
