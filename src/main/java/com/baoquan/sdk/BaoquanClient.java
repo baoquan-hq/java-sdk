@@ -534,10 +534,10 @@ public class BaoquanClient {
         payloadMap.put("remark", payload.getRemark());
         payloadMap.put("userPhones", payload.getUserPhones());
         payloadMap.put("contract_id", payload.getContract_id());
-        if (payload.getYourself() != null)
-            payloadMap.put("yourself", payload.getYourself());
-        else
-            payloadMap.put("yourself", true);
+//        if (payload.getYourself() != null)
+//            payloadMap.put("yourself", payload.getYourself());
+//        else
+//            payloadMap.put("yourself", true);
         return payloadMap;
     }
 

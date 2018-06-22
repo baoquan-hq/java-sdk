@@ -33,10 +33,10 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://192.168.3.47:8080");
-        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
-//        client.setHost("https://baoquan.com");
+//        client.setHost("http://192.168.3.47:8080");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+        client.setHost("https://baoquan.com");
+        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.249:8081");
 //        client.setAccessKey("oH64EJTXeQGtewL7jvVzqF");
         try {
@@ -303,8 +303,8 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
         payload.setCompleted(true);
-      //  InputStream inputStream = getClass().getClassLoader().getResourceAsStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf");
-      // ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf")), ContentType.DEFAULT_BINARY, "contract.pdf");
+        //  InputStream inputStream = getClass().getClassLoader().getResourceAsStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf");
+        // ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf")), ContentType.DEFAULT_BINARY, "contract.pdf");
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(new FileInputStream("D:/baoquan/安存/供存证平台使用/供存证平台使用/需要上传的文件/不支持的格式证据.xmind")), ContentType.DEFAULT_BINARY, "不支持的格式证据.xmind");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
         byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
@@ -1117,7 +1117,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("g1gaNfKTNFaEw44zeDmey6", "13312468888", "3260", "DONE", "4", "300", "550", "_priv_template_2", identitiesMap, list, true, "", "personal", "");
+        client.signContract("j3bjcqxmGtSZbQT1fBj7rk", "19905814214", "7418", "DONE", "4", "300", "550", "_priv_template_2", identitiesMap, list, true, "", "enterprise", "");
     }
 
     @Test
@@ -1138,7 +1138,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("g1gaNfKTNFaEw44zeDmey6", "13312468888");
+        client.sendVerifyCode("j3bjcqxmGtSZbQT1fBj7rk", "19905814214");
     }
 
     @Test
@@ -1273,20 +1273,22 @@ public class BaoquanClientTest {
 
         payload.setTitle("aaaa合同");
 
-        payload.setContract_id("g1gaNfKTNFaEw44zeDmey6");
+        payload.setContract_id("j3bjcqxmGtSZbQT1fBj7rk");
 
         List<String> usePhones = new ArrayList();
 //        usePhones.add("18106500602");
 //        usePhones.add("18551824340");
 //        usePhones.add("18368729972");
+        usePhones.add("19905814214");
+        usePhones.add("19905814214");
 //        usePhones.add("15822222222");
 ////        usePhones.add("15833333333");
-        usePhones.add("13312467888");
-        usePhones.add("13312468888");
+//        usePhones.add("13312467888");
+//        usePhones.add("13312468888");
 
         payload.setUserPhones(usePhones);
 
-        payload.setYourself(true);
+//        payload.setYourself(true);
         ResultResponse u = client.setContractDetail(payload);
         //Assert.assertNotNull(response.getData().getNo());
     }
@@ -1494,7 +1496,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testgetDetail() throws ServerException {
-        client.getDetail("01");
+        client.getDetail("j3bjcqxmGtSZbQT1fBj7rk");
     }
 
     @Test
@@ -1675,30 +1677,34 @@ public class BaoquanClientTest {
 
     @Test
     public void testcreateAttestationWithUrl() throws ServerException, IOException {
-        CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setUniqueId(randomUniqueId());
+        while (true) {
+            CreateAttestationPayload payload = new CreateAttestationPayload();
+            payload.setUniqueId(randomUniqueId());
 //        payload.setTemplateId("6J6yeT7rhLjTUUuxS6zMwD");
-        payload.setTemplateId("4g8kLrgrr8AGTXKqUzW1rc");
-        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-        identities.put(IdentityType.ID, "420303198203123327");
+            payload.setTemplateId("4g8kLrgrr8AGTXKqUzW1rc");
+            Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+            identities.put(IdentityType.ID, "420303198203123327");
 //        identities.put(IdentityType.USCID, "91330101341890873G");
-        payload.setIdentities(identities);
-        List<Factoid> factoids = new ArrayList<Factoid>();
-        Factoid factoid = new Factoid();
-        HashMap<String, String> factoidData = new HashMap<String, String>();
+            payload.setIdentities(identities);
+            List<Factoid> factoids = new ArrayList<Factoid>();
+            Factoid factoid = new Factoid();
+            HashMap<String, String> factoidData = new HashMap<String, String>();
 
-        factoidData.put("url", "https://mail.qq.com");
-        factoid.setUnique_id(randomUniqueId());
-        factoid.setType("website");
-        factoid.setData(factoidData);
-        factoids.add(factoid);
-        payload.setFactoids(factoids);
+            factoidData.put("url", "https://mail.qq.com");
+            factoid.setUnique_id(randomUniqueId());
+            factoid.setType("website");
+            factoid.setData(factoidData);
+            factoids.add(factoid);
+            payload.setFactoids(factoids);
 
 
 //        String url = "http://news.21cn.com/caiji/roll1/zhnb/2017/0628/12/32422879_all.shtml";
-        String url = "https://mail.qq.com";
-        CreateAttestationResponse response = client.createAttestationWithUrl(payload, url);
-        Assert.assertNotNull(response.getData().getNo());
+            String url = "http://zj.qq.com/a/20171207/002528.htm";
+            CreateAttestationResponse response = client.createAttestationWithUrl(payload, url);
+            Assert.assertNotNull(response.getData().getNo());
+        }
+
+
     }
 
 
