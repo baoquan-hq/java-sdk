@@ -18,6 +18,9 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by sbwdlihao on 6/17/16.
@@ -32,9 +35,9 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://192.168.3.12:8088");
+        client.setHost("http://192.168.3.149:8080");
         //client.setHost("https://baoquan.com");
-        client.setAccessKey("287oEp2uFKRxJQuPBpQW7S");
+        client.setAccessKey("2nk2KTwcawQpudvGQerYXi");
 //        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
             client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
@@ -1563,7 +1566,65 @@ public class BaoquanClientTest {
     @Test
     public void testSendAuthorizationVerifyCode() throws ServerException {
         client.sendAuthorizationVerifyCode( "15811111111");
+
     }
+
+    @Test
+    public void createAttestationWithSha256(){
+      final CreateAttestationPayload payload = new CreateAttestationPayload();
+      String attId="111";
+      final String hash="9897599b653f0015b477465333488db8f0df3c3b03905dbf4d0b0b4651e4865e";
+      payload.setTemplateId("fu34E5zU3NN9XkfZDBVPLj");
+      payload.setUniqueId("111");
+      payload.setSha256("2222");
+      payload.setOpenStatusKey("22222");
+
+      Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+      identities.put(IdentityType.USERID, "111");
+
+
+      payload.setIdentities(identities);
+
+      List<Factoid> factoids = new ArrayList<Factoid>();
+
+      Factoid factoid = new Factoid();
+      factoid.setUnique_id("1111111");
+      factoid.setType("file");
+      Map<String, String> data = new HashMap<String,String>();
+      data.put("attId", attId);
+//    if (identityMap.get("NAME") != null) {
+//      data.put("owner_name", identityMap.get("NAME"));
+//    }
+      data.put("owner_name", "xiaxia");
+      factoid.setData(data);
+      factoids.add(factoid);
+      payload.setFactoids(factoids);
+
+
+      final CountDownLatch begin = new CountDownLatch(1); //为0时开始执行
+      final ExecutorService exec = Executors.newFixedThreadPool(9);
+
+      for (int i = 0; i < 9; i++) {
+        final int NO = i + 1;
+        Runnable runnable = new Runnable() {
+          @Override
+          public void run() {
+            try {
+              begin.await(); //等待直到 CountDownLatch减到1
+              CreateAttestationResponse createAttestationResponse = client.createAttestationWithSha256(payload,hash);
+            System.out.println("sign"+String.valueOf(NO)+": "+createAttestationResponse.getData().getNo());
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        };
+        exec.submit(runnable);
+      }
+      System.out.println("开始执行");
+      begin.countDown(); // begin减一，开始并发执行
+      exec.shutdown();
+    }
+
 
     @Test
     public void testauthorized() throws ServerException {
@@ -1576,7 +1637,7 @@ public class BaoquanClientTest {
       // 设置保全唯一码
       payload.setUniqueId(UUID.randomUUID().toString());
       // 设置模板id
-      payload.setTemplateId("_priv_template_web_forensics_v2");
+      payload.setTemplateId("6YKxogbJARLFVFEGXQZvpD");
       // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
       payload.setCompleted(true);
       // 设置保全所有者的身份标识，标识类型定义在IdentityType中
@@ -1603,13 +1664,15 @@ public class BaoquanClientTest {
         loanDataMap.put("ywlj", "https://www.baoquan.com/");
         loanDataMap.put("ywbt", "hahaha");
         loanDataMap.put("originalType","1");
-        loanDataMap.put("url", "https://baoquan.readthedocs.io/zh/latest/api.html#sha256-attestation-hash");
+        loanDataMap.put("url", "http://www.tapd.cn");
         loanDataMap.put("qqbt", "哈哈哈哈");
         loanDataMap.put("qqwz", "嘻嘻嘻嘻");
         loanDataMap.put("bqgs", "数秦科技");
         loanDataMap.put("qqbh", "qq001");
         loanDataMap.put("qqzt", "XX网");
         loanDataMap.put("matchNum", "0.99");
+        loanDataMap.put("pirSubDate","2018-06-20 20:16");
+        loanDataMap.put("oriSubDate","2018-06-20 20:16");
         factoids.add(qqxxFactoid);
         payload.setFactoids(factoids);
         CreateAttestationResponse response = client.fixedEvidence(payload);
@@ -1667,4 +1730,97 @@ public class BaoquanClientTest {
     private int rand(int min, int max) {
         return (int) ((double) (max - min + 1) * Math.random() + (double) min);
     }
+
+
+    @Test
+    public void createAttestationWithUrl() throws ServerException{
+      String url = "http://www.qq.com/";
+      CreateAttestationPayload payload = new CreateAttestationPayload();
+      // 设置保全唯一码
+      payload.setUniqueId(UUID.randomUUID().toString());
+      // 设置模板id
+      payload.setTemplateId("jcEGvWNn88XVzjdmGu5GDr");
+      // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+      payload.setCompleted(true);
+      // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+
+      Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
+      identities.put(IdentityType.ID,"429006198507104214");
+      identities.put(IdentityType.MO, "18767106890");
+      payload.setIdentities(identities);
+
+
+      List<Factoid> factoids = new ArrayList<Factoid>();
+      Factoid qqxxFactoid = new Factoid();
+      qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
+
+      qqxxFactoid.setType("qqxx");
+      payload.setUrl(url);
+      Map<String, String> loanDataMap = new HashMap<String, String>();
+      qqxxFactoid.setData(loanDataMap);
+      loanDataMap.put("url", url);
+      qqxxFactoid.setUnique_id(randomUniqueId());
+      qqxxFactoid.setType("website");
+      qqxxFactoid.setData(loanDataMap);
+      factoids.add(qqxxFactoid);
+      payload.setFactoids(factoids);
+
+      CreateAttestationResponse response = client.createAttestationWithUrl(payload,url);
+      System.out.print(response.getData().getNo());
+    }
+
+
+  @Test
+  public void createAttestationWithUrl2() throws ServerException{
+    String url = "http://zj.qq.com/a/20180316/023904.html";
+    CreateAttestationPayload payload = new CreateAttestationPayload();
+    // 设置保全唯一码
+    payload.setUniqueId(UUID.randomUUID().toString());
+    // 设置模板id
+    payload.setTemplateId("6YX9zyd13GurXQ2u8TcNKe");
+    // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+    payload.setCompleted(true);
+    // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+
+    Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
+    identities.put(IdentityType.ID,"429006198507104214");
+    identities.put(IdentityType.MO, "18767106890");
+    payload.setIdentities(identities);
+
+
+    List<Factoid> factoids = new ArrayList<Factoid>();
+    Factoid qqxxFactoid = new Factoid();
+    qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
+
+    qqxxFactoid.setType("qqxx");
+
+    Map<String, String> loanDataMap = new HashMap<String, String>();
+    qqxxFactoid.setData(loanDataMap);
+    loanDataMap.put("url", url);
+    payload.setUrl(url);
+    qqxxFactoid.setUnique_id(randomUniqueId());
+    qqxxFactoid.setType("website");
+    qqxxFactoid.setData(loanDataMap);
+    factoids.add(qqxxFactoid);
+    payload.setFactoids(factoids);
+
+    CreateAttestationResponse response = client.createAttestationWithUrl(payload,url);
+    System.out.print(response.getData().getNo());
+  }
+
+
+  @Test
+  public void createOriginalArticle() throws ServerException{
+   OriginalArticlePayload payload = new OriginalArticlePayload();
+    // 设置原创认证唯一码
+    payload.setUniqueId(UUID.randomUUID().toString());
+    payload.setLinkUrl("http://www.baidu.com");
+    payload.setNickName("1111");
+    payload.setOriginalType("1,2");
+    payload.setPlatformCode("1");
+    payload.setSubDate("2018-06-27 15:22");
+    payload.setTitle("SDK测试");
+    OriginalArticleResponse response = client.createOriginalArticle(payload);
+    System.out.print(response.getOriginalId());
+  }
 }
