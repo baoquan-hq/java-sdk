@@ -33,7 +33,7 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://192.168.3.47:8080");
+//        client.setHost("http://127.0.0.1:8080");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
         client.setHost("https://baoquan.com");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
@@ -1699,7 +1699,7 @@ public class BaoquanClientTest {
 
 
 //        String url = "http://news.21cn.com/caiji/roll1/zhnb/2017/0628/12/32422879_all.shtml";
-            String url = "http://zj.qq.com/a/20171207/002528.htm";
+            String url = "http://www.hualongxiang.com/chazuo/14200885";
             CreateAttestationResponse response = client.createAttestationWithUrl(payload, url);
             Assert.assertNotNull(response.getData().getNo());
         }
