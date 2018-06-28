@@ -179,17 +179,17 @@ public class BaoquanClient {
     }
 
 
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @return {@link String}
-     * @throws ServerException {@link ServerException}
-     */
-    public String sendVerifyCode() throws ServerException {
-        Map<String, Object> payloadMap = buildSendVerifyCodePayloadMap();
-//        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
-        return json("contract/verify_code", payloadMap, null, null);
-    }
+//    /**
+//     * create attestation with attachments, one factoid can have more than one attachments
+//     *
+//     * @return {@link String}
+//     * @throws ServerException {@link ServerException}
+//     */
+//    public String sendVerifyCode() throws ServerException {
+//        Map<String, Object> payloadMap = buildSendVerifyCodePayloadMap();
+////        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+//        return json("contract/verify_code", payloadMap, null, null);
+//    }
 
     /**
      * create attestation with attachments, one factoid can have more than one attachments
@@ -218,61 +218,61 @@ public class BaoquanClient {
     }
 
 
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @param attachments attachments
-     * @param payload     {@link ContractPayload}
-     * @return {@link String}
-     * @throws ServerException {@link ServerException}
-     */
-    public UploadContractResponse uploadContract(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
-        // checkCreateAttestationPayload(payload);
-        Map<String, Object> payloadMap = buildUploadContractPayloadMap(payload);
-        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
-        return json("contract/uploadPdf", payloadMap, streamBodyMap, UploadContractResponse.class);
-    }
+//    /**
+//     * create attestation with attachments, one factoid can have more than one attachments
+//     *
+//     * @param attachments attachments
+//     * @param payload     {@link ContractPayload}
+//     * @return {@link String}
+//     * @throws ServerException {@link ServerException}
+//     */
+//    public UploadContractResponse uploadContract(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
+//        // checkCreateAttestationPayload(payload);
+//        Map<String, Object> payloadMap = buildUploadContractPayloadMap(payload);
+//        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+//        return json("contract/uploadPdf", payloadMap, streamBodyMap, UploadContractResponse.class);
+//    }
 
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @param attachments attachments
-     * @param payload     {@link ContractPayload}
-     * @return {@link String}
-     * @throws ServerException {@link ServerException}
-     */
-    public CreateGroupResponse createGroup(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
-        // checkCreateAttestationPayload(payload);
-        Map<String, Object> payloadMap = buildUploadContractPayloadMap(payload);
-        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
-        return json("contract/group", payloadMap, streamBodyMap, CreateGroupResponse.class);
-    }
+//    /**
+//     * create attestation with attachments, one factoid can have more than one attachments
+//     *
+//     * @param attachments attachments
+//     * @param payload     {@link ContractPayload}
+//     * @return {@link String}
+//     * @throws ServerException {@link ServerException}
+//     */
+//    public CreateGroupResponse createGroup(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
+//        // checkCreateAttestationPayload(payload);
+//        Map<String, Object> payloadMap = buildUploadContractPayloadMap(payload);
+//        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+//        return json("contract/group", payloadMap, streamBodyMap, CreateGroupResponse.class);
+//    }
 
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @param payload {@link ContractPayload}
-     * @return {@link String}
-     * @throws ServerException {@link ServerException}
-     */
-    public ResultResponse setContractDetail(ContractPayload payload) throws ServerException {
+//    /**
+//     * create attestation with attachments, one factoid can have more than one attachments
+//     *
+//     * @param payload {@link ContractPayload}
+//     * @return {@link String}
+//     * @throws ServerException {@link ServerException}
+//     */
+//    public ResultResponse setContractDetail(ContractPayload payload) throws ServerException {
+//
+//        Map<String, Object> payloadMap = buildSetContractPayloadMap(payload);
+//        return json("contract/setDetail", payloadMap, null, ResultResponse.class);
+//    }
 
-        Map<String, Object> payloadMap = buildSetContractPayloadMap(payload);
-        return json("contract/setDetail", payloadMap, null, ResultResponse.class);
-    }
-
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @param payload {@link ContractPayload}
-     * @return {@link String}
-     * @throws ServerException {@link ServerException}
-     */
-    public UploadContractResponse setContractGroupDetail(ContractPayload payload) throws ServerException {
-
-        Map<String, Object> payloadMap = buildSetContractGroupPayloadMap(payload);
-        return json("contract/setGroupDetail", payloadMap, null, UploadContractResponse.class);
-    }
+//    /**
+//     * create attestation with attachments, one factoid can have more than one attachments
+//     *
+//     * @param payload {@link ContractPayload}
+//     * @return {@link String}
+//     * @throws ServerException {@link ServerException}
+//     */
+//    public UploadContractResponse setContractGroupDetail(ContractPayload payload) throws ServerException {
+//
+//        Map<String, Object> payloadMap = buildSetContractGroupPayloadMap(payload);
+//        return json("contract/setGroupDetail", payloadMap, null, UploadContractResponse.class);
+//    }
 
 
     /**
@@ -492,24 +492,24 @@ public class BaoquanClient {
         return payloadMap;
     }
 
-    private Map<String, Object> buildSendVerifyCodePayloadMap() {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("phone", "15811111111");
-        payloadMap.put("ecs_status", "DONE");
-        return payloadMap;
-    }
+//    private Map<String, Object> buildSendVerifyCodePayloadMap() {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("phone", "15811111111");
+//        payloadMap.put("ecs_status", "DONE");
+//        return payloadMap;
+//    }
+//
 
-
-    private Map<String, Object> buildSendupdateContractPayloadMap() {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("phone", "15811111111");
-        payloadMap.put("phone", "15811111111");
-        payloadMap.put("phone", "15811111111");
-        payloadMap.put("phone", "15811111111");
-
-        payloadMap.put("ecs_status", "DONE");
-        return payloadMap;
-    }
+//    private Map<String, Object> buildSendupdateContractPayloadMap() {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("phone", "15811111111");
+//        payloadMap.put("phone", "15811111111");
+//        payloadMap.put("phone", "15811111111");
+//        payloadMap.put("phone", "15811111111");
+//
+//        payloadMap.put("ecs_status", "DONE");
+//        return payloadMap;
+//    }
 
     private Map<String, Object> buildSetSignatureDefaultIdPayloadMap(SignaturePayload payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
@@ -531,10 +531,10 @@ public class BaoquanClient {
     }
 
 
-    private Map<String, Object> buildUploadContractPayloadMap(ContractPayload payload) {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        return payloadMap;
-    }
+//    private Map<String, Object> buildUploadContractPayloadMap(ContractPayload payload) {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        return payloadMap;
+//    }
 
 
     private Map<String, Object> buildSetContractPayloadMap(ContractPayload payload) {
@@ -999,77 +999,77 @@ public class BaoquanClient {
     }
 
 
-    /**
-     * send VerifyCode
-     *
-     * @param contractId contractId
-     * @param phone      phone
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
-    public ResultResponse sendVerifyCode(String contractId, String phone) throws ServerException {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("contract_id", contractId);
-        payloadMap.put("phone", phone);
-        return json("contract/verifyCode", payloadMap, null, ResultResponse.class);
-    }
+//    /**
+//     * send VerifyCode
+//     *
+//     * @param contractId contractId
+//     * @param phone      phone
+//     * @return CloseableHttpResponse
+//     * @throws ServerException ServerException
+//     */
+//    public ResultResponse sendVerifyCode(String contractId, String phone) throws ServerException {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("contract_id", contractId);
+//        payloadMap.put("phone", phone);
+//        return json("contract/verifyCode", payloadMap, null, ResultResponse.class);
+//    }
 
-    public ResultResponse sendVerifyCodeForGroup(String groupId, String phone) throws ServerException {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("group_id", groupId);
-        payloadMap.put("phone", phone);
-        return json("contract/verifyCodeForGroup", payloadMap, null, ResultResponse.class);
-    }
+//    public ResultResponse sendVerifyCodeForGroup(String groupId, String phone) throws ServerException {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("group_id", groupId);
+//        payloadMap.put("phone", phone);
+//        return json("contract/verifyCodeForGroup", payloadMap, null, ResultResponse.class);
+//    }
 
+//
+//    /**
+//     * @param contractId contractId
+//     * @param phone      phone
+//     * @param verifyCode verifyCode
+//     * @param ecsStatus  ecsStatus
+//     * @param page       page
+//     * @param posX       posX
+//     * @param posY       posY
+//     * @return CloseableHttpResponse
+//     * @throws ServerException ServerException
+//     */
+//    public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
+//                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type, String orgcode) throws ServerException {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("contract_id", contractId);
+//        payloadMap.put("phone", phone);
+//        payloadMap.put("verify_code", verifyCode);
+//        payloadMap.put("ecs_status", ecsStatus);
+//        payloadMap.put("page", page);
+//        payloadMap.put("posX", posX);
+//        payloadMap.put("posY", posY);
+//        payloadMap.put("template_id", templateId);
+//        payloadMap.put("identities", identities);
+//        payloadMap.put("factoids", factoids);
+//        payloadMap.put("completed", completed);
+//        payloadMap.put("signature_id", signatureId);
+//        payloadMap.put("type", type);
+//        payloadMap.put("orgcode", orgcode);
+//        return json("contract/sign", payloadMap, null, ResultResponse.class);
+//    }
 
-    /**
-     * @param contractId contractId
-     * @param phone      phone
-     * @param verifyCode verifyCode
-     * @param ecsStatus  ecsStatus
-     * @param page       page
-     * @param posX       posX
-     * @param posY       posY
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
-    public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed,String signatureId,String type, String orgcode) throws ServerException {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("contract_id", contractId);
-        payloadMap.put("phone", phone);
-        payloadMap.put("verify_code", verifyCode);
-        payloadMap.put("ecs_status", ecsStatus);
-        payloadMap.put("page", page);
-        payloadMap.put("posX", posX);
-        payloadMap.put("posY", posY);
-        payloadMap.put("template_id", templateId);
-        payloadMap.put("identities", identities);
-        payloadMap.put("factoids", factoids);
-        payloadMap.put("completed", completed);
-        payloadMap.put("signature_id", signatureId);
-        payloadMap.put("type", type);
-        payloadMap.put("orgcode", orgcode);
-        return json("contract/sign", payloadMap, null, ResultResponse.class);
-    }
-
-    public ResultResponse setContractGroupStatus(String groupId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
-                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId,String type) throws ServerException {
-        Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("group_id", groupId);
-        payloadMap.put("phone", phone);
-        payloadMap.put("verify_code", verifyCode);
-        payloadMap.put("ecs_status", ecsStatus);
-        payloadMap.put("page", page);
-        payloadMap.put("posX", posX);
-        payloadMap.put("posY", posY);
-        payloadMap.put("template_id", templateId);
-        payloadMap.put("identities",identities);
-        payloadMap.put("factoids",factoids);
-        payloadMap.put("completed", completed);
-
-        return json("contract/signGroup", payloadMap, null, ResultResponse.class);
-    }
+//    public ResultResponse setContractGroupStatus(String groupId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
+//                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId,String type) throws ServerException {
+//        Map<String, Object> payloadMap = new HashMap<String, Object>();
+//        payloadMap.put("group_id", groupId);
+//        payloadMap.put("phone", phone);
+//        payloadMap.put("verify_code", verifyCode);
+//        payloadMap.put("ecs_status", ecsStatus);
+//        payloadMap.put("page", page);
+//        payloadMap.put("posX", posX);
+//        payloadMap.put("posY", posY);
+//        payloadMap.put("template_id", templateId);
+//        payloadMap.put("identities",identities);
+//        payloadMap.put("factoids",factoids);
+//        payloadMap.put("completed", completed);
+//
+//        return json("contract/signGroup", payloadMap, null, ResultResponse.class);
+//    }
 
     /**
      * @return CloseableHttpResponse
@@ -1107,16 +1107,78 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse sendAuthorizationVerifyCode(String phone) throws ServerException {
+    public ResultResponse sendAuthorizationVerifyCode(String phone,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
+        payloadMap.put("type", type);
         return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
-    public ResultResponse authorized(String phone,String verifyCode) throws ServerException {
+    public ResultResponse authorized(String phone,String verifyCode,String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         payloadMap.put("verfiy_code", verifyCode);
+        payloadMap.put("type", type);
         return json("authorization", payloadMap, null, ResultResponse.class);
     }
+
+    private Map<String, Object> buildUploadContractV2PayloadMap(ContractPayload payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("title", payload.getTitle());
+        payloadMap.put("end_at", payload.getEnd_at());
+        payloadMap.put("remark", payload.getRemark());
+        return payloadMap;
+    }
+
+    /**
+     * create attestation with attachments, one factoid can have more than one attachments
+     *
+     * @param attachments attachments
+     * @param payload     {@link ContractPayload}
+     * @return {@link String}
+     * @throws ServerException {@link ServerException}
+     */
+    public UploadContractResponse uploadContract(ContractPayload payload, Map<String, List<ByteArrayBody>> attachments) throws ServerException {
+        // checkCreateAttestationPayload(payload);
+        Map<String, Object> payloadMap = buildUploadContractV2PayloadMap(payload);
+        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+        return json("contract/uploadPdf", payloadMap, streamBodyMap, UploadContractResponse.class);
+    }
+
+    /**
+     * send VerifyCode
+     *
+     * @param contractId contractId
+     * @param phone      phone
+     * @return CloseableHttpResponse
+     * @throws ServerException ServerException
+     */
+    public ResultResponse sendVerifyCode(String contractId, String phone,String type) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("contract_id", contractId);
+        payloadMap.put("phone", phone);
+        payloadMap.put("type", type);
+        return json("contract/verifyCode", payloadMap, null, ResultResponse.class);
+    }
+
+    public ResultResponse signContract(String contractId, String phone, String verifyCode, String ecsStatus, String page, String posX, String posY, String templateId, Map<String, String> identities,
+                                       List<PayloadFactoid> factoids, Boolean completed, String signatureId, String type) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("contract_id", contractId);
+        payloadMap.put("phone", phone);
+        payloadMap.put("verify_code", verifyCode);
+        payloadMap.put("ecs_status", ecsStatus);
+        payloadMap.put("page", page);
+        payloadMap.put("posX", posX);
+        payloadMap.put("posY", posY);
+        payloadMap.put("template_id", templateId);
+        payloadMap.put("identities", identities);
+        payloadMap.put("factoids", factoids);
+        payloadMap.put("completed", completed);
+        payloadMap.put("signature_id", signatureId);
+        payloadMap.put("type", type);
+//        payloadMap.put("orgcode", orgcode);
+        return json("contract/sign", payloadMap, null, ResultResponse.class);
+    }
+
 }

@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1002,47 +1003,47 @@ public class BaoquanClientTest {
         System.out.println(accessUrl);
     }
 
-    @Test
-    public void testSignContract() throws ServerException {
-        Map<String, String> identitiesMap = new HashMap<String, String>();
-        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
-        PayloadFactoid payloadFactoid = new PayloadFactoid();
-        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<String, Object>();
-        linkedHashMap.put("userTruename", "张三");
-        linkedHashMap.put("address", "hangzhou");
-        payloadFactoid.setType("product");
-        payloadFactoid.setData(linkedHashMap);
-        list.add(payloadFactoid);
-        identitiesMap.put("MO", "15611111111");
-        identitiesMap.put("ID", "430426198401361452");
-        client.signContract("ojUGgCzuj9HixPSTDUEQpM", "18333333333", "1418", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise","131111222");
-    }
+//    @Test
+//    public void testSignContract() throws ServerException {
+//        Map<String, String> identitiesMap = new HashMap<String, String>();
+//        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
+//        PayloadFactoid payloadFactoid = new PayloadFactoid();
+//        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<String, Object>();
+//        linkedHashMap.put("userTruename", "张三");
+//        linkedHashMap.put("address", "hangzhou");
+//        payloadFactoid.setType("product");
+//        payloadFactoid.setData(linkedHashMap);
+//        list.add(payloadFactoid);
+//        identitiesMap.put("MO", "15611111111");
+//        identitiesMap.put("ID", "430426198401361452");
+//        client.signContract("ojUGgCzuj9HixPSTDUEQpM", "18333333333", "1418", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise","131111222");
+//    }
+//
+//    @Test
+//    public void testSetContractGroupStatus() throws ServerException {
+//        Map<String, String> identitiesMap = new HashMap<String, String>();
+//        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
+//        PayloadFactoid payloadFactoid = new PayloadFactoid();
+//        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
+//        linkedHashMap.put("userTruename","张三");
+//        linkedHashMap.put("address", "hangzhou");
+//        payloadFactoid.setType("product");
+//        payloadFactoid.setData(linkedHashMap);
+//        list.add(payloadFactoid);
+//        identitiesMap.put("MO","15611111111");
+//        identitiesMap.put("ID", "430426198401361452");
+//        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
+//    }
+//
+//    @Test
+//    public void testSendVerifyCode() throws ServerException {
+//        client.sendVerifyCode("ojUGgCzuj9HixPSTDUEQpM", "18333333333");
+//    }
 
-    @Test
-    public void testSetContractGroupStatus() throws ServerException {
-        Map<String, String> identitiesMap = new HashMap<String, String>();
-        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
-        PayloadFactoid payloadFactoid = new PayloadFactoid();
-        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
-        linkedHashMap.put("userTruename","张三");
-        linkedHashMap.put("address", "hangzhou");
-        payloadFactoid.setType("product");
-        payloadFactoid.setData(linkedHashMap);
-        list.add(payloadFactoid);
-        identitiesMap.put("MO","15611111111");
-        identitiesMap.put("ID", "430426198401361452");
-        client.setContractGroupStatus("kRcDGVqwxrKmjG1oBjH5BN", "18272161340", "3986", "DONE", "4", "400", "550","_priv_template_2", identitiesMap, list,false,"","enterprise");
-    }
-
-    @Test
-    public void testSendVerifyCode() throws ServerException {
-        client.sendVerifyCode("ojUGgCzuj9HixPSTDUEQpM", "18333333333");
-    }
-
-    @Test
-    public void testSendVerifyCodeForGroup() throws ServerException {
-        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340");
-    }
+//    @Test
+//    public void testSendVerifyCodeForGroup() throws ServerException {
+//        client.sendVerifyCodeForGroup("kRcDGVqwxrKmjG1oBjH5BN", "18272161340");
+//    }
 
     @Test
     public void testListSignature() throws ServerException {
@@ -1092,279 +1093,96 @@ public class BaoquanClientTest {
 //        Assert.assertNotNull(response.getData().getNo());
 //    }
 
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testUploadContract() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
-        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
-        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
-        System.out.println(u.getContractId());
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testCreateGroup() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
-        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
-        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        CreateGroupResponse u = client.createGroup(payload, byteStreamBodyMap);
-        System.out.println(u.getGroupId());
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testUploadContract1() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
-        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
-        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
-        //  byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
-        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractDetail() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date(System.currentTimeMillis());
-        calendar.setTime(date);
-//        calendar.add(Calendar.WEEK_OF_YEAR, -1);
-        calendar.add(Calendar.YEAR, +1);
-        date = calendar.getTime();
-        System.out.println(date);
-        payload.setEnd_at(date);
-
-        payload.setRemark("zheshi");
-
-        payload.setTitle("s合同");
-
-        payload.setContract_id("afnEMxJzjturBBvfcjqtMg");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("17696526777");
-        payload.setUserPhones(usePhones);
-
-
-        ResultResponse u  = client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    @Test
-    public void testSetContractGroupDetail() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date(System.currentTimeMillis());
-        calendar.setTime(date);
-//        calendar.add(Calendar.WEEK_OF_YEAR, -1);
-        calendar.add(Calendar.YEAR, +1);
-        date = calendar.getTime();
-        System.out.println(date);
-        payload.setEnd_at(date);
-
-        payload.setRemark("zhes");
-
-        payload.setTitle("ss添加2");
-
-//        payload.setContract_id("vcVuhR2e1odTShZnJug7cg");
-
-        payload.setGroup_id("kRcDGVqwxrKmjG1oBjH5BN");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("18322222222");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractGroupDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail1() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setRemark("");
-
-        payload.setTitle("ssss合同");
-
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail2() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setTitle("ssss合同");
-
-        payload.setContract_id("gtvJ21kZxZoh8Gmpw999Ek");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
-        usePhones.add("18811111111");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail3() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setRemark("awef");
-
-
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail4() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setRemark("ewfw");
-
-        payload.setTitle("ssss合同");
-
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail5() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setRemark("dfvawsde");
-
-        payload.setTitle("ssss合同");
-
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
-
-        List<String> usePhones = new ArrayList();
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
-
-    /**
-     * create attestation with the same unique id will return the same attestation no
-     *
-     * @throws ServerException
-     * @throws IOException
-     */
-    @Test
-    public void testSetContractuDetail6() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setRemark("sas");
-
-        payload.setTitle("ssss合同");
-
-        payload.setContract_id("bvN6zPZJMd9ZGALGphPRNF");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15333344");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
-    }
+//    /**
+//     * create attestation with the same unique id will return the same attestation no
+//     *
+//     * @throws ServerException
+//     * @throws IOException
+//     */
+//    @Test
+//    public void testUploadContract() throws ServerException, IOException {
+//        ContractPayload payload = new ContractPayload();
+//
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+//        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+//        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+//        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+//        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
+//        System.out.println(u.getContractId());
+//        //Assert.assertNotNull(response.getData().getNo());
+//    }
+//
+//    /**
+//     * create attestation with the same unique id will return the same attestation no
+//     *
+//     * @throws ServerException
+//     * @throws IOException
+//     */
+//    @Test
+//    public void testCreateGroup() throws ServerException, IOException {
+//        ContractPayload payload = new ContractPayload();
+//
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+//        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+//        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+//        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+//        CreateGroupResponse u = client.createGroup(payload, byteStreamBodyMap);
+//        System.out.println(u.getGroupId());
+//        //Assert.assertNotNull(response.getData().getNo());
+//    }
+//
+//    /**
+//     * create attestation with the same unique id will return the same attestation no
+//     *
+//     * @throws ServerException
+//     * @throws IOException
+//     */
+//    @Test
+//    public void testUploadContract1() throws ServerException, IOException {
+//        ContractPayload payload = new ContractPayload();
+//
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf");
+//        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+//        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+//        //  byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+//        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
+//        //Assert.assertNotNull(response.getData().getNo());
+//    }
+
+//    /**
+//     * create attestation with the same unique id will return the same attestation no
+//     *
+//     * @throws ServerException
+//     * @throws IOException
+//     */
+//    @Test
+//    public void testSetContractDetail() throws ServerException, IOException {
+//        ContractPayload payload = new ContractPayload();
+//        Calendar calendar = Calendar.getInstance();
+//        Date date = new Date(System.currentTimeMillis());
+//        calendar.setTime(date);
+////        calendar.add(Calendar.WEEK_OF_YEAR, -1);
+//        calendar.add(Calendar.YEAR, +1);
+//        date = calendar.getTime();
+//        System.out.println(date);
+//        payload.setEnd_at(date);
+//
+//        payload.setRemark("zheshi");
+//
+//        payload.setTitle("s合同");
+//
+//        payload.setContract_id("afnEMxJzjturBBvfcjqtMg");
+//
+//        List<String> usePhones = new ArrayList();
+//        usePhones.add("17696526777");
+//        payload.setUserPhones(usePhones);
+//
+//
+//        ResultResponse u  = client.setContractDetail(payload);
+//        //Assert.assertNotNull(response.getData().getNo());
+//    }
+//
+//
 
     /**
      * create attestation with the same unique id will return the same attestation no
@@ -1386,28 +1204,6 @@ public class BaoquanClientTest {
     @Test
     public void testgetDetail() throws ServerException {
         client.getDetail("01");
-    }
-
-    @Test
-    public void testSetContractuDetail7() throws ServerException, IOException {
-        ContractPayload payload = new ContractPayload();
-
-        payload.setEnd_at(new Date());
-
-        payload.setRemark("sas");
-
-        payload.setTitle("ssss合同");
-
-        payload.setContract_id("bvN6zPZJMd9ZGALRNF");
-
-        List<String> usePhones = new ArrayList();
-        usePhones.add("15844444444");
-        usePhones.add("18811111111");
-        payload.setUserPhones(usePhones);
-
-
-        client.setContractDetail(payload);
-        //Assert.assertNotNull(response.getData().getNo());
     }
 
 
@@ -1565,7 +1361,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendAuthorizationVerifyCode() throws ServerException {
-        client.sendAuthorizationVerifyCode( "15811111111");
+        client.sendAuthorizationVerifyCode( "15811111111","persoanl");
 
     }
 
@@ -1628,7 +1424,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testauthorized() throws ServerException {
-        client.authorized( "15811111111","7333");
+        client.authorized( "15811111111","7333","personal");
     }
 
     @Test
@@ -1680,6 +1476,61 @@ public class BaoquanClientTest {
       }
 
     }
+
+    /**
+     * create attestation with the same unique id will return the same attestation no
+     *
+     * @throws ServerException
+     * @throws IOException
+     */
+    @Test
+    public void testUploadContractV2() throws ServerException, IOException {
+
+        ContractPayload payload = new ContractPayload();
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(System.currentTimeMillis());
+        calendar.setTime(date);
+//        calendar.add(Calendar.WEEK_OF_YEAR, -1);
+        calendar.add(Calendar.YEAR, +1);
+        date = calendar.getTime();
+        System.out.println(date);
+        payload.setEnd_at(date);
+
+        payload.setRemark("sas");
+
+        payload.setTitle("ssss合同");
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf"); //  contract.pdf
+        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf") ;//  contract.pdf
+        System.out.println(getClass().getClassLoader());
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
+        Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
+        byteStreamBodyMap.put("0", Collections.singletonList(byteArrayBody));
+        UploadContractResponse u = client.uploadContract(payload, byteStreamBodyMap);
+        System.out.println(u.getContractId());
+        //Assert.assertNotNull(response.getData().getNo());
+    }
+
+    @Test
+    public void testSendVerifyCodeV2() throws ServerException {
+        client.sendVerifyCode("qK66vNAfZwHEQKPBedPHrR", "18312455227","enterprise");
+    }
+
+    @Test
+    public void testSignContractV2() throws ServerException {
+        Map<String, String> identitiesMap = new HashMap<String, String>();
+        List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
+        PayloadFactoid payloadFactoid = new PayloadFactoid();
+        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
+        linkedHashMap.put("userTruename","张三");
+        linkedHashMap.put("address", "hangzhou");
+        payloadFactoid.setType("product");
+        payloadFactoid.setData(linkedHashMap);
+        list.add(payloadFactoid);
+        identitiesMap.put("MO", "15611111111");
+        identitiesMap.put("ID", "430426198401361452");
+        client.signContract("is5kvW1JBzKg66af1eBN7f", "18312455227", "7818", "DONE", "4", "400", "550","4QmPxWihZEgqvgBGJg86TH", identitiesMap, list,true,"","enterprise");
+    }
+
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
     }
