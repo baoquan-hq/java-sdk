@@ -36,12 +36,17 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://192.168.3.149:8080");
-        //client.setHost("https://baoquan.com");
+//        client.setHost("http://127.0.0.1:8080");
+//        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+//        client.setHost("http://192.168.3.149:8080");
+        client.setHost("https://baoquan.com");
         client.setAccessKey("2nk2KTwcawQpudvGQerYXi");
+        client.setVersion("v2");
 //        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
-            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+            client.setPemPath("D:/baoquan/java-sdk/src/test/resources/private_key.pem");
+//            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+//                        client.setPemPath("D:/baoquan/java-sdk/src/test/resources/249.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -282,7 +287,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestation11() throws ServerException, IOException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("5e4G1Kdr8ThS71HBdW64A");
+        payload.setTemplateId("urhMM9enzejADKvY4yow7c");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319800127691X");
         identities.put(IdentityType.MO, "15857112383");
@@ -350,7 +355,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestationWithSha256() throws ServerException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("filehash");
+        payload.setTemplateId("urhMM9enzejADKvY4yow7c");
         payload.setUniqueId(randomUniqueId());
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.MO, "15857112383");
@@ -368,7 +373,6 @@ public class BaoquanClientTest {
         CreateAttestationResponse response = client.createAttestationWithSha256(payload, "654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
         Assert.assertNotNull(response.getData().getNo());
     }
-
 
 
     /**
@@ -1352,8 +1356,8 @@ public class BaoquanClientTest {
         payload.setBank("中国银行");
         payload.setBankAccount("111111111111");
         payload.setName("这是我的新公");
-        payload.setOrgcode("124243254255345");
-        payload.setPhone("18272161340");
+        payload.setOrgcode("1242432542555");
+        payload.setPhone("18272161444");
         InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
@@ -1361,119 +1365,118 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendAuthorizationVerifyCode() throws ServerException {
-        client.sendAuthorizationVerifyCode( "15811111111","persoanl");
+        client.sendAuthorizationVerifyCode("15811111111", "persoanl");
 
     }
 
     @Test
-    public void createAttestationWithSha256(){
-      final CreateAttestationPayload payload = new CreateAttestationPayload();
-      String attId="111";
-      final String hash="9897599b653f0015b477465333488db8f0df3c3b03905dbf4d0b0b4651e4865e";
-      payload.setTemplateId("fu34E5zU3NN9XkfZDBVPLj");
-      payload.setUniqueId("111");
-      payload.setSha256("2222");
-      payload.setOpenStatusKey("22222");
+    public void createAttestationWithSha256() {
+        final CreateAttestationPayload payload = new CreateAttestationPayload();
+        String attId = "111";
+        final String hash = "9897599b653f0015b477465333488db8f0df3c3b03905dbf4d0b0b4651e4865e";
+        payload.setTemplateId("fu34E5zU3NN9XkfZDBVPLj");
+        payload.setUniqueId("111");
+        payload.setSha256("2222");
+        payload.setOpenStatusKey("22222");
 
-      Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-      identities.put(IdentityType.USERID, "111");
+        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+        identities.put(IdentityType.USERID, "111");
 
 
-      payload.setIdentities(identities);
+        payload.setIdentities(identities);
 
-      List<Factoid> factoids = new ArrayList<Factoid>();
+        List<Factoid> factoids = new ArrayList<Factoid>();
 
-      Factoid factoid = new Factoid();
-      factoid.setUnique_id("1111111");
-      factoid.setType("file");
-      Map<String, String> data = new HashMap<String,String>();
-      data.put("attId", attId);
+        Factoid factoid = new Factoid();
+        factoid.setUnique_id("1111111");
+        factoid.setType("file");
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("attId", attId);
 //    if (identityMap.get("NAME") != null) {
 //      data.put("owner_name", identityMap.get("NAME"));
 //    }
-      data.put("owner_name", "xiaxia");
-      factoid.setData(data);
-      factoids.add(factoid);
-      payload.setFactoids(factoids);
+        data.put("owner_name", "xiaxia");
+        factoid.setData(data);
+        factoids.add(factoid);
+        payload.setFactoids(factoids);
 
 
-      final CountDownLatch begin = new CountDownLatch(1); //为0时开始执行
-      final ExecutorService exec = Executors.newFixedThreadPool(9);
+        final CountDownLatch begin = new CountDownLatch(1); //为0时开始执行
+        final ExecutorService exec = Executors.newFixedThreadPool(9);
 
-      for (int i = 0; i < 9; i++) {
-        final int NO = i + 1;
-        Runnable runnable = new Runnable() {
-          @Override
-          public void run() {
-            try {
-              begin.await(); //等待直到 CountDownLatch减到1
-              CreateAttestationResponse createAttestationResponse = client.createAttestationWithSha256(payload,hash);
-            System.out.println("sign"+String.valueOf(NO)+": "+createAttestationResponse.getData().getNo());
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        };
-        exec.submit(runnable);
-      }
-      System.out.println("开始执行");
-      begin.countDown(); // begin减一，开始并发执行
-      exec.shutdown();
+        for (int i = 0; i < 9; i++) {
+            final int NO = i + 1;
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        begin.await(); //等待直到 CountDownLatch减到1
+                        CreateAttestationResponse createAttestationResponse = client.createAttestationWithSha256(payload, hash);
+                        System.out.println("sign" + String.valueOf(NO) + ": " + createAttestationResponse.getData().getNo());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            exec.submit(runnable);
+        }
+        System.out.println("开始执行");
+        begin.countDown(); // begin减一，开始并发执行
+        exec.shutdown();
     }
 
 
     @Test
     public void testauthorized() throws ServerException {
-        client.authorized( "15811111111","7333","personal");
+        client.authorized("15811111111", "7333", "personal");
     }
 
     @Test
-    public void fixedEvidence() throws  ServerException{
-      CreateAttestationPayload payload = new CreateAttestationPayload();
-      // 设置保全唯一码
-      payload.setUniqueId(UUID.randomUUID().toString());
-      // 设置模板id
-      payload.setTemplateId("6YKxogbJARLFVFEGXQZvpD");
-      // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
-      payload.setCompleted(true);
-      // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+    public void fixedEvidence() throws ServerException {
+        CreateAttestationPayload payload = new CreateAttestationPayload();
+        // 设置保全唯一码
+        payload.setUniqueId(UUID.randomUUID().toString());
+        // 设置模板id
+        payload.setTemplateId("6YKxogbJARLFVFEGXQZvpD");
+        // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+        payload.setCompleted(true);
+        // 设置保全所有者的身份标识，标识类型定义在IdentityType中
 
-      Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
-      identities.put(IdentityType.ID,"429006198507104214");
-      identities.put(IdentityType.MO, "18767106890");
-      payload.setIdentities(identities);
-      Factoid qqxxFactoid = new Factoid();
-      // 添加陈述对象列表
+        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+        identities.put(IdentityType.ID, "429006198507104214");
+        identities.put(IdentityType.MO, "18767106890");
+        payload.setIdentities(identities);
+        Factoid qqxxFactoid = new Factoid();
+        // 添加陈述对象列表
 
 
+        for (int i = 32; i < 33; i++) {
+            List<Factoid> factoids = new ArrayList<Factoid>();
+            payload.setUniqueId(UUID.randomUUID().toString() + i);
+            qqxxFactoid.setUnique_id(UUID.randomUUID().toString() + new Date().getTime());
 
-      for (int i = 32; i < 33; i++) {
-        List<Factoid> factoids = new ArrayList<Factoid>();
-        payload.setUniqueId(UUID.randomUUID().toString()+i);
-        qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
+            qqxxFactoid.setType("qqxx");
 
-        qqxxFactoid.setType("qqxx");
-
-        Map<String, String> loanDataMap = new HashMap<String, String>();
-        qqxxFactoid.setData(loanDataMap);
-        loanDataMap.put("platFormId", "1");
-        loanDataMap.put("ywlj", "https://www.baoquan.com/");
-        loanDataMap.put("ywbt", "hahaha");
-        loanDataMap.put("originalType","1");
-        loanDataMap.put("url", "http://www.tapd.cn");
-        loanDataMap.put("qqbt", "哈哈哈哈");
-        loanDataMap.put("qqwz", "嘻嘻嘻嘻");
-        loanDataMap.put("bqgs", "数秦科技");
-        loanDataMap.put("qqbh", "qq001");
-        loanDataMap.put("qqzt", "XX网");
-        loanDataMap.put("matchNum", "0.99");
-        loanDataMap.put("pirSubDate","2018-06-20 20:16");
-        loanDataMap.put("oriSubDate","2018-06-20 20:16");
-        factoids.add(qqxxFactoid);
-        payload.setFactoids(factoids);
-        CreateAttestationResponse response = client.fixedEvidence(payload);
-        System.out.print(response.getData().getNo());
-      }
+            Map<String, String> loanDataMap = new HashMap<String, String>();
+            qqxxFactoid.setData(loanDataMap);
+            loanDataMap.put("platFormId", "1");
+            loanDataMap.put("ywlj", "https://www.baoquan.com/");
+            loanDataMap.put("ywbt", "hahaha");
+            loanDataMap.put("originalType", "1");
+            loanDataMap.put("url", "http://www.tapd.cn");
+            loanDataMap.put("qqbt", "哈哈哈哈");
+            loanDataMap.put("qqwz", "嘻嘻嘻嘻");
+            loanDataMap.put("bqgs", "数秦科技");
+            loanDataMap.put("qqbh", "qq001");
+            loanDataMap.put("qqzt", "XX网");
+            loanDataMap.put("matchNum", "0.99");
+            loanDataMap.put("pirSubDate", "2018-06-20 20:16");
+            loanDataMap.put("oriSubDate", "2018-06-20 20:16");
+            factoids.add(qqxxFactoid);
+            payload.setFactoids(factoids);
+            CreateAttestationResponse response = client.fixedEvidence(payload);
+            System.out.print(response.getData().getNo());
+        }
 
     }
 
@@ -1500,7 +1503,7 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 //        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf"); //  contract.pdf
-        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf") ;//  contract.pdf
+        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf");//  contract.pdf
         System.out.println(getClass().getClassLoader());
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
@@ -1512,7 +1515,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCodeV2() throws ServerException {
-        client.sendVerifyCode("qK66vNAfZwHEQKPBedPHrR", "18312455227","enterprise");
+        client.sendVerifyCode("4Lf6AWgQZVFTTr4ST52JUd", "18272161444", "enterprise");
     }
 
     @Test
@@ -1520,15 +1523,15 @@ public class BaoquanClientTest {
         Map<String, String> identitiesMap = new HashMap<String, String>();
         List<PayloadFactoid> list = new ArrayList<PayloadFactoid>();
         PayloadFactoid payloadFactoid = new PayloadFactoid();
-        LinkedHashMap<String , Object> linkedHashMap = new LinkedHashMap<String, Object>();
-        linkedHashMap.put("userTruename","张三");
+        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<String, Object>();
+        linkedHashMap.put("userTruename", "张三");
         linkedHashMap.put("address", "hangzhou");
         payloadFactoid.setType("product");
         payloadFactoid.setData(linkedHashMap);
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("is5kvW1JBzKg66af1eBN7f", "18312455227", "7818", "DONE", "4", "400", "550","4QmPxWihZEgqvgBGJg86TH", identitiesMap, list,true,"","enterprise");
+        client.signContract("4Lf6AWgQZVFTTr4ST52JUd", "18272161333", "6600", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "", "enterprise");
     }
 
     private String randomUniqueId() {
@@ -1584,94 +1587,94 @@ public class BaoquanClientTest {
 
 
     @Test
-    public void createAttestationWithUrl() throws ServerException{
-      String url = "http://www.qq.com/";
-      CreateAttestationPayload payload = new CreateAttestationPayload();
-      // 设置保全唯一码
-      payload.setUniqueId(UUID.randomUUID().toString());
-      // 设置模板id
-      payload.setTemplateId("jcEGvWNn88XVzjdmGu5GDr");
-      // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
-      payload.setCompleted(true);
-      // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+    public void createAttestationWithUrl() throws ServerException {
+        String url = "http://www.qq.com/";
+        CreateAttestationPayload payload = new CreateAttestationPayload();
+        // 设置保全唯一码
+        payload.setUniqueId(UUID.randomUUID().toString());
+        // 设置模板id
+        payload.setTemplateId("jcEGvWNn88XVzjdmGu5GDr");
+        // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+        payload.setCompleted(true);
+        // 设置保全所有者的身份标识，标识类型定义在IdentityType中
 
-      Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
-      identities.put(IdentityType.ID,"429006198507104214");
-      identities.put(IdentityType.MO, "18767106890");
-      payload.setIdentities(identities);
+        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+        identities.put(IdentityType.ID, "429006198507104214");
+        identities.put(IdentityType.MO, "18767106890");
+        payload.setIdentities(identities);
 
 
-      List<Factoid> factoids = new ArrayList<Factoid>();
-      Factoid qqxxFactoid = new Factoid();
-      qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
+        List<Factoid> factoids = new ArrayList<Factoid>();
+        Factoid qqxxFactoid = new Factoid();
+        qqxxFactoid.setUnique_id(UUID.randomUUID().toString() + new Date().getTime());
 
-      qqxxFactoid.setType("qqxx");
-      payload.setUrl(url);
-      Map<String, String> loanDataMap = new HashMap<String, String>();
-      qqxxFactoid.setData(loanDataMap);
-      loanDataMap.put("url", url);
-      qqxxFactoid.setUnique_id(randomUniqueId());
-      qqxxFactoid.setType("website");
-      qqxxFactoid.setData(loanDataMap);
-      factoids.add(qqxxFactoid);
-      payload.setFactoids(factoids);
+        qqxxFactoid.setType("qqxx");
+        payload.setUrl(url);
+        Map<String, String> loanDataMap = new HashMap<String, String>();
+        qqxxFactoid.setData(loanDataMap);
+        loanDataMap.put("url", url);
+        qqxxFactoid.setUnique_id(randomUniqueId());
+        qqxxFactoid.setType("website");
+        qqxxFactoid.setData(loanDataMap);
+        factoids.add(qqxxFactoid);
+        payload.setFactoids(factoids);
 
-      CreateAttestationResponse response = client.createAttestationWithUrl(payload,url);
-      System.out.print(response.getData().getNo());
+        CreateAttestationResponse response = client.createAttestationWithUrl(payload, url);
+        System.out.print(response.getData().getNo());
     }
 
 
-  @Test
-  public void createAttestationWithUrl2() throws ServerException{
-    String url = "http://zj.qq.com/a/20180316/023904.html";
-    CreateAttestationPayload payload = new CreateAttestationPayload();
-    // 设置保全唯一码
-    payload.setUniqueId(UUID.randomUUID().toString());
-    // 设置模板id
-    payload.setTemplateId("6YX9zyd13GurXQ2u8TcNKe");
-    // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
-    payload.setCompleted(true);
-    // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+    @Test
+    public void createAttestationWithUrl2() throws ServerException {
+        String url = "http://zj.qq.com/a/20180316/023904.html";
+        CreateAttestationPayload payload = new CreateAttestationPayload();
+        // 设置保全唯一码
+        payload.setUniqueId(UUID.randomUUID().toString());
+        // 设置模板id
+        payload.setTemplateId("6YX9zyd13GurXQ2u8TcNKe");
+        // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+        payload.setCompleted(true);
+        // 设置保全所有者的身份标识，标识类型定义在IdentityType中
 
-    Map<IdentityType, String> identities = new HashMap<IdentityType,String>();
-    identities.put(IdentityType.ID,"429006198507104214");
-    identities.put(IdentityType.MO, "18767106890");
-    payload.setIdentities(identities);
-
-
-    List<Factoid> factoids = new ArrayList<Factoid>();
-    Factoid qqxxFactoid = new Factoid();
-    qqxxFactoid.setUnique_id(UUID.randomUUID().toString()+new Date().getTime());
-
-    qqxxFactoid.setType("qqxx");
-
-    Map<String, String> loanDataMap = new HashMap<String, String>();
-    qqxxFactoid.setData(loanDataMap);
-    loanDataMap.put("url", url);
-    payload.setUrl(url);
-    qqxxFactoid.setUnique_id(randomUniqueId());
-    qqxxFactoid.setType("website");
-    qqxxFactoid.setData(loanDataMap);
-    factoids.add(qqxxFactoid);
-    payload.setFactoids(factoids);
-
-    CreateAttestationResponse response = client.createAttestationWithUrl(payload,url);
-    System.out.print(response.getData().getNo());
-  }
+        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+        identities.put(IdentityType.ID, "429006198507104214");
+        identities.put(IdentityType.MO, "18767106890");
+        payload.setIdentities(identities);
 
 
-  @Test
-  public void createOriginalArticle() throws ServerException{
-   OriginalArticlePayload payload = new OriginalArticlePayload();
-    // 设置原创认证唯一码
-    payload.setUniqueId(UUID.randomUUID().toString());
-    payload.setLinkUrl("http://www.baidu.com");
-    payload.setNickName("1111");
-    payload.setOriginalType("1,2");
-    payload.setPlatformCode("1");
-    payload.setSubDate("2018-06-27 15:22");
-    payload.setTitle("SDK测试");
-    OriginalArticleResponse response = client.createOriginalArticle(payload);
-    System.out.print(response.getOriginalId());
-  }
+        List<Factoid> factoids = new ArrayList<Factoid>();
+        Factoid qqxxFactoid = new Factoid();
+        qqxxFactoid.setUnique_id(UUID.randomUUID().toString() + new Date().getTime());
+
+        qqxxFactoid.setType("qqxx");
+
+        Map<String, String> loanDataMap = new HashMap<String, String>();
+        qqxxFactoid.setData(loanDataMap);
+        loanDataMap.put("url", url);
+        payload.setUrl(url);
+        qqxxFactoid.setUnique_id(randomUniqueId());
+        qqxxFactoid.setType("website");
+        qqxxFactoid.setData(loanDataMap);
+        factoids.add(qqxxFactoid);
+        payload.setFactoids(factoids);
+
+        CreateAttestationResponse response = client.createAttestationWithUrl(payload, url);
+        System.out.print(response.getData().getNo());
+    }
+
+
+    @Test
+    public void createOriginalArticle() throws ServerException {
+        OriginalArticlePayload payload = new OriginalArticlePayload();
+        // 设置原创认证唯一码
+        payload.setUniqueId(UUID.randomUUID().toString());
+        payload.setLinkUrl("http://www.baidu.com");
+        payload.setNickName("1111");
+        payload.setOriginalType("1,2");
+        payload.setPlatformCode("1");
+        payload.setSubDate("2018-06-27 15:22");
+        payload.setTitle("SDK测试");
+        OriginalArticleResponse response = client.createOriginalArticle(payload);
+        System.out.print(response.getOriginalId());
+    }
 }
