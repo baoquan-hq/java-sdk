@@ -36,16 +36,16 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://127.0.0.1:8080");
-//        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+        client.setHost("http://127.0.0.1:8080");
+        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.149:8080");
-        client.setHost("https://baoquan.com");
-        client.setAccessKey("2nk2KTwcawQpudvGQerYXi");
+//        client.setHost("https://baoquan.com");
+//        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
         client.setVersion("v2");
 //        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
-            client.setPemPath("D:/baoquan/java-sdk/src/test/resources/private_key.pem");
-//            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+//            client.setPemPath("D:/baoquan/java-sdk/src/test/resources/private_key.pem");
+            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
 //                        client.setPemPath("D:/baoquan/java-sdk/src/test/resources/249.pem");
         } catch (IOException e) {
             e.printStackTrace();
@@ -994,7 +994,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testUserKyc() throws ServerException {
-        UserKycResponse response = client.userKyc("18355555553", "用户一", "210682199505041375");
+        UserKycResponse response = client.userKyc("18355555213", "用户一", "210682199505041375");
         String userId = response.getData().getUserId();
 //        System.out.println(userId);
 //        Assert.assertNotNull(response.getData().getUserId());
@@ -1356,8 +1356,10 @@ public class BaoquanClientTest {
         payload.setBank("中国银行");
         payload.setBankAccount("111111111111");
         payload.setName("这是我的新公");
-        payload.setOrgcode("1242432542555");
-        payload.setPhone("18272161444");
+        payload.setOrgcode("91140100MA0GXX9P6J");
+        payload.setPhone("18277831234");
+        payload.setContactName("哈哈");
+        payload.setContactCode("320321199409243619");
         InputStream businessInputStream = getClass().getClassLoader().getResourceAsStream("seal.png");
         ByteArrayBody businessFile = new ByteArrayBody(IOUtils.toByteArray(businessInputStream), ContentType.DEFAULT_BINARY, "seal.png");
         kycEnterpriseResponse response = client.kycEnterprise(payload, businessFile);
@@ -1515,7 +1517,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCodeV2() throws ServerException {
-        client.sendVerifyCode("4Lf6AWgQZVFTTr4ST52JUd", "18272161444", "enterprise");
+        client.sendVerifyCode("v8cKbh8HPyWYeyKV6iZoWr", "18355555213", "personal");
     }
 
     @Test
@@ -1531,7 +1533,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("4Lf6AWgQZVFTTr4ST52JUd", "18272161333", "6600", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "", "enterprise");
+        client.signContract("v8cKbh8HPyWYeyKV6iZoWr", "18355555213", "3469", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "", "personal");
     }
 
     private String randomUniqueId() {
