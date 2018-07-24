@@ -139,15 +139,15 @@ public class BaoquanClient {
         return json("attestations/url", payloadMap, null, CreateAttestationResponse.class);
     }
 
-    public CreateAttestationResponse fixedEvidence(CreateAttestationPayload payload) throws ServerException{
-      Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
-      return json("/copyright/fixedEvidence", payloadMap, null, CreateAttestationResponse.class);
+    public CreateAttestationResponse fixedEvidence(CreateAttestationPayload payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
+        return json("/copyright/fixedEvidence", payloadMap, null, CreateAttestationResponse.class);
     }
 
 
-    public OriginalArticleResponse createOriginalArticle(OriginalArticlePayload payload) throws  ServerException{
-      Map<String, Object> payloadMap = buildOriginalArticlePayloadMap(payload);
-      return json("/copyright/createOriginalArticle", payloadMap, null, OriginalArticleResponse.class);
+    public OriginalArticleResponse createOriginalArticle(OriginalArticlePayload payload) throws ServerException {
+        Map<String, Object> payloadMap = buildOriginalArticlePayloadMap(payload);
+        return json("/copyright/createOriginalArticle", payloadMap, null, OriginalArticleResponse.class);
     }
 
     /**
@@ -563,27 +563,26 @@ public class BaoquanClient {
 
 
     private Map<String, Object> buildCreateAttestationPayloadMap(CreateAttestationPayload payload, Map<String, List<ByteArrayBody>> attachments) {
-      Map<String, Object> payloadMap = new HashMap<String, Object>();
-      payloadMap.put("unique_id", payload.getUniqueId());
-      payloadMap.put("template_id", payload.getTemplateId());
-      payloadMap.put("identities", payload.getIdentities());
-      payloadMap.put("factoids", payload.getFactoids());
-      payloadMap.put("completed", payload.isCompleted());
-      if (StringUtils.isNotBlank(payload.getOpenStatusKey())) {
-        payloadMap.put("openStatusKey", payload.getOpenStatusKey());
-      }
-      String sha256 = payload.getSha256();
-      if (StringUtils.isNotBlank(sha256)) {
-        payloadMap.put("sha256", sha256);
-      }
-      String url = payload.getUrl();
-      if (StringUtils.isNoneBlank(url)) {
-        payloadMap.put("url", url);
-      }
-      payloadMap.put("attachments", buildChecksum(payload, attachments));
-      return payloadMap;
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUniqueId());
+        payloadMap.put("template_id", payload.getTemplateId());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("completed", payload.isCompleted());
+        if (StringUtils.isNotBlank(payload.getOpenStatusKey())) {
+            payloadMap.put("openStatusKey", payload.getOpenStatusKey());
+        }
+        String sha256 = payload.getSha256();
+        if (StringUtils.isNotBlank(sha256)) {
+            payloadMap.put("sha256", sha256);
+        }
+        String url = payload.getUrl();
+        if (StringUtils.isNoneBlank(url)) {
+            payloadMap.put("url", url);
+        }
+        payloadMap.put("attachments", buildChecksum(payload, attachments));
+        return payloadMap;
     }
-
 
 
     private Map<String, Object> buildKycEnterprisePayloadMap(KycEnterprisePayload payload) {
@@ -594,19 +593,23 @@ public class BaoquanClient {
         payloadMap.put("accountName", payload.getAccountName());
         payloadMap.put("bank", payload.getBank());
         payloadMap.put("bankAccount", payload.getBankAccount());
+        payloadMap.put("contactName", payload.getContactName());
+        payloadMap.put("contactCode", payload.getContactCode());
         return payloadMap;
     }
-  private Map<String, Object> buildOriginalArticlePayloadMap(OriginalArticlePayload payload) {
-    Map<String, Object> payloadMap = new HashMap<String, Object>();
-    payloadMap.put("uniqueId", payload.getUniqueId());
-    payloadMap.put("platformCode", payload.getPlatformCode());
-    payloadMap.put("linkUrl", payload.getLinkUrl());
-    payloadMap.put("nickName", payload.getNickName());
-    payloadMap.put("originalType", payload.getOriginalType());
-    payloadMap.put("subDate", payload.getSubDate());
-    payloadMap.put("title", payload.getTitle());
-    return payloadMap;
-  }
+
+    private Map<String, Object> buildOriginalArticlePayloadMap(OriginalArticlePayload payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("uniqueId", payload.getUniqueId());
+        payloadMap.put("platformCode", payload.getPlatformCode());
+        payloadMap.put("linkUrl", payload.getLinkUrl());
+        payloadMap.put("nickName", payload.getNickName());
+        payloadMap.put("originalType", payload.getOriginalType());
+        payloadMap.put("subDate", payload.getSubDate());
+        payloadMap.put("title", payload.getTitle());
+        return payloadMap;
+    }
+
     private Map<String, Object> buildAddFactoidsPayloadMap(AddFactoidsPayload payload, Map<String, List<ByteArrayBody>> attachments) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("ano", payload.getAno());
@@ -1098,23 +1101,21 @@ public class BaoquanClient {
     }
 
 
-
-
     /**
      * senduthorizationVerifyCode
      *
-     * @param phone      phone
+     * @param phone phone
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse sendAuthorizationVerifyCode(String phone,String type) throws ServerException {
+    public ResultResponse sendAuthorizationVerifyCode(String phone, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         payloadMap.put("type", type);
         return json("authorization/verifyCode", payloadMap, null, ResultResponse.class);
     }
 
-    public ResultResponse authorized(String phone,String verifyCode,String type) throws ServerException {
+    public ResultResponse authorized(String phone, String verifyCode, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
         payloadMap.put("verfiy_code", verifyCode);
@@ -1153,7 +1154,7 @@ public class BaoquanClient {
      * @return CloseableHttpResponse
      * @throws ServerException ServerException
      */
-    public ResultResponse sendVerifyCode(String contractId, String phone,String type) throws ServerException {
+    public ResultResponse sendVerifyCode(String contractId, String phone, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
         payloadMap.put("phone", phone);

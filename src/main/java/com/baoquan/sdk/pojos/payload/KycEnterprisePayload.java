@@ -19,6 +19,10 @@ public class KycEnterprisePayload {
 
   private String bankAccount;
 
+  private String contactName;
+
+  private String contactCode;
+
 
   public String getName() {
     return name;
@@ -66,5 +70,21 @@ public class KycEnterprisePayload {
 
   public void setPhone(String phone) {
     this.phone = phone;
+  }
+
+  public String getContactName() {
+    return contactName;
+  }
+
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
+  }
+
+  public String getContactCode() {
+    return contactCode;
+  }
+
+  public void setContactCode(String contactCode) {
+    this.contactCode = contactCode;
   }
 }
