@@ -16,8 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -36,7 +34,7 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://127.0.0.1:8080");
+        client.setHost("http://127.0.0.1:8088");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.149:8080");
 //        client.setHost("https://baoquan.com");
@@ -1679,4 +1677,25 @@ public class BaoquanClientTest {
         OriginalArticleResponse response = client.createOriginalArticle(payload);
         System.out.print(response.getOriginalId());
     }
+
+    //获取小说章节
+    @Test
+    public void getNovelChapterCount() throws ServerException {
+        String novelUrl = "http://www.biqiuge.com/book/4772/";
+        NovelChapterIndex novelChapterIndex = client.getNovelChapterCount(novelUrl);
+        System.out.println(novelChapterIndex);
+    }
+
+    //小说扣费并取证
+    @Test
+    public void deductAndRecord() throws ServerException {
+        String novelUrl = "http://www.biqiuge.com/book/4772/";
+        String webname = "http://www.biqiuge.com/book/4772/11111";
+        String remark = "http://www.biqiuge.com/book/4772/222222";
+        String orgcode = "562505102406102";
+        String telephone = "11111111111";
+        Map map = client.deductAndRecord(novelUrl, webname, remark, orgcode, telephone);
+        System.out.println(map.get("status"));
+    }
+
 }

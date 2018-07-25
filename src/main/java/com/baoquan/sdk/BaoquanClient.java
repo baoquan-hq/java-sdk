@@ -1182,4 +1182,22 @@ public class BaoquanClient {
         return json("contract/sign", payloadMap, null, ResultResponse.class);
     }
 
+    //获取小说章节
+    public NovelChapterIndex getNovelChapterCount(String novelUrl) throws ServerException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("novelUrl", novelUrl);
+        return json("AttestationNovel/getNovelChapterCount", map, null, NovelChapterIndex.class);
+    }
+
+    //小说扣费并
+    public Map deductAndRecord(String novelUrl, String webname, String remark, String orgcode, String telephone) throws ServerException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("novelUrl", novelUrl);
+        map.put("webname", webname);
+        map.put("remark", remark);
+        map.put("orgcode", orgcode);
+        map.put("telephone", telephone);
+        return json("AttestationNovel/deductAndRecord", map, null, Map.class);
+    }
+
 }
