@@ -1242,7 +1242,7 @@ public class BaoquanClient {
         return json("AttestationNovel/getNovelChapterCount", map, null, NovelChapterIndex.class);
     }
 
-    //小说扣费并
+    //小说扣费
     public Map deductAndRecord(String novelUrl, String webname, String remark, String orgcode, String telephone) throws ServerException {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("novelUrl", novelUrl);
