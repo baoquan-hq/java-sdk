@@ -3,6 +3,7 @@ package com.baoquan.sdk;
 import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
 import com.baoquan.sdk.pojos.response.*;
+import com.baoquan.sdk.pojos.response.data.GetAttestationUrlData;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -34,16 +35,18 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://127.0.0.1:8088");
-        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
-//        client.setHost("http://192.168.3.149:8080");
-//        client.setHost("https://baoquan.com");
+        client.setHost("http://127.0.0.1:8080");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+//        client.setHost("http://192.168.3.249:8081");
+//        client.setHost("https://baoquan.com");
+        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+//        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
         client.setVersion("v2");
 //        client.setAccessKey("fsBswNzfECKZH9aWyh47fc");
         try {
 //            client.setPemPath("D:/baoquan/java-sdk/src/test/resources/private_key.pem");
-            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+//            client.setPemPath(getClass().getClassLoader().getResource("private_key.pem").getPath());
+            client.setPemPath("E:/dataqin/java-sdk/src/test/resources/private_key.pem");
 //                        client.setPemPath("D:/baoquan/java-sdk/src/test/resources/249.pem");
         } catch (IOException e) {
             e.printStackTrace();
@@ -968,7 +971,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testDownloadAttestation0() throws ServerException, IOException {
-        DownloadFile downloadFile = client.downloadAttestation("01E89E0D2E3A46F8AE271A532D56F7FD");
+        DownloadFile downloadFile = client.downloadAttestation("FCEAD004475F42A796A33C4C6FBCBD57");
         Assert.assertNotNull(downloadFile);
         Assert.assertNotNull(downloadFile.getFileName());
         Assert.assertNotNull(downloadFile.getFile());
@@ -992,8 +995,11 @@ public class BaoquanClientTest {
 
     @Test
     public void testUserKyc() throws ServerException {
-        UserKycResponse response = client.userKyc("18355555213", "用户一", "210682199505041375");
+        UserKycResponse response = client.userKyc("13661602876", "赵智豪", "310114199403023619");
+//        UserKycResponse response = client.userKyc("18355555213", "用户一", "210682199505041375");
         String userId = response.getData().getUserId();
+
+
 //        System.out.println(userId);
 //        Assert.assertNotNull(response.getData().getUserId());
 
@@ -1001,7 +1007,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testAttestationUrl() throws ServerException {
-        String accessUrl = client.attestationAccessUrl("35F79C28AC244202B0AA0A4E3E316AEC");
+        String accessUrl = client.attestationAccessUrl("946FB17529B244D78E28D3E90F33037B");
         System.out.println(accessUrl);
     }
 
@@ -1503,7 +1509,7 @@ public class BaoquanClientTest {
 
         payload.setTitle("ssss合同");
 //        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("contract.pdf"); //  contract.pdf
-        InputStream inputStream = new FileInputStream("D:/baoquan/java-sdk/out/test/resources/contract.pdf");//  contract.pdf
+        InputStream inputStream = new FileInputStream("E:\\dataqin\\java-sdk\\src\\test\\resources\\contract.pdf");//  contract.pdf
         System.out.println(getClass().getClassLoader());
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "contract.pdf");
         Map<String, List<ByteArrayBody>> byteStreamBodyMap = new HashMap<String, List<ByteArrayBody>>();
@@ -1515,7 +1521,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCodeV2() throws ServerException {
-        client.sendVerifyCode("v8cKbh8HPyWYeyKV6iZoWr", "18355555213", "personal");
+        client.sendVerifyCode("gXNcu5aCdeSieyMWS97dpJ", "13145205611", "personal");
     }
 
     @Test
@@ -1531,7 +1537,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("v8cKbh8HPyWYeyKV6iZoWr", "18355555213", "3469", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "", "personal");
+        client.signContract("gXNcu5aCdeSieyMWS97dpJ", "13145205611", "2722", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "thFSEEPTWXerPt9BrGQTdQ", "personal");
     }
 
     private String randomUniqueId() {
@@ -1593,7 +1599,7 @@ public class BaoquanClientTest {
         // 设置保全唯一码
         payload.setUniqueId(UUID.randomUUID().toString());
         // 设置模板id
-        payload.setTemplateId("jcEGvWNn88XVzjdmGu5GDr");
+        payload.setTemplateId("4g8kLrgrr8AGTXKqUzW1rc");
         // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
         payload.setCompleted(true);
         // 设置保全所有者的身份标识，标识类型定义在IdentityType中
@@ -1662,6 +1668,108 @@ public class BaoquanClientTest {
         System.out.print(response.getData().getNo());
     }
 
+    @Test
+    public void createAttestationWithUrl3() throws ServerException, InterruptedException {
+        String url = "http://www.qq.com/";
+        CreateAttestation4UrlPayload payload = new CreateAttestation4UrlPayload();
+        // 设置保全唯一码
+        payload.setUniqueId(UUID.randomUUID().toString());
+        // 设置模板id
+        payload.setTemplateId("4g8kLrgrr8AGTXKqUzW1rc");
+        // 设置陈述是否上传完成，如果设置成true，则后续不能继续追加陈述
+        payload.setCompleted(true);
+        // 设置保全所有者的身份标识，标识类型定义在IdentityType中
+
+        Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
+        identities.put(IdentityType.ID, "429006198507104214");
+        identities.put(IdentityType.MO, "18767106890");
+        payload.setIdentities(identities);
+
+
+        List<Factoid> factoids = new ArrayList<Factoid>();
+        Factoid qqxxFactoid = new Factoid();
+        qqxxFactoid.setUnique_id(UUID.randomUUID().toString() + new Date().getTime());
+
+        qqxxFactoid.setType("qqxx");
+        payload.setUrl(url);
+        Map<String, String> loanDataMap = new HashMap<String, String>();
+        qqxxFactoid.setData(loanDataMap);
+        loanDataMap.put("url", url);
+        qqxxFactoid.setUnique_id(randomUniqueId());
+        qqxxFactoid.setType("website");
+        qqxxFactoid.setData(loanDataMap);
+        factoids.add(qqxxFactoid);
+        payload.setFactoids(factoids);
+
+        payload.setUrl("http://www.simplechain.com/");
+        payload.setLabel("http://www.qq.com/");
+        payload.setRemark("ceshi");
+        payload.setWebName("ceshi");
+
+//        final CountDownLatch begin = new CountDownLatch(5); //为0时开始执行
+//        final ExecutorService exec = Executors.newFixedThreadPool(9);
+//
+//        for (int i = 0; i < 9; i++) {
+//            final int NO = i + 1;
+//            Runnable runnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        CreateAttestationResponse response = client.createAttestationWithUrl3(payload);
+//                        System.out.println("sign" + String.valueOf(NO) + ": " + response.getData().getNo());
+//                        begin.countDown();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            exec.submit(runnable);
+//        }
+//        System.out.println("开始执行");
+//        begin.await(); //等待直到 CountDownLatch减到1
+//        // begin减一，开始并发执行
+//        exec.shutdown();
+
+        CreateAttestationResponse response = client.createAsyAttestationWithUrl(payload);
+        System.out.print(response.getData().getNo());
+    }
+
+
+    @Test
+    public void createAttestationWithUrl4() throws InterruptedException {
+
+        final CountDownLatch begin = new CountDownLatch(9); //为0时开始执行
+        final ExecutorService exec = Executors.newFixedThreadPool(9);
+
+        for (int i = 0; i < 9; i++) {
+            final int NO = i + 1;
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        createAttestationWithUrl3();
+                        begin.countDown();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            exec.submit(runnable);
+        }
+        System.out.println("开始执行");
+        begin.await(); //等待直到 CountDownLatch减到1
+        // begin减一，开始并发执行
+        exec.shutdown();
+
+//        CreateAttestationResponse response = client.createAttestationWithUrl3(payload);
+//        System.out.print(response.getData().getNo());
+    }
+
+    @Test
+    public void getAttestationUrl() throws ServerException {
+        GetAttestationUrlResponse response = client.getAttestationWithUrl("0DD0D5FDCB754B028D514C5F5B7CB183");
+        System.out.print(response.getData().getStatus());
+    }
 
     @Test
     public void createOriginalArticle() throws ServerException {
@@ -1677,6 +1785,8 @@ public class BaoquanClientTest {
         OriginalArticleResponse response = client.createOriginalArticle(payload);
         System.out.print(response.getOriginalId());
     }
+
+
 
     //获取小说章节
     @Test

@@ -4,6 +4,7 @@ import com.baoquan.sdk.exceptions.ClientException;
 import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
 import com.baoquan.sdk.pojos.response.*;
+import com.baoquan.sdk.pojos.response.data.GetAttestationUrlData;
 import com.baoquan.sdk.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
@@ -138,6 +139,25 @@ public class BaoquanClient {
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
         return json("attestations/url", payloadMap, null, CreateAttestationResponse.class);
     }
+
+    /**
+     * create attestation with sha256
+     *
+     * @param payload payload
+     * @return {@link CreateAttestationResponse}
+     * @throws ServerException {@link ServerException}
+     */
+    public CreateAttestationResponse createAsyAttestationWithUrl(CreateAttestation4UrlPayload payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestation4UrlPayloadMap(payload);
+        return json("attestations/url/asy", payloadMap, null, CreateAttestationResponse.class);
+    }
+
+    public GetAttestationUrlResponse getAttestationWithUrl(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano",ano);
+        return json("attestation/url/info", payloadMap, null, GetAttestationUrlResponse.class);
+    }
+
 
     public CreateAttestationResponse fixedEvidence(CreateAttestationPayload payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload, null);
@@ -584,6 +604,39 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildCreateAttestation4UrlPayloadMap(CreateAttestation4UrlPayload payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUniqueId());
+        payloadMap.put("template_id", payload.getTemplateId());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("completed", payload.isCompleted());
+        if (StringUtils.isNotBlank(payload.getOpenStatusKey())) {
+            payloadMap.put("openStatusKey", payload.getOpenStatusKey());
+        }
+        String sha256 = payload.getSha256();
+        if (StringUtils.isNotBlank(sha256)) {
+            payloadMap.put("sha256", sha256);
+        }
+        String url = payload.getUrl();
+        if (StringUtils.isNoneBlank(url)) {
+            payloadMap.put("url", url);
+        }
+        if (StringUtils.isNoneBlank(payload.getLabel()))
+            payloadMap.put("label", payload.getLabel());
+        else
+            payloadMap.put("label", "");
+        if (StringUtils.isNoneBlank(payload.getRemark()))
+            payloadMap.put("remark", payload.getRemark());
+        else
+            payloadMap.put("remark", "");
+        if (StringUtils.isNoneBlank(payload.getWebName()))
+            payloadMap.put("webName", payload.getWebName());
+        else
+            payloadMap.put("webName", "");
+        payloadMap.put("attachments", buildChecksum(payload, null));
+        return payloadMap;
+    }
 
     private Map<String, Object> buildKycEnterprisePayloadMap(KycEnterprisePayload payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
