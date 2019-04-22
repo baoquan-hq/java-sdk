@@ -35,10 +35,10 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://127.0.0.1:8080");
+//        client.setHost("http://127.0.0.1:8080");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.249:8081");
-//        client.setHost("https://baoquan.com");
+        client.setHost("https://baoquan.com");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
         client.setVersion("v2");
@@ -290,15 +290,15 @@ public class BaoquanClientTest {
         CreateAttestationPayload payload = new CreateAttestationPayload();
         payload.setTemplateId("urhMM9enzejADKvY4yow7c");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-        identities.put(IdentityType.ID, "42012319800127691X");
-        identities.put(IdentityType.MO, "15857112383");
+        identities.put(IdentityType.ID, "42012319344127691X");
+        identities.put(IdentityType.MO, "158571383");
         payload.setUniqueId(randomUniqueId());
         payload.setIdentities(identities);
         List<Factoid> factoids = new ArrayList<Factoid>();
         Factoid factoid = new Factoid();
         User user = new User();
         user.setName("张三");
-        user.setPhone_number("13234568732");
+        user.setPhone_number("132345732");
         user.setRegistered_at("1466674609");
         user.setUsername("tom");
         factoid.setUnique_id(randomUniqueId());
@@ -1702,7 +1702,7 @@ public class BaoquanClientTest {
         payload.setFactoids(factoids);
 
         payload.setUrl("http://www.simplechain.com/");
-        payload.setLabel("http://www.qq.com/");
+        payload.setLabel("aa");
         payload.setRemark("ceshi");
         payload.setWebName("ceshi");
 
@@ -1767,7 +1767,7 @@ public class BaoquanClientTest {
 
     @Test
     public void getAttestationUrl() throws ServerException {
-        GetAttestationUrlResponse response = client.getAttestationWithUrl("0DD0D5FDCB754B028D514C5F5B7CB183");
+        GetAttestationUrlResponse response = client.getAttestationWithUrl("E4276C1F61084FCA9AE1CB714526ACC9");
         System.out.print(response.getData().getStatus());
     }
 

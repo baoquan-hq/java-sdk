@@ -33,7 +33,15 @@ public class CreateAttestationPayload extends AttestationPayload{
    * the key of identities is one of {@link IdentityType}
    */
   private Map<IdentityType, String> identities;
+  private String fileLabel;
 
+  public String getFileLabel() {
+    return fileLabel;
+  }
+
+  public void setFileLabel(String fileLabel) {
+    this.fileLabel = fileLabel;
+  }
   public String getUniqueId() {
     return uniqueId;
   }
