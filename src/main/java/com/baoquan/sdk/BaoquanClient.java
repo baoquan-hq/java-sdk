@@ -779,8 +779,11 @@ public class BaoquanClient {
         } catch (IOException e) {
             throw new ClientException(e);
         }
-        System.out.println(response);
+//        System.out.println(response);
         T responseObject;
+        if(responseClass ==null){
+            return (T) response;
+        }
         try {
             responseObject = Utils.jsonToObject(response, responseClass);
         } catch (IOException e) {
@@ -806,6 +809,9 @@ public class BaoquanClient {
         }
         System.out.println(response);
         T responseObject;
+        if(responseClass ==null){
+            return (T) response;
+        }
         try {
             responseObject = Utils.jsonToObject(response, responseClass);
         } catch (IOException e) {

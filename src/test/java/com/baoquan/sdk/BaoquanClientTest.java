@@ -1345,7 +1345,7 @@ public class BaoquanClientTest {
     @Test
     public void signatureList() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-        client.signatureList(payload);
+        System.out.println(client.signatureList(payload));
         //  Assert.assertNotNull(response);
     }
 
@@ -1785,7 +1785,6 @@ public class BaoquanClientTest {
         OriginalArticleResponse response = client.createOriginalArticle(payload);
         System.out.print(response.getOriginalId());
     }
-
 
 
     //获取小说章节
