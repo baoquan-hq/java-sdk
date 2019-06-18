@@ -199,6 +199,13 @@ public class BaoquanClient {
     }
 
 
+    public ResultResponse deleteSignatureDefaultId(SignaturePayload payload) throws ServerException {
+        Map<String, Object> payloadMap = buildSetSignatureDefaultIdPayloadMap(payload);
+//        Map<String, List<ByteArrayBody>> streamBodyMap = buildStreamBodyMap(attachments);
+        return json("contract/signature/delete/default", payloadMap, null, ResultResponse.class);
+    }
+
+
 //    /**
 //     * create attestation with attachments, one factoid can have more than one attachments
 //     *
@@ -533,8 +540,9 @@ public class BaoquanClient {
 
     private Map<String, Object> buildSetSignatureDefaultIdPayloadMap(SignaturePayload payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
-
         payloadMap.put("signature_id", payload.getSignature_id());
+        payloadMap.put("phone", payload.getPhone());
+        payloadMap.put("type", payload.getType());
         return payloadMap;
     }
 

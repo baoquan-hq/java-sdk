@@ -35,10 +35,10 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://127.0.0.1:8080");
+        client.setHost("http://127.0.0.1:8080");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.249:8081");
-        client.setHost("https://baoquan.com");
+//        client.setHost("https://baoquan.com");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
         client.setVersion("v2");
@@ -995,7 +995,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testUserKyc() throws ServerException {
-        UserKycResponse response = client.userKyc("13661602876", "赵智豪", "310114199403023619");
+        UserKycResponse response = client.userKyc("13661232876", "赵智豪", "522327199311090025");
 //        UserKycResponse response = client.userKyc("18355555213", "用户一", "210682199505041375");
         String userId = response.getData().getUserId();
 
@@ -1258,8 +1258,21 @@ public class BaoquanClientTest {
     @Test
     public void SetSignatureDefaultId() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-        payload.setSignature_id("cey4FBLpqbsUNaLp3SENdp");
+        payload.setSignature_id("8eRaaxNgTLCaj1JUjQKt1k");
+        payload.setPhone("13145205611");
+        payload.setType("personal");
         client.setSignatureDefaultId(payload);
+        //  Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void deleteSignatureDefaultId() throws ServerException, IOException {
+        SignaturePayload payload = new SignaturePayload();
+        payload.setSignature_id("8eRaaxNgTLCaj1JUjQKt1k");
+        payload.setPhone("13145205611");
+        payload.setType("personal");
+        ResultResponse r= client.deleteSignatureDefaultId(payload);
+        System.out.println(r.getResult());
         //  Assert.assertNotNull(response);
     }
 
@@ -1301,7 +1314,7 @@ public class BaoquanClientTest {
     @Test
     public void deleteSignature() throws ServerException, IOException {
         SignaturePayload payload = new SignaturePayload();
-        payload.setSignature_id("nePd7d55vb9q9AJLmacVgt");
+        payload.setSignature_id("8eRaaxNgTLCaj1JUjQKt1k");
         client.deleteSignature(payload);
         //  Assert.assertNotNull(response);
     }
@@ -1521,7 +1534,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCodeV2() throws ServerException {
-        client.sendVerifyCode("gXNcu5aCdeSieyMWS97dpJ", "13145205611", "personal");
+        client.sendVerifyCode("wJguuKHCDpdUqwj3MiiNZa", "13661232876", "personal");
     }
 
     @Test
@@ -1537,7 +1550,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("gXNcu5aCdeSieyMWS97dpJ", "13145205611", "2722", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, true, "thFSEEPTWXerPt9BrGQTdQ", "personal");
+        client.signContract("wJguuKHCDpdUqwj3MiiNZa", "13661232876", "1096", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, false, "", "personal");
     }
 
     private String randomUniqueId() {
