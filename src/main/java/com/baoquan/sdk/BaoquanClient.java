@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class BaoquanClient {
 
     private String host = "https://baoquan.com";
-    //private String host = "http://127.0.0.1:8088";
+//    private String host = "http://127.0.0.1:8088";
 
     private String version = "v1";
 
@@ -597,7 +597,7 @@ public class BaoquanClient {
         payloadMap.put("identities", payload.getIdentities());
         payloadMap.put("factoids", payload.getFactoids());
         payloadMap.put("completed", payload.isCompleted());
-        payloadMap.put("file_label", payload.getFileLabel());
+//        payloadMap.put("file_label", payload.getFileLabel());
         if (StringUtils.isNotBlank(payload.getOpenStatusKey())) {
             payloadMap.put("openStatusKey", payload.getOpenStatusKey());
         }
