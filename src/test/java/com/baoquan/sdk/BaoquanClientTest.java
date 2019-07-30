@@ -288,7 +288,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestation11() throws ServerException, IOException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("urhMM9enzejADKvY4yow7c");
+        payload.setTemplateId("eaDLwFVggucg18crzPLGxo");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319344127691X");
         identities.put(IdentityType.MO, "158571383");
@@ -356,7 +356,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestationWithSha256() throws ServerException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("urhMM9enzejADKvY4yow7c");
+        payload.setTemplateId("q5FdBV1tCk5ZcopTZcx3M5");
         payload.setUniqueId(randomUniqueId());
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.MO, "15857112383");
@@ -367,8 +367,8 @@ public class BaoquanClientTest {
         factoid.setType("file");
         Map<String, String> map = new HashMap<String, String>();
         factoid.setData(map);
-        map.put("owner_name", "李三");
-        map.put("owner_id", "330124199501017791");
+        map.put("file_name", "李三");
+        map.put("size", "330124199501017791");
         factoids.add(factoid);
         payload.setFactoids(factoids);
         CreateAttestationResponse response = client.createAttestationWithSha256(payload, "654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
@@ -1384,7 +1384,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendAuthorizationVerifyCode() throws ServerException {
-        client.sendAuthorizationVerifyCode("15811111111", "persoanl");
+        client.sendAuthorizationVerifyCode("13145205611", "personal");
 
     }
 
@@ -1534,7 +1534,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testSendVerifyCodeV2() throws ServerException {
-        client.sendVerifyCode("wJguuKHCDpdUqwj3MiiNZa", "13661232876", "personal");
+        client.sendVerifyCode("cZp29YZinWwv7B3ir3j32v", "13145205611", "enterprise");
     }
 
     @Test
@@ -1550,7 +1550,7 @@ public class BaoquanClientTest {
         list.add(payloadFactoid);
         identitiesMap.put("MO", "15611111111");
         identitiesMap.put("ID", "430426198401361452");
-        client.signContract("wJguuKHCDpdUqwj3MiiNZa", "13661232876", "1096", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, false, "", "personal");
+        client.signContract("cZp29YZinWwv7B3ir3j32v", "13145205611", "5818", "DONE", "4", "200", "550", "4QmPxWihZEgqvgBGJg86TH", identitiesMap, list, false, "vNnTJRALUhfhKbuPGJCzJ6", "enterprise");
     }
 
     private String randomUniqueId() {
@@ -1780,7 +1780,7 @@ public class BaoquanClientTest {
 
     @Test
     public void getAttestationUrl() throws ServerException {
-        GetAttestationUrlResponse response = client.getAttestationWithUrl("E4276C1F61084FCA9AE1CB714526ACC9");
+        GetAttestationUrlResponse response = client.getAttestationWithUrl("EE5E6274F0734A2EB8C1D88EB8C813DE");
         System.out.print(response.getData().getStatus());
     }
 
