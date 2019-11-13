@@ -1,7 +1,9 @@
 package com.baoquan.sdk.pojos.response;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Map;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ContractDetailResponse {
     private Map<String, Object> detail;
 

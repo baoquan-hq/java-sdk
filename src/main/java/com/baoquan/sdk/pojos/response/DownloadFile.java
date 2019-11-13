@@ -1,10 +1,14 @@
 package com.baoquan.sdk.pojos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.InputStream;
 
 /**
  * Created by sbwdlihao on 7/1/16.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DownloadFile {
   private String fileName;
   private InputStream file;

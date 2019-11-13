@@ -1,8 +1,11 @@
 package com.baoquan.sdk.pojos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by sbwdlihao on 6/18/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExceptionResponse extends BaseResponse {
 
   /**

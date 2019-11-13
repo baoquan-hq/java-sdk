@@ -1,12 +1,14 @@
 package com.baoquan.sdk.pojos.response;
 
 import com.baoquan.sdk.pojos.response.data.CreateAttestationData;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Map;
 
 /**
  * Created by sbwdlihao on 6/17/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class kycEnterpriseResponse  {
 
   private Map<String, Object> kycEnterprise  ;

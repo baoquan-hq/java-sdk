@@ -35,10 +35,11 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://127.0.0.1:8080");
+//        client.setHost("http://127.0.0.1:9090");
+        client.setHost("http://192.168.3.98");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.249:8081");
-//        client.setHost("https://baoquan.com");
+//        client.setHost("https://www.baoquan.com");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
         client.setVersion("v2");
@@ -356,10 +357,10 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestationWithSha256() throws ServerException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("q5FdBV1tCk5ZcopTZcx3M5");
+        payload.setTemplateId("4g8kLrgrr8AGTXKqUzW1rc");
         payload.setUniqueId(randomUniqueId());
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-        identities.put(IdentityType.MO, "15857112383");
+        identities.put(IdentityType.ID, "15857112383");
         payload.setIdentities(identities);
         List<Factoid> factoids = new ArrayList<Factoid>();
         Factoid factoid = new Factoid();
@@ -372,7 +373,8 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
         CreateAttestationResponse response = client.createAttestationWithSha256(payload, "654c71176b207401445fdd471f5e023f65af50d7361bf828e5b1c19c89b977b0");
-        Assert.assertNotNull(response.getData().getNo());
+       System.out.println(response.getData().getNo());
+//        Assert.assertNotNull(response.getData().getNo());
     }
 
 
@@ -1694,8 +1696,8 @@ public class BaoquanClientTest {
         // 设置保全所有者的身份标识，标识类型定义在IdentityType中
 
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
-        identities.put(IdentityType.ID, "429006198507104214");
-        identities.put(IdentityType.MO, "18767106890");
+        identities.put(IdentityType.ID, "4290067104214");
+        identities.put(IdentityType.MO, "18767100");
         payload.setIdentities(identities);
 
 
@@ -1707,14 +1709,16 @@ public class BaoquanClientTest {
         payload.setUrl(url);
         Map<String, String> loanDataMap = new HashMap<String, String>();
         qqxxFactoid.setData(loanDataMap);
-        loanDataMap.put("url", url);
+        loanDataMap.put("web_address", url);
+        loanDataMap.put("web_name", "ceshi");
+        loanDataMap.put("remark", "url");
         qqxxFactoid.setUnique_id(randomUniqueId());
         qqxxFactoid.setType("website");
         qqxxFactoid.setData(loanDataMap);
         factoids.add(qqxxFactoid);
         payload.setFactoids(factoids);
 
-        payload.setUrl("http://www.simplechain.com/");
+        payload.setUrl("http://www.baidu.com");
         payload.setLabel("aa");
         payload.setRemark("ceshi");
         payload.setWebName("ceshi");
@@ -1780,7 +1784,7 @@ public class BaoquanClientTest {
 
     @Test
     public void getAttestationUrl() throws ServerException {
-        GetAttestationUrlResponse response = client.getAttestationWithUrl("EE5E6274F0734A2EB8C1D88EB8C813DE");
+        GetAttestationUrlResponse response = client.getAttestationWithUrl("7F0CB6FC656E453DB5A23A0E0F93ED40");
         System.out.print(response.getData().getStatus());
     }
 
