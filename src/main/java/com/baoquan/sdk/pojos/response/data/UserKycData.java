@@ -1,8 +1,11 @@
 package com.baoquan.sdk.pojos.response.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by CHENLIUFANG on 2017/4/18.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserKycData {
 
   private String userId;

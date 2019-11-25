@@ -2,7 +2,9 @@ package com.baoquan.sdk.pojos.response.data;
 
 
 import com.baoquan.sdk.pojos.response.CreateAttestationResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetAttestationUrlData {
   private String status;
   private String message;

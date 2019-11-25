@@ -37,10 +37,10 @@ import java.util.regex.Pattern;
  */
 public class BaoquanClient {
 
-    private String host = "https://baoquan.com";
+    private String host = "https://api.baoquan.com";
 //    private String host = "http://127.0.0.1:8088";
 
-    private String version = "v1";
+    private String version = "v2";
 
     private String accessKey;
 

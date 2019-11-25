@@ -1,10 +1,13 @@
 package com.baoquan.sdk.pojos.response.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by sbwdlihao on 6/17/16.
  *
  * data of add factoid response
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddFactoidsData {
 
   /**

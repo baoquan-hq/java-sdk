@@ -1,6 +1,7 @@
 package com.baoquan.sdk.pojos.response.data;
 
 import com.baoquan.sdk.pojos.payload.Factoid;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 /**
  * Created by sbwdlihao on 6/30/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetAttestationData {
 
   private String no;
@@ -18,6 +20,9 @@ public class GetAttestationData {
   private Map<String, List<String>> attachments;
   private String blockchain_hash;
   private String unique_id;
+  private String sha256_hash;
+  private String sm3_hash;
+  private String number;
 
   public String getNo() {
     return no;
@@ -81,5 +86,29 @@ public class GetAttestationData {
 
   public void setUnique_id(String unique_id) {
     this.unique_id = unique_id;
+  }
+
+  public String getSha256_hash() {
+    return sha256_hash;
+  }
+
+  public void setSha256_hash(String sha256_hash) {
+    this.sha256_hash = sha256_hash;
+  }
+
+  public String getSm3_hash() {
+    return sm3_hash;
+  }
+
+  public void setSm3_hash(String sm3_hash) {
+    this.sm3_hash = sm3_hash;
+  }
+
+  public String getNumber() {
+    return number;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
   }
 }

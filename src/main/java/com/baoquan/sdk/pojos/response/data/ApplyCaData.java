@@ -1,8 +1,11 @@
 package com.baoquan.sdk.pojos.response.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by sbwdlihao on 6/17/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplyCaData {
 
   /**
