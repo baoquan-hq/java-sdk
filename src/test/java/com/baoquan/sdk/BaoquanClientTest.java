@@ -35,11 +35,12 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-//        client.setHost("http://127.0.0.1:9090");
-        client.setHost("http://192.168.3.98");
+//        client.setHost("http://127.0.0.1:8080");
+//        client.setHost("http://192.168.3.98");
 //        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setHost("http://192.168.3.249:8081");
-//        client.setHost("https://www.baoquan.com");
+//        client.setHost("https://api.baoquan.com");
+        client.setHost("https://www.baoquan.com");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
 //        client.setAccessKey("t2GuZhKatpYJuCu4o6b7GZ");
         client.setVersion("v2");
@@ -289,7 +290,7 @@ public class BaoquanClientTest {
     @Test
     public void testCreateAttestation11() throws ServerException, IOException {
         CreateAttestationPayload payload = new CreateAttestationPayload();
-        payload.setTemplateId("eaDLwFVggucg18crzPLGxo");
+        payload.setTemplateId("eaDLwFVggucg18crzGxo");
         Map<IdentityType, String> identities = new HashMap<IdentityType, String>();
         identities.put(IdentityType.ID, "42012319344127691X");
         identities.put(IdentityType.MO, "158571383");
@@ -943,18 +944,18 @@ public class BaoquanClientTest {
 
     @Test
     public void testGetAttestation1() throws ServerException {
-        GetAttestationResponse response = client.getAttestation("0E9A26E72C51453BB8F8A0C4FEE9BE3F", null);
+        GetAttestationResponse response = client.getAttestation("720E83CA978448D8B3A04C303489DCCE", null);
         Assert.assertNotNull(response.getRequest_id());
         Assert.assertNotNull(response.getData());
-        Assert.assertEquals("0E9A26E72C51453BB8F8A0C4FEE9BE3F", response.getData().getNo());
+        Assert.assertEquals("720E83CA978448D8B3A04C303489DCCE", response.getData().getNo());
     }
 
     @Test
     public void testGetAttestation2() throws ServerException {
-        GetAttestationResponse response = client.getAttestation("0E9A26E72C51453BB8F8A0C4FEE9BE3F", new ArrayList<String>());
+        GetAttestationResponse response = client.getAttestation("720E83CA978448D8B3A04C303489DCCE", new ArrayList<String>());
         Assert.assertNotNull(response.getRequest_id());
         Assert.assertNotNull(response.getData());
-        Assert.assertEquals("0E9A26E72C51453BB8F8A0C4FEE9BE3F", response.getData().getNo());
+        Assert.assertEquals("720E83CA978448D8B3A04C303489DCCE", response.getData().getNo());
         Assert.assertNull(response.getData().getIdentities());
         Assert.assertNull(response.getData().getFactoids());
         Assert.assertNull(response.getData().getAttachments());
@@ -1009,7 +1010,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testAttestationUrl() throws ServerException {
-        String accessUrl = client.attestationAccessUrl("946FB17529B244D78E28D3E90F33037B");
+        String accessUrl = client.attestationAccessUrl("AC030B2ED3284B7DB6F8AB7B183042C3");
         System.out.println(accessUrl);
     }
 
@@ -1057,7 +1058,9 @@ public class BaoquanClientTest {
 
     @Test
     public void testListSignature() throws ServerException {
-        ListSignatureResponse list = client.listSignature();
+        Map list = client.listSignature();
+        System.out.println(list.keySet());
+
     }
 
 

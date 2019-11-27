@@ -367,9 +367,9 @@ public class BaoquanClient {
      * @return {@link GetAttestationResponse}
      * @throws ServerException {@link ServerException}
      */
-    public ListSignatureResponse listSignature() throws ServerException {
+    public Map listSignature() throws ServerException {
         Map<String, Object> payload = new HashMap<String, Object>();
-        return json("contract/signature/list", payload, null, ListSignatureResponse.class);
+        return json("contract/signature/list", payload, null, Map.class);
     }
 
     /**
