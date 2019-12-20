@@ -2,10 +2,6 @@ package com.baoquan.jsdk.comm;
 
 
 import com.baoquan.jsdk.Enum.IdentityTypeEnum;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,9 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class BaseAttestationPayloadParam implements Serializable {
     @NotNull(message = "factoids不能为空")
     @Size(min = 1)
@@ -31,4 +25,36 @@ public class BaseAttestationPayloadParam implements Serializable {
     @NotNull(message = "identities不能为空")
     @Size(min = 1)
     private Map<IdentityTypeEnum, String> identities;
+
+    public List<PayloadFactoidParam> getFactoids() {
+        return factoids;
+    }
+
+    public void setFactoids(List<PayloadFactoidParam> factoids) {
+        this.factoids = factoids;
+    }
+
+    public String getUnique_id() {
+        return unique_id;
+    }
+
+    public void setUnique_id(String unique_id) {
+        this.unique_id = unique_id;
+    }
+
+    public String getTemplate_id() {
+        return template_id;
+    }
+
+    public void setTemplate_id(String template_id) {
+        this.template_id = template_id;
+    }
+
+    public Map<IdentityTypeEnum, String> getIdentities() {
+        return identities;
+    }
+
+    public void setIdentities(Map<IdentityTypeEnum, String> identities) {
+        this.identities = identities;
+    }
 }

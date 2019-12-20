@@ -81,7 +81,7 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
 
-        payload.setSha256("654c71176b207401445fdd471f5e021f65af50d7361bf828e5b1c19c89b977b0");
+        payload.setSha256("654c71176b207401445fdd471f5e021f65af50d7361bf828e5b1219c89b977b0");
         ResultModel response = null;
         try {
             response = client.createAttestationWithSha256(payload);

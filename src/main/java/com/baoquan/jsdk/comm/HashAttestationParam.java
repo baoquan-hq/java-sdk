@@ -1,17 +1,16 @@
 package com.baoquan.jsdk.comm;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class HashAttestationParam extends BaseAttestationPayloadParam {
     @NotBlank(message = "sha256不能为空")
     private String sha256;
+
+    public String getSha256() {
+        return sha256;
+    }
+
+    public void setSha256(String sha256) {
+        this.sha256 = sha256;
+    }
 }
