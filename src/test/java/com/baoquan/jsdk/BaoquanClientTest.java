@@ -21,7 +21,7 @@ public class BaoquanClientTest {
     public void initClient() {
         client = new BaoquanClient();
         client.setHost("http://127.0.0.1:9090");
-        client.setAccessKey("ceshikey");
+        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
         client.setVersion("v3");
         try {
             client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");

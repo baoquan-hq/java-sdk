@@ -1,11 +1,8 @@
 package com.baoquan.jsdk.beans;
 
-import com.baoquan.jsdk.comm.OldResultModel;
-import lombok.Builder;
-import lombok.Data;
 
 
-public class OldAttestationResult extends OldResultModel {
+public class OldAttestationResult   {
     private BaseResultData data;
     private String request_id;
 

@@ -135,12 +135,12 @@ public class BaoquanClient {
 
     public ResultModel createAttestationWithUrlConfirm(UrlAttestationStep2Param payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
-        return json("api/v3/attestations/url/confirm", payloadMap, null, ResultModel.class);
+        return json("attestations/url/confirm", payloadMap, null, ResultModel.class);
     }
 
     public ResultModel downloadImgWithUrlAttestation(UrlAttestationStep2Param payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
-        return json("api/v3/attestations/url/img", payloadMap, null, ResultModel.class);
+        return json("attestations/url/img", payloadMap, null, ResultModel.class);
     }
 
 

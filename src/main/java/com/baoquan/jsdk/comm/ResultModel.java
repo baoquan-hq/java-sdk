@@ -1,10 +1,6 @@
 package com.baoquan.jsdk.comm;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -25,7 +21,7 @@ public class ResultModel<T> implements Serializable {
     private String errorMessage;
 
     private String statusCode;
-
+    ResultModel(){}
     public ResultModel(boolean flag) {
         this.flag = flag;
     }
@@ -37,6 +33,13 @@ public class ResultModel<T> implements Serializable {
 
     public ResultModel(boolean flag, String errorCode, String errorMessage) {
         this.flag = flag;
+        this.errorMessage = errorMessage;
+        this.statusCode = errorCode;
+    }
+
+    public ResultModel(boolean flag, T data, String errorCode, String errorMessage) {
+        this.flag = flag;
+        this.data = data;
         this.errorMessage = errorMessage;
         this.statusCode = errorCode;
     }
