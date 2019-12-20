@@ -5,4 +5,5 @@ java-sdk.iml
 gradle.properties
 secring.gpg
 out/
+gradle
 
