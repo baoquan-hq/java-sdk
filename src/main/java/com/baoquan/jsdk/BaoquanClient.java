@@ -1,9 +1,6 @@
 package com.baoquan.jsdk;
 
-import com.baoquan.jsdk.comm.BaseAttestationPayloadParam;
-import com.baoquan.jsdk.comm.DownloadAttestationInfo;
-import com.baoquan.jsdk.comm.HashAttestationParam;
-import com.baoquan.jsdk.comm.ResultModel;
+import com.baoquan.jsdk.comm.*;
 import com.baoquan.jsdk.exceptions.ClientException;
 import com.baoquan.jsdk.exceptions.ServerException;
 import com.baoquan.jsdk.utils.Utils;
@@ -28,8 +25,7 @@ import java.util.*;
 
 public class BaoquanClient {
 
-    private String host = "https://baoquan.com";
-//    private String host = "http://127.0.0.1:8088";
+    private String host = "https://api.baoquan.com";
 
     private String version = "v3";
 
@@ -137,6 +133,41 @@ public class BaoquanClient {
         return json("attestations/download", payloadMap, null, DownloadAttestationInfo.class);
     }
 
+    public ResultModel createAttestationWithUrlConfirm(UrlAttestationStep2Param payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
+        return json("api/v3/attestations/url/confirm", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel downloadImgWithUrlAttestation(UrlAttestationStep2Param payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
+        return json("api/v3/attestations/url/img", payloadMap, null, ResultModel.class);
+    }
+
+
+    public ResultModel createAsyAttestationWithUrl(UrlAttestationParam payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestation4UrlPayloadMap(payload);
+        return json("attestations/url", payloadMap, null, ResultModel.class);
+    }
+
+    private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUnique_id());
+        payloadMap.put("template_id", payload.getTemplate_id());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("no", payload.getNo());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateAttestation4UrlPayloadMap(UrlAttestationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUnique_id());
+        payloadMap.put("template_id", payload.getTemplate_id());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("url", payload.getUrl());
+        payloadMap.put("mode", payload.getMode());
+        return payloadMap;
+    }
 
     private Map<String, Object> buildCreateAttestationPayloadMap(BaseAttestationPayloadParam payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
@@ -195,11 +226,6 @@ public class BaoquanClient {
         streamBodyMap.put("attachment", attachment);
         return streamBodyMap;
     }
-
-//    public static void main(String[] args) {
-//        String s = "https://www.baidu.com/s?ie=UTF-8&wd=java%20string%E9%95%BF%E5%BA%A6https://www.baidu.com/s?ie=UTF-8&wd=java%20string%E9%95%BF%E5%BA%A6" +
-//                "";
-//    }
 
     private <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
@@ -262,7 +288,7 @@ public class BaoquanClient {
                 .addTextBody("payload", payloadString, ContentType.APPLICATION_JSON) // avoid chinese garbled
                 .addTextBody("signature", signature);
         if (streamBodyMap != null) {
-            for (String name :streamBodyMap.keySet()) {
+            for (String name : streamBodyMap.keySet()) {
                 multipartEntityBuilder.addPart(name, streamBodyMap.get(name));
             }
         }

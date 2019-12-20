@@ -15,10 +15,7 @@ import java.io.Serializable;
  * Author: la
  * Date: 2019/9/17 11:23
  **/
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResultModel<T> implements Serializable {
     private boolean flag = false;
@@ -42,5 +39,37 @@ public class ResultModel<T> implements Serializable {
         this.flag = flag;
         this.errorMessage = errorMessage;
         this.statusCode = errorCode;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
     }
 }
