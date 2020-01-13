@@ -149,6 +149,23 @@ public class BaoquanClient {
         return json("attestations/url", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel createProcessToken(BaseAttestationPayloadParam payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload);
+        return json("process/token", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel getProcessInfo(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("process/info", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel stopProcess(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("process/stop", payloadMap, null, ResultModel.class);
+    }
+
     private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("unique_id", payload.getUnique_id());

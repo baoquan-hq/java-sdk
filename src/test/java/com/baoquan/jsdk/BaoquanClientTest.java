@@ -3,6 +3,8 @@ package com.baoquan.jsdk;
 import com.baoquan.jsdk.Enum.IdentityTypeEnum;
 import com.baoquan.jsdk.comm.*;
 import com.baoquan.jsdk.exceptions.ServerException;
+import com.baoquan.jsdk.utils.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -20,12 +22,12 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
-        client.setHost("http://127.0.0.1:9090");
+        client.setHost("http://192.168.3.98:9090");
         client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
         client.setVersion("v3");
         try {
-            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
-//            client.setPemPath("E:\\dataqin\\jsdk\\src\\main\\resources\\key.pem");
+//            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
+            client.setPemPath("E:\\dataqin\\jsdk\\src\\main\\resources\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -187,6 +189,7 @@ public class BaoquanClientTest {
         ResultModel response = client.downloadImgWithUrlAttestation(payload);
         Assert.assertNotNull(response.getData());
     }
+
     @Test
     public void testdownloadFile() {
         DownloadAttestationInfo response = null;
@@ -197,6 +200,73 @@ public class BaoquanClientTest {
         }
         Assert.assertNotNull(response.getNo());
     }
+
+
+    @Test
+    public void testcreateProcessToken() {
+        HashAttestationParam payload = new HashAttestationParam();
+        payload.setTemplate_id("mqAkuZQwNZbpbrmVTob6Ss");
+        payload.setUnique_id(randomUniqueId());
+        Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
+        identities.put(IdentityTypeEnum.ID, "15817112383");
+        payload.setIdentities(identities);
+        List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
+        PayloadFactoidParam factoid = new PayloadFactoidParam();
+        factoid.setUnique_id(randomUniqueId());
+        factoid.setType("file");
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        factoid.setData(map);
+        map.put("file_name", "李三");
+        map.put("size", "37791");
+        factoids.add(factoid);
+        payload.setFactoids(factoids);
+
+        ResultModel response = null;
+        try {
+            response = client.createProcessToken(payload);
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(Utils.objectToJson(response));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        Assert.assertNotNull(response.getData());
+    }
+
+
+    @Test
+    public void testgetProcessInfo() {
+        ResultModel response = null;
+        try {
+            response = client.getProcessInfo("420961332418846720");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(Utils.objectToJson(response));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void teststopProcess() {
+        ResultModel response = null;
+        try {
+            response = client.stopProcess("419876824919580673");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(Utils.objectToJson(response));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private String randomUniqueId() {
