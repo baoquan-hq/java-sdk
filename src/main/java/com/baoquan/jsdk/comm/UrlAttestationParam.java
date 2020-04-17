@@ -16,6 +16,12 @@ public class UrlAttestationParam extends BaseAttestationPayloadParam {
     @Min(value = 1)
     private Integer mode = 1;
 
+    private String evidenceName;
+
+    private String evidenceLabel;
+
+    private String callBackUrl;
+
     public String getUrl() {
         return url;
     }
@@ -30,5 +36,29 @@ public class UrlAttestationParam extends BaseAttestationPayloadParam {
 
     public void setMode(Integer mode) {
         this.mode = mode;
+    }
+
+    public String getEvidenceName() {
+        return evidenceName;
+    }
+
+    public void setEvidenceName(String evidenceName) {
+        this.evidenceName = evidenceName;
+    }
+
+    public String getEvidenceLabel() {
+        return evidenceLabel;
+    }
+
+    public void setEvidenceLabel(String evidenceLabel) {
+        this.evidenceLabel = evidenceLabel;
+    }
+
+    public String getCallBackUrl() {
+        return callBackUrl;
+    }
+
+    public void setCallBackUrl(String callBackUrl) {
+        this.callBackUrl = callBackUrl;
     }
 }

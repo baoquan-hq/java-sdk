@@ -4,6 +4,7 @@ import com.baoquan.jsdk.Enum.IdentityTypeEnum;
 import com.baoquan.jsdk.comm.*;
 import com.baoquan.jsdk.exceptions.ServerException;
 import com.baoquan.jsdk.utils.Utils;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
@@ -11,6 +12,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 
 import java.io.*;
 import java.util.*;
@@ -22,12 +24,14 @@ public class BaoquanClientTest {
     @Before
     public void initClient() {
         client = new BaoquanClient();
+//        client.setHost("https://api.baoquan.com");
         client.setHost("http://192.168.3.98:9090");
-        client.setAccessKey("kUCJXfceNuCKWeXTaofWXe");
+//        client.setHost("http://localhost:9090");
+        client.setAccessKey("ceshikey");
         client.setVersion("v3");
         try {
 //            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
-            client.setPemPath("E:\\dataqin\\jsdk\\src\\main\\resources\\key.pem");
+            client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +40,7 @@ public class BaoquanClientTest {
 
     @Test
     public void testCreateAttestation() {
-        HashAttestationParam payload = new HashAttestationParam();
+        BaseAttestationPayloadParam payload = new HashAttestationParam();
         payload.setTemplate_id("ceshiuserdata");
         payload.setUnique_id(randomUniqueId());
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
@@ -48,18 +52,17 @@ public class BaoquanClientTest {
         factoid.setType("file");
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         factoid.setData(map);
-        map.put("file_name", "李三");
+        map.put("file_name", "https://jx.tmall.com/?spm=a219t.7664554.1998457203.159.hWZb4X&ali_trackid=2:mm_122806507_911000261_109921750097:1584691132_121_1943880412");
         map.put("size", "330124199501017791");
         factoids.add(factoid);
         payload.setFactoids(factoids);
-
-        ResultModel response = null;
         try {
-            response = client.createAttestation(payload);
-        } catch (ServerException e) {
+            ResultModel response = client.createAttestation(payload);
+            System.out.println(Utils.objectToJson(response.getData()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertNotNull(response.getData());
+
     }
 
 
@@ -87,17 +90,17 @@ public class BaoquanClientTest {
         ResultModel response = null;
         try {
             response = client.createAttestationWithSha256(payload);
-        } catch (ServerException e) {
+            System.out.println(Utils.objectToJson(response.getData()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertNotNull(response.getData());
     }
 
 
     @Test
     public void testCreateAttestationWithFile() throws IOException {
         BaseAttestationPayloadParam payload = new BaseAttestationPayloadParam();
-        payload.setTemplate_id("11234dfcsafac");
+        payload.setTemplate_id("795eac6a8d88401f8926efdef1a95e33");
         payload.setUnique_id(randomUniqueId());
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
         identities.put(IdentityTypeEnum.ID, "15857112383");
@@ -113,54 +116,52 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
         ResultModel response = null;
-        InputStream inputStream = new FileInputStream("C:\\workspace\\workspace\\work\\jsdk\\src\\main\\java\\com\\baoquan\\jsdk\\RequestIdGenerator.java");
-        ;
-        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "RequestIdGenerator.java");
+        InputStream inputStream = new FileInputStream("D:\\452886513210892289.pdf");
 
+        ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "452886513210892289.pdf");
         try {
             response = client.createAttestationWithFile(payload, byteArrayBody);
+            System.out.println(Utils.objectToJson(response.getData()));
         } catch (ServerException e) {
             e.printStackTrace();
         }
-        Assert.assertNotNull(response.getData());
     }
 
 
     @Test
-    public void createAttestationWithUrl() throws ServerException, InterruptedException {
-        String url = "http://www.qq.com/";
+    public void createAttestationWithUrl() throws ServerException {
+
         UrlAttestationParam payload = new UrlAttestationParam();
         // 设置保全唯一码
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
-        payload.setTemplate_id("4g8kLrgrr8AGTXKqUzW1rc");
+        payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
         identities.put(IdentityTypeEnum.ID, "429006198507104214");
         payload.setIdentities(identities);
-
         List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
         PayloadFactoidParam factoid = new PayloadFactoidParam();
-
         LinkedHashMap<String, String> loanDataMap = new LinkedHashMap<String, String>();
-
-        loanDataMap.put("web_address", url);
-        loanDataMap.put("web_name", "web_name");
+        loanDataMap.put("web_address", "https://jx.tmall.com/?spm=a219t.7664554.1998457203.159.hWZb4X&ali_trackid=2:mm_122806507_911000261_109921750097:1584691132_121_1943880412");
+//        loanDataMap.put("web_address", "https://detail.tmall.com/item.htm?spm=a230r.1.14.1.57e28c97rRfHZK&id=568546227960&ns=1&abbucket=2");
+        loanDataMap.put("name", "ceshi");
         factoid.setData(loanDataMap);
         factoid.setUnique_id(randomUniqueId());
-        factoid.setType("website");
+        factoid.setType("evidence");
         factoids.add(factoid);
         payload.setFactoids(factoids);
-
-        payload.setUrl("http://www.baoquan.com/");
+//        payload.setUrl("https://www.baidu.com");
+        payload.setUrl("https://www.w3school.com.cn");
         payload.setMode(1);
-
-        ResultModel response = client.createAsyAttestationWithUrl(payload);
-        Assert.assertNotNull(response.getData());
+        payload.setEvidenceName("测试取证");
+        payload.setEvidenceLabel("测试取证");
+        ResultModel response = client.createAttestationWithUrl(payload);
+        System.out.println(response.getData());
     }
 
 
     @Test
-    public void createAttestationWithUrlConfirm() throws ServerException, InterruptedException {
+    public void createAttestationWithUrlConfirm() throws ServerException {
         UrlAttestationStep2Param payload = new UrlAttestationStep2Param();
         // 设置保全唯一码
         payload.setUnique_id(randomUniqueId());
@@ -174,8 +175,9 @@ public class BaoquanClientTest {
         ResultModel response = client.createAttestationWithUrlConfirm(payload);
         Assert.assertNotNull(response.getData());
     }
+
     @Test
-    public void downloadImgWithUrlAttestation() throws ServerException, InterruptedException {
+    public void downloadImgWithUrlAttestation() throws ServerException {
         UrlAttestationStep2Param payload = new UrlAttestationStep2Param();
         // 设置保全唯一码
         payload.setUnique_id(randomUniqueId());
@@ -192,13 +194,42 @@ public class BaoquanClientTest {
 
     @Test
     public void testdownloadFile() {
-        DownloadAttestationInfo response = null;
         try {
-            response = client.downloadFile("394544545871728641");
-        } catch (ServerException e) {
+            DownloadAttestationInfo response = client.downloadFile("457951312537980929");
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\" + response.getFileName());
+            IOUtils.copy(response.getFileInputStream(), fileOutputStream);
+            fileOutputStream.close();
+//            byteToFile(response.getFileInputStream(),"D:\\test.zip");
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertNotNull(response.getNo());
+    }
+
+    public static void byteToFile(byte[] bytes, String path) {
+        try {
+            // 根据绝对路径初始化文件
+            File localFile = new File(path);
+            if (!localFile.exists()) {
+                localFile.createNewFile();
+            }
+            // 输出流
+            OutputStream os = new FileOutputStream(localFile);
+            os.write(bytes);
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void attestationInfo() {
+
+        try {
+            ResultModel response = client.attestationInfo("457951312537980929");
+            System.out.println(Utils.objectToJson(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -213,7 +244,7 @@ public class BaoquanClientTest {
         List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
         PayloadFactoidParam factoid = new PayloadFactoidParam();
         factoid.setUnique_id(randomUniqueId());
-        factoid.setType("file");
+        factoid.setType("evidence");
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         factoid.setData(map);
         map.put("file_name", "李三");
@@ -240,7 +271,7 @@ public class BaoquanClientTest {
     public void testgetProcessInfo() {
         ResultModel response = null;
         try {
-            response = client.getProcessInfo("420961332418846720");
+            response = client.getProcessInfo("424592300396515329");
         } catch (ServerException e) {
             e.printStackTrace();
         }
@@ -256,7 +287,7 @@ public class BaoquanClientTest {
     public void teststopProcess() {
         ResultModel response = null;
         try {
-            response = client.stopProcess("419876824919580673");
+            response = client.stopProcess("425043414342438912");
         } catch (ServerException e) {
             e.printStackTrace();
         }
@@ -266,7 +297,6 @@ public class BaoquanClientTest {
             e.printStackTrace();
         }
     }
-
 
 
     private String randomUniqueId() {

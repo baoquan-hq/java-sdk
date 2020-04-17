@@ -1,29 +1,15 @@
 package com.baoquan.jsdk.comm;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
+import java.io.InputStream;
 import java.io.Serializable;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DownloadAttestationInfo implements Serializable {
-    private String no;
-
     private String fileName;
-
-    private String chainHash;
-
-    private byte[] fileInputStream;
-
-    public String getNo() {
-        return no;
-    }
-
-    public void setNo(String no) {
-        this.no = no;
-    }
+    private InputStream fileInputStream;
 
     public String getFileName() {
         return fileName;
@@ -33,19 +19,11 @@ public class DownloadAttestationInfo implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getChainHash() {
-        return chainHash;
-    }
-
-    public void setChainHash(String chainHash) {
-        this.chainHash = chainHash;
-    }
-
-    public byte[] getFileInputStream() {
+    public InputStream getFileInputStream() {
         return fileInputStream;
     }
 
-    public void setFileInputStream(byte[] fileInputStream) {
+    public void setFileInputStream(InputStream fileInputStream) {
         this.fileInputStream = fileInputStream;
     }
 }

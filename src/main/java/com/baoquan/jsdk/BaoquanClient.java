@@ -8,11 +8,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MIME;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -21,6 +24,8 @@ import org.bouncycastle.util.io.pem.PemReader;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class BaoquanClient {
@@ -95,7 +100,7 @@ public class BaoquanClient {
      */
     public ResultModel createAttestation(BaseAttestationPayloadParam payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload);
-        return json("attestations", payloadMap, null, ResultModel.class);
+        return json("attestations/text", payloadMap, null, ResultModel.class);
     }
 
     /**
@@ -130,7 +135,13 @@ public class BaoquanClient {
     public DownloadAttestationInfo downloadFile(String ano) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("ano", ano);
-        return json("attestations/download", payloadMap, null, DownloadAttestationInfo.class);
+        return file("attestations/download", payloadMap);
+    }
+
+    public ResultModel attestationInfo(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("attestations", payloadMap, null, ResultModel.class);
     }
 
     public ResultModel createAttestationWithUrlConfirm(UrlAttestationStep2Param payload) throws ServerException {
@@ -144,7 +155,7 @@ public class BaoquanClient {
     }
 
 
-    public ResultModel createAsyAttestationWithUrl(UrlAttestationParam payload) throws ServerException {
+    public ResultModel createAttestationWithUrl(UrlAttestationParam payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlPayloadMap(payload);
         return json("attestations/url", payloadMap, null, ResultModel.class);
     }
@@ -182,6 +193,9 @@ public class BaoquanClient {
         payloadMap.put("identities", payload.getIdentities());
         payloadMap.put("factoids", payload.getFactoids());
         payloadMap.put("url", payload.getUrl());
+        payloadMap.put("callBackUrl", payload.getCallBackUrl());
+        payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
+        payloadMap.put("evidenceName", payload.getEvidenceName());
         payloadMap.put("mode", payload.getMode());
         return payloadMap;
     }
@@ -256,18 +270,51 @@ public class BaoquanClient {
         } catch (IOException e) {
             throw new ClientException(e);
         }
-        T responseObject;
-        if (responseClass == null) {
-            return (T) response;
+        if (statusCode == HttpStatus.SC_OK) {
+            T responseObject;
+            if (responseClass == null) {
+                return (T) response;
+            }
+            try {
+                responseObject = Utils.jsonToObject(response, responseClass);
+            } catch (IOException e) {
+                throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
+            }
+            return responseObject;
+        } else {
+            throw new ServerException(requestId, response, System.currentTimeMillis());
         }
-        try {
-            responseObject = Utils.jsonToObject(response, responseClass);
-        } catch (IOException e) {
-            throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
-        }
-        return responseObject;
+
     }
 
+    private DownloadAttestationInfo file(String apiName, Map<String, Object> payload) throws ServerException {
+        String requestId = requestIdGenerator.createRequestId();
+        CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, null);
+        int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+        HttpEntity httpEntity = closeableHttpResponse.getEntity();
+        if (statusCode != HttpStatus.SC_OK) {
+            String response;
+            try {
+                response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+            } catch (Exception e) {
+                throw new ClientException(e);
+            }
+            throw new ServerException(requestId, response, System.currentTimeMillis());
+        }
+        DownloadAttestationInfo downloadFile = new DownloadAttestationInfo();
+        Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
+        Pattern pattern = Pattern.compile(".*filename=\"(.*)\".*");
+        Matcher matcher = pattern.matcher(header.getValue());
+        if (matcher.matches()) {
+            downloadFile.setFileName(matcher.group(1));
+        }
+        try {
+            downloadFile.setFileInputStream(httpEntity.getContent());
+        } catch (IOException e) {
+            throw new ServerException(requestId, e.getMessage(), System.currentTimeMillis());
+        }
+        return downloadFile;
+    }
 
     private CloseableHttpResponse post(String requestId, String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap) {
         String path = String.format("/api/%s/%s", version, apiName);
