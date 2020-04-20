@@ -30,8 +30,8 @@ public class BaoquanClientTest {
         client.setAccessKey("ceshikey");
         client.setVersion("v3");
         try {
-//            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
-            client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
+            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
+//            client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,7 +116,7 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
         ResultModel response = null;
-        InputStream inputStream = new FileInputStream("D:\\452886513210892289.pdf");
+        InputStream inputStream = new FileInputStream("C:\\Users\\LA\\Downloads\\mysql-connector-java-5.1.38.jar");
 
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "452886513210892289.pdf");
         try {
@@ -152,7 +152,7 @@ public class BaoquanClientTest {
         payload.setFactoids(factoids);
 //        payload.setUrl("https://www.baidu.com");
         payload.setUrl("https://www.w3school.com.cn");
-        payload.setMode(1);
+        payload.setMode(2);
         payload.setEvidenceName("测试取证");
         payload.setEvidenceLabel("测试取证");
         ResultModel response = client.createAttestationWithUrl(payload);
@@ -168,12 +168,12 @@ public class BaoquanClientTest {
         // 设置模板id
         payload.setTemplate_id("4g8kLrgrr8AGTXKqUzW1rc");
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
-        identities.put(IdentityTypeEnum.ID, "429006198507104214");
+        identities.put(IdentityTypeEnum.ID, "459029550886555648");
         payload.setIdentities(identities);
-        payload.setNo("414384432619753472");
+        payload.setNo("459039218077798400");
 
         ResultModel response = client.createAttestationWithUrlConfirm(payload);
-        Assert.assertNotNull(response.getData());
+        Assert.assertNotNull(response);
     }
 
     @Test
@@ -186,10 +186,10 @@ public class BaoquanClientTest {
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
         identities.put(IdentityTypeEnum.ID, "429006198507104214");
         payload.setIdentities(identities);
-        payload.setNo("414384432619753472");
+        payload.setNo("459040791407366145");
 
         ResultModel response = client.downloadImgWithUrlAttestation(payload);
-        Assert.assertNotNull(response.getData());
+        Assert.assertNotNull(response);
     }
 
     @Test
