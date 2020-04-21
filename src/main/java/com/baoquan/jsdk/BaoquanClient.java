@@ -303,7 +303,7 @@ public class BaoquanClient {
         }
         DownloadAttestationInfo downloadFile = new DownloadAttestationInfo();
         Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
-        Pattern pattern = Pattern.compile(".*filename=\"(.*)\".*");
+        Pattern pattern = Pattern.compile(".*filename=(.*).*");
         Matcher matcher = pattern.matcher(header.getValue());
         if (matcher.matches()) {
             downloadFile.setFileName(matcher.group(1));
