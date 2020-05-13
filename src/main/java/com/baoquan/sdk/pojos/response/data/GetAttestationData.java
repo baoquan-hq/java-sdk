@@ -23,6 +23,8 @@ public class GetAttestationData {
   private String sha256_hash;
   private String sm3_hash;
   private String number;
+  private String hhf_number;
+  private String ghf_number;
 
   public String getNo() {
     return no;
@@ -110,5 +112,21 @@ public class GetAttestationData {
 
   public void setNumber(String number) {
     this.number = number;
+  }
+
+  public String getHhf_number() {
+    return hhf_number;
+  }
+
+  public void setHhf_number(String hhf_number) {
+    this.hhf_number = hhf_number;
+  }
+
+  public String getGhf_number() {
+    return ghf_number;
+  }
+
+  public void setGhf_number(String ghf_number) {
+    this.ghf_number = ghf_number;
   }
 }
