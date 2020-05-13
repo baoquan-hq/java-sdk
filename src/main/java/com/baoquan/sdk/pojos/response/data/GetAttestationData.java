@@ -25,6 +25,7 @@ public class GetAttestationData {
   private String number;
   private String hhf_number;
   private String ghf_number;
+  private String html;
 
   public String getNo() {
     return no;
@@ -128,5 +129,13 @@ public class GetAttestationData {
 
   public void setGhf_number(String ghf_number) {
     this.ghf_number = ghf_number;
+  }
+
+  public String getHtml() {
+    return html;
+  }
+
+  public void setHtml(String html) {
+    this.html = html;
   }
 }
