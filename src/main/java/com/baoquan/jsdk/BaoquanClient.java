@@ -22,6 +22,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.bouncycastle.util.io.pem.PemReader;
 
+import javax.validation.constraints.NotBlank;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -144,6 +145,26 @@ public class BaoquanClient {
         return json("attestations", payloadMap, null, ResultModel.class);
     }
 
+    public String attestationAccessUrl(String ano) throws ServerException {
+        String signature = "";
+        long tonce = System.currentTimeMillis();
+        try {
+            Map map = new TreeMap() {
+                {
+                    put("access_key", accessKey);
+                    put("tonce", tonce);
+                    put("no", ano);
+
+                }
+            };
+            String data = Utils.objectToJson(map);
+            signature = Utils.sign(privateKeyData, data);
+        } catch (Exception e) {
+            throw new ServerException("", "签名失败", System.currentTimeMillis());
+        }
+        return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
+    }
+
     public ResultModel createAttestationWithUrlConfirm(UrlAttestationStep2Param payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
         return json("attestations/url/confirm", payloadMap, null, ResultModel.class);
@@ -177,6 +198,17 @@ public class BaoquanClient {
         return json("process/stop", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel createMusicAttestation(MusicAttestationParam payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateMusicAttestationPayloadMap(payload);
+        return json("attestations/music", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel getMusicAttestationInfo(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("music/info", payloadMap, null, ResultModel.class);
+    }
+
     private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("unique_id", payload.getUnique_id());
@@ -200,6 +232,21 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildCreateMusicAttestationPayloadMap(MusicAttestationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUnique_id());
+        payloadMap.put("template_id", payload.getTemplate_id());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("url", payload.getUrl());
+        payloadMap.put("platform", payload.getPlatform());
+        payloadMap.put("song", payload.getSong());
+        payloadMap.put("singer", payload.getSinger());
+        payloadMap.put("album", payload.getAlbum());
+        return payloadMap;
+    }
+
+
     private Map<String, Object> buildCreateAttestationPayloadMap(BaseAttestationPayloadParam payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("unique_id", payload.getUnique_id());
@@ -207,21 +254,6 @@ public class BaoquanClient {
         payloadMap.put("identities", payload.getIdentities());
         payloadMap.put("factoids", payload.getFactoids());
         return payloadMap;
-    }
-
-    public String attestationAccessUrl(String ano) throws ServerException {
-        String signature = "";
-        long tonce = System.currentTimeMillis();
-        try {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("attestationId", ano);
-            map.put("tonce", tonce);
-            String data = Utils.objectToJson(map);
-            signature = Utils.sign(privateKeyData, data);
-        } catch (Exception e) {
-            throw new ServerException("", "签名失败", System.currentTimeMillis());
-        }
-        return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
     }
 
     private Map<String, List<ByteArrayBody>> buildStreamBodyMap(Map<String, List<ByteArrayBody>> attachments) {
