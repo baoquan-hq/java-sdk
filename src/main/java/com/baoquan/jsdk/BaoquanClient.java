@@ -153,25 +153,25 @@ public class BaoquanClient {
         return json("attestations", payloadMap, null, ResultModel.class);
     }
 
-    public String attestationAccessUrl(String ano) throws ServerException {
-        String signature = "";
-        long tonce = System.currentTimeMillis();
-        try {
-            Map map = new TreeMap() {
-                {
-                    put("access_key", accessKey);
-                    put("tonce", tonce);
-                    put("no", ano);
-
-                }
-            };
-            String data = Utils.objectToJson(map);
-            signature = Utils.sign(privateKeyData, data);
-        } catch (Exception e) {
-            throw new ServerException("", "签名失败", System.currentTimeMillis());
-        }
-        return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
-    }
+//    public String attestationAccessUrl(String ano) throws ServerException {
+//        String signature = "";
+//        long tonce = System.currentTimeMillis();
+//        try {
+//            Map map = new TreeMap() {
+//                {
+//                    put("access_key", accessKey);
+//                    put("tonce", tonce);
+//                    put("no", ano);
+//
+//                }
+//            };
+//            String data = Utils.objectToJson(map);
+//            signature = Utils.sign(privateKeyData, data);
+//        } catch (Exception e) {
+//            throw new ServerException("", "签名失败", System.currentTimeMillis());
+//        }
+//        return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
+//    }
 
     public ResultModel createAttestationWithUrlConfirm(UrlAttestationStep2Param payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
