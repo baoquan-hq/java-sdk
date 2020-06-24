@@ -77,6 +77,7 @@ uploadArchives {
     }
 }
 dependencies {
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.67'
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.64'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.10'
     compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.10'

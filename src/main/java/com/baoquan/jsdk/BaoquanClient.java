@@ -42,6 +42,14 @@ public class BaoquanClient {
 
     private byte[] privateKeyData;
 
+    public byte[] getPrivateKeyData() {
+        return privateKeyData;
+    }
+
+    public void setPrivateKeyData(byte[] privateKeyData) {
+        this.privateKeyData = privateKeyData;
+    }
+
     public String getHost() {
         return host;
     }
@@ -160,7 +168,7 @@ public class BaoquanClient {
         return json("attestations/url", payloadMap, null, ResultModel.class);
     }
 
-    public ResultModel createProcessToken(BaseAttestationPayloadParam payload) throws ServerException {
+    public ResultModel createProcessToken(ProcessAttestationParam payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload);
         return json("process/token", payloadMap, null, ResultModel.class);
     }
@@ -197,6 +205,16 @@ public class BaoquanClient {
         payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
         payloadMap.put("evidenceName", payload.getEvidenceName());
         payloadMap.put("mode", payload.getMode());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateAttestationPayloadMap(ProcessAttestationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUnique_id());
+        payloadMap.put("template_id", payload.getTemplate_id());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("evidenceType", payload.getEvidenceType());
         return payloadMap;
     }
 
