@@ -1,5 +1,5 @@
 group 'com.baoquan'
-version '3.0.3'
+version '3.0.4'
 description 'Api sdk of Baoquan.com'
 
 apply plugin: 'java'
@@ -12,6 +12,7 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
 }
+
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -27,6 +28,10 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs << "-Xlint:unchecked"
+}
 signing {
     sign configurations.archives
 }

@@ -35,8 +35,8 @@ public class BaoquanClientTest {
         client.setAccessKey("ceshikey");
         client.setVersion("v3");
         try {
-            client.setPemPath("C:\\workspace\\workspace\\java-sdk\\src\\main\\resources\\key.pem");
-//            client.setPemPath(ClassLoader.getSystemResource("private_key.pem").getPath());
+//            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
+            client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,7 +134,7 @@ public class BaoquanClientTest {
         factoids.add(factoid);
         payload.setFactoids(factoids);
         ResultModel response = null;
-        InputStream inputStream = new FileInputStream("C:\\Users\\LA\\Downloads\\mysql-connector-java-5.1.38.jar");
+        InputStream inputStream = new FileInputStream("111");
 
         ByteArrayBody byteArrayBody = new ByteArrayBody(IOUtils.toByteArray(inputStream), ContentType.DEFAULT_BINARY, "452886513210892289.pdf");
         try {
@@ -280,7 +280,7 @@ public class BaoquanClientTest {
     @Test
     public void testdownloadFile() {
         try {
-            DownloadAttestationInfo response = client.downloadFile("457951312537980929");
+            DownloadAttestationInfo response = client.downloadFile("477487559933431809");
             FileOutputStream fileOutputStream = new FileOutputStream("D:\\" + response.getFileName());
             IOUtils.copy(response.getFileInputStream(), fileOutputStream);
             fileOutputStream.close();
@@ -310,8 +310,18 @@ public class BaoquanClientTest {
     public void attestationInfo() {
 
         try {
-            ResultModel response = client.attestationInfo("457951312537980929");
+            ResultModel response = client.attestationInfo("477059053135073280");
             System.out.println(Utils.objectToJson(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testAccessUrl() {
+        try {
+            String accessUrl = client.attestationAccessUrl("479243597808406528");
+            System.out.println(Utils.objectToJson(accessUrl));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -357,7 +367,7 @@ public class BaoquanClientTest {
     public void testgetProcessInfo() {
         ResultModel response = null;
         try {
-            response = client.getProcessInfo("424592300396515329");
+            response = client.getProcessInfo("480678247831441408");
         } catch (ServerException e) {
             e.printStackTrace();
         }
@@ -384,6 +394,53 @@ public class BaoquanClientTest {
         }
     }
 
+
+    @Test
+    public void createMusicAttestation() throws ServerException {
+
+        MusicAttestationParam payload = new MusicAttestationParam();
+        // 设置保全唯一码
+        payload.setUnique_id(randomUniqueId());
+        // 设置模板id
+        payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");
+        Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
+        identities.put(IdentityTypeEnum.ID, "429006198507104214");
+        payload.setIdentities(identities);
+        List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
+        PayloadFactoidParam factoid = new PayloadFactoidParam();
+        LinkedHashMap<String, String> loanDataMap = new LinkedHashMap<String, String>();
+        loanDataMap.put("web_address", "https://jx.tmall.com/?spm=a219t.7664554.1998457203.159.hWZb4X&ali_trackid=2:mm_122806507_911000261_109921750097:1584691132_121_1943880412");
+//        loanDataMap.put("web_address", "https://detail.tmall.com/item.htm?spm=a230r.1.14.1.57e28c97rRfHZK&id=568546227960&ns=1&abbucket=2");
+        loanDataMap.put("name", "ceshi");
+        factoid.setData(loanDataMap);
+        factoid.setUnique_id(randomUniqueId());
+        factoid.setType("evidence");
+        factoids.add(factoid);
+        payload.setFactoids(factoids);
+//        payload.setUrl("https://www.baidu.com");
+        payload.setUrl("https://y.qq.com/n/yqq/song/001jZ8uJ1OVCvb.html");
+        payload.setPlatform("QQ");
+        payload.setSinger("周深");
+        payload.setSong("有一件美好的事情将要发生");
+        payload.setAlbum("QQ");
+        ResultModel response = client.createMusicAttestation(payload);
+        System.out.println(response.getData());
+    }
+
+    @Test
+    public void testgetMusicInfo() {
+        ResultModel response = null;
+        try {
+            response = client.getMusicAttestationInfo("480678247831441408");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(Utils.objectToJson(response));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
     private String randomUniqueId() {
         return UUID.randomUUID().toString();
