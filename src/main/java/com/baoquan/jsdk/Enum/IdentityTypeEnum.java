@@ -3,8 +3,8 @@ package com.baoquan.jsdk.Enum;
 
 public enum IdentityTypeEnum {
 
-    ID("ID", "身份证号码"),
-    USCID("USCID", "统一社会信用代码"),
+    ID("ID", ""),
+    USCID("USCID", ""),
 
     ;
 
