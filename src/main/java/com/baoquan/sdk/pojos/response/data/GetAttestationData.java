@@ -26,6 +26,7 @@ public class GetAttestationData {
   private String hhf_number;
   private String ghf_number;
   private String html;
+  private long completed_at;
 
   public String getNo() {
     return no;
@@ -137,5 +138,13 @@ public class GetAttestationData {
 
   public void setHtml(String html) {
     this.html = html;
+  }
+
+  public long getCompleted_at() {
+    return completed_at;
+  }
+
+  public void setCompleted_at(long completed_at) {
+    this.completed_at = completed_at;
   }
 }
