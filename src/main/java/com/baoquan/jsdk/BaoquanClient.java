@@ -278,9 +278,14 @@ public class BaoquanClient {
         String signature = "";
         long tonce = System.currentTimeMillis();
         try {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("attestationId", ano);
-            map.put("tonce", tonce);
+            Map map = new TreeMap() {
+                {
+                    put("access_key", accessKey);
+                    put("tonce", tonce);
+                    put("no", ano);
+
+                }
+            };
             String data = Utils.objectToJson(map);
             signature = Utils.sign(privateKeyData, data);
         } catch (Exception e) {
