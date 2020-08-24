@@ -183,6 +183,10 @@ public class BaoquanClient {
         return json("attestations/url/img", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel getAttestationUrlInfo(UrlAttestationStep2Param payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateAttestation4UrlConfirmPayloadMap(payload);
+        return json("attestations/url/info", payloadMap, null, ResultModel.class);
+    }
 
     public ResultModel createAttestationWithUrl(UrlAttestationParam payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateAttestation4UrlPayloadMap(payload);
@@ -219,9 +223,9 @@ public class BaoquanClient {
 
     private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("unique_id", payload.getUnique_id());
-        payloadMap.put("template_id", payload.getTemplate_id());
-        payloadMap.put("identities", payload.getIdentities());
+//        payloadMap.put("unique_id", payload.getUnique_id());
+//        payloadMap.put("template_id", payload.getTemplate_id());
+//        payloadMap.put("identities", payload.getIdentities());
         payloadMap.put("no", payload.getNo());
         return payloadMap;
     }
@@ -247,6 +251,7 @@ public class BaoquanClient {
         payloadMap.put("identities", payload.getIdentities());
         payloadMap.put("factoids", payload.getFactoids());
         payloadMap.put("evidenceType", payload.getEvidenceType());
+        payloadMap.put("nodeGroup", payload.getNodeGroup());
         return payloadMap;
     }
 
