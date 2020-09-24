@@ -279,6 +279,28 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildCreateImportArticleAddMap(ImportArticleAddParam importArticleAddParam) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("title", importArticleAddParam.getTitle());
+        payloadMap.put("body", importArticleAddParam.getBody());
+        payloadMap.put("postTime", importArticleAddParam.getPostTime());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateUrlArticleAddMap(UrlArticleAddParam urlArticleAddParam) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("platform", urlArticleAddParam.getPlatform());
+        payloadMap.put("url",urlArticleAddParam.getUrl());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateDoMonitorImgMap(DoMonitorParam doMonitorParam) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("resourceList", doMonitorParam.getResourceList());
+        payloadMap.put("callbackUrl",doMonitorParam.getCallbackUrl());
+        return payloadMap;
+    }
+
     public String attestationAccessUrl(String ano) throws ServerException {
         String signature = "";
         long tonce = System.currentTimeMillis();
@@ -330,6 +352,18 @@ public class BaoquanClient {
             throw new IllegalArgumentException("attachment filename can not be empty");
         }
         streamBodyMap.put("attachment", attachment);
+        return streamBodyMap;
+    }
+
+    private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
+        Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
+        if (attachment.getContentType() != ContentType.DEFAULT_BINARY) {
+            throw new IllegalArgumentException("imagefile content type is invalid");
+        }
+        if (StringUtils.isEmpty(attachment.getFilename())) {
+            throw new IllegalArgumentException("imagefile filename can not be empty");
+        }
+        streamBodyMap.put("imagefile", attachment);
         return streamBodyMap;
     }
 
@@ -450,5 +484,30 @@ public class BaoquanClient {
         }
     }
 
+    private ResultModel monitorImgAdd(ByteArrayBody imagefile) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        Map<String, ByteArrayBody> streamBodyMap = buildMonitorFile(imagefile);
+        return json("monitorImgAdd", payloadMap, streamBodyMap, ResultModel.class);
+    }
+
+    private ResultModel importArticleAdd(ImportArticleAddParam importArticleAddParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateImportArticleAddMap(importArticleAddParam);
+        return json("importArticleAdd", payloadMap, null, ResultModel.class);
+    }
+
+    private ResultModel urlArticleAdd(UrlArticleAddParam urlArticleAddParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateUrlArticleAddMap(urlArticleAddParam);
+        return json("urlArticleAdd", payloadMap, null, ResultModel.class);
+    }
+
+    private ResultModel doMonitorImg(DoMonitorParam doMonitorParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateDoMonitorImgMap(doMonitorParam);
+        return json("doMonitorImg", payloadMap, null, ResultModel.class);
+    }
+
+    private ResultModel doMonitorArticle(DoMonitorParam doMonitorParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateDoMonitorImgMap(doMonitorParam);
+        return json("doMonitorArticle", payloadMap, null, ResultModel.class);
+    }
 
 }
