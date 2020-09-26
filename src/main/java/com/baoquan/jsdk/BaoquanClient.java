@@ -484,28 +484,28 @@ public class BaoquanClient {
         }
     }
 
-    private ResultModel monitorImgAdd(ByteArrayBody imagefile) throws ServerException {
+    public ResultModel monitorImgAdd(ByteArrayBody imagefile) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         Map<String, ByteArrayBody> streamBodyMap = buildMonitorFile(imagefile);
         return json("monitorImgAdd", payloadMap, streamBodyMap, ResultModel.class);
     }
 
-    private ResultModel importArticleAdd(ImportArticleAddParam importArticleAddParam) throws ServerException {
+    public ResultModel importArticleAdd(ImportArticleAddParam importArticleAddParam) throws ServerException {
         Map<String, Object> payloadMap = buildCreateImportArticleAddMap(importArticleAddParam);
         return json("importArticleAdd", payloadMap, null, ResultModel.class);
     }
 
-    private ResultModel urlArticleAdd(UrlArticleAddParam urlArticleAddParam) throws ServerException {
+    public ResultModel urlArticleAdd(UrlArticleAddParam urlArticleAddParam) throws ServerException {
         Map<String, Object> payloadMap = buildCreateUrlArticleAddMap(urlArticleAddParam);
         return json("urlArticleAdd", payloadMap, null, ResultModel.class);
     }
 
-    private ResultModel doMonitorImg(DoMonitorParam doMonitorParam) throws ServerException {
+    public ResultModel doMonitorImg(DoMonitorParam doMonitorParam) throws ServerException {
         Map<String, Object> payloadMap = buildCreateDoMonitorImgMap(doMonitorParam);
         return json("doMonitorImg", payloadMap, null, ResultModel.class);
     }
 
-    private ResultModel doMonitorArticle(DoMonitorParam doMonitorParam) throws ServerException {
+    public ResultModel doMonitorArticle(DoMonitorParam doMonitorParam) throws ServerException {
         Map<String, Object> payloadMap = buildCreateDoMonitorImgMap(doMonitorParam);
         return json("doMonitorArticle", payloadMap, null, ResultModel.class);
     }
