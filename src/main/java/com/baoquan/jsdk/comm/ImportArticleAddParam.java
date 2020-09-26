@@ -5,13 +5,10 @@ import javax.validation.constraints.NotNull;
 
 public class ImportArticleAddParam {
 
-    @NotBlank(message = "文章标题不能为空")
     private String title;
 
-    @NotBlank(message = "文章正文不能为空")
     private String body;
 
-    @NotNull(message = "发布时间，时间戳（s）不能为空")
     private Long postTime;
 
     public String getTitle() {
