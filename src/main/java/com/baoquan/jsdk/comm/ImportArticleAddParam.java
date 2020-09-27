@@ -1,14 +1,14 @@
 package com.baoquan.jsdk.comm;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-public class ImportArticleAddParam {
+public class ImportArticleAddParam implements Serializable {
 
     private String title;
 
     private String body;
 
+    //当前时间（秒）
     private Long postTime;
 
     public String getTitle() {

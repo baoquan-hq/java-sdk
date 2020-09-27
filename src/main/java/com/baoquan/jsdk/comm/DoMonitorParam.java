@@ -1,8 +1,8 @@
 package com.baoquan.jsdk.comm;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-public class DoMonitorParam {
+public class DoMonitorParam implements Serializable {
 
     //例子：[{"times":10,"extId":"10"},{"times":9,"extId":"9"},{"times":4,"extId":"8"}]
     private String resourceList;

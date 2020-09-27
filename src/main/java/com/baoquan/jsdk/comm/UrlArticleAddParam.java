@@ -1,8 +1,9 @@
 package com.baoquan.jsdk.comm;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-public class UrlArticleAddParam {
+public class UrlArticleAddParam implements Serializable {
 
     @NotBlank(message = "平台代码不能为空, (weixin,zhihu,jianshu,douban,weibo,toutiao)")
     private String platform;
