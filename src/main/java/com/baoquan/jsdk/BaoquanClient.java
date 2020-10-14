@@ -357,12 +357,6 @@ public class BaoquanClient {
 
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
-        if (attachment.getContentType() != ContentType.DEFAULT_BINARY) {
-            throw new IllegalArgumentException("imagefile content type is invalid");
-        }
-        if (StringUtils.isEmpty(attachment.getFilename())) {
-            throw new IllegalArgumentException("imagefile filename can not be empty");
-        }
         streamBodyMap.put("imagefile", attachment);
         return streamBodyMap;
     }
