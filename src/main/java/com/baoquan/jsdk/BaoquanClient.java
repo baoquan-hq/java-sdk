@@ -22,7 +22,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.bouncycastle.util.io.pem.PemReader;
 
-import javax.validation.constraints.NotBlank;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -290,14 +289,33 @@ public class BaoquanClient {
     private Map<String, Object> buildCreateUrlArticleAddMap(UrlArticleAddParam urlArticleAddParam) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("platform", urlArticleAddParam.getPlatform());
-        payloadMap.put("url",urlArticleAddParam.getUrl());
+        payloadMap.put("url", urlArticleAddParam.getUrl());
         return payloadMap;
     }
 
     private Map<String, Object> buildCreateDoMonitorImgMap(DoMonitorParam doMonitorParam) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("resourceList", doMonitorParam.getResourceList());
-        payloadMap.put("callbackUrl",doMonitorParam.getCallbackUrl());
+        payloadMap.put("callbackUrl", doMonitorParam.getCallbackUrl());
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateJudicialPayloadMap(EvidenceJudicialParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("anos", payload.getAnos());
+        payloadMap.put("name", payload.getName());
+        payloadMap.put("evidenceDesc", payload.getEvidenceDesc());
+        payloadMap.put("evidenceUseType", payload.getEvidenceUseType());
+        payloadMap.put("address", payload.getAddress());
+
+        return payloadMap;
+    }
+
+    private Map<String, Object> buildCreateNotarizationPayloadMap(EvidenceNotarizationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("anos", payload.getAnos());
+        payloadMap.put("name", payload.getName());
+        payloadMap.put("address", payload.getAddress());
         return payloadMap;
     }
 
@@ -357,6 +375,12 @@ public class BaoquanClient {
 
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
+        if(null == attachment){
+            throw new IllegalArgumentException("请上传文件");
+        }
+        if (StringUtils.isEmpty(attachment.getFilename())) {
+            throw new IllegalArgumentException("attachment filename can not be empty");
+        }
         streamBodyMap.put("imagefile", attachment);
         return streamBodyMap;
     }
@@ -504,4 +528,20 @@ public class BaoquanClient {
         return json("doMonitorArticle", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel createJudicial(EvidenceJudicialParam evidenceJudicialParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateJudicialPayloadMap(evidenceJudicialParam);
+        return json("evidence/judicial", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel createNotarization(EvidenceNotarizationParam evidenceNotarizationParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateNotarizationPayloadMap(evidenceNotarizationParam);
+        return json("evidence/notarization", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel uploadAttestationHashFile(String ano, ByteArrayBody attachment) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("anos", ano);
+        Map<String, ByteArrayBody> streamBodyMap = buildFile(attachment);
+        return json("evidence/hash", payloadMap, streamBodyMap, ResultModel.class);
+    }
 }
