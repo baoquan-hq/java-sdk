@@ -8,7 +8,6 @@ public class ImportArticleAddParam implements Serializable {
 
     private String body;
 
-    //当前时间（秒）
     private Long postTime;
 
     public String getTitle() {

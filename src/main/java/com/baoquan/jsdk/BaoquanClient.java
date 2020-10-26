@@ -146,6 +146,13 @@ public class BaoquanClient {
         return file("attestations/download", payloadMap);
     }
 
+    public ResultModel downloadPdf(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("attestations/pdf/download", payloadMap,null,ResultModel.class);
+    }
+
+
     public ResultModel attestationInfo(String ano) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("ano", ano);
@@ -307,6 +314,8 @@ public class BaoquanClient {
         payloadMap.put("evidenceDesc", payload.getEvidenceDesc());
         payloadMap.put("evidenceUseType", payload.getEvidenceUseType());
         payloadMap.put("address", payload.getAddress());
+        payloadMap.put("userName", payload.getUserName());
+        payloadMap.put("userPhone", payload.getUserPhone());
 
         return payloadMap;
     }
@@ -316,6 +325,9 @@ public class BaoquanClient {
         payloadMap.put("anos", payload.getAnos());
         payloadMap.put("name", payload.getName());
         payloadMap.put("address", payload.getAddress());
+        payloadMap.put("userName", payload.getUserName());
+        payloadMap.put("userPhone", payload.getUserPhone());
+
         return payloadMap;
     }
 
@@ -376,7 +388,7 @@ public class BaoquanClient {
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
         if(null == attachment){
-            throw new IllegalArgumentException("请上传文件");
+            throw new IllegalArgumentException("Please upload the file");
         }
         if (StringUtils.isEmpty(attachment.getFilename())) {
             throw new IllegalArgumentException("attachment filename can not be empty");
@@ -540,7 +552,7 @@ public class BaoquanClient {
 
     public ResultModel uploadAttestationHashFile(String ano, ByteArrayBody attachment) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("anos", ano);
+        payloadMap.put("ano", ano);
         Map<String, ByteArrayBody> streamBodyMap = buildFile(attachment);
         return json("evidence/hash", payloadMap, streamBodyMap, ResultModel.class);
     }

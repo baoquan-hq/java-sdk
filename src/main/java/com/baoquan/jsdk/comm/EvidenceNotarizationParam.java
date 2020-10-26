@@ -8,6 +8,9 @@ public class EvidenceNotarizationParam {
 
     private String address;
 
+    private String userName;
+    private String userPhone;
+
     public String getAnos() {
         return anos;
     }
@@ -30,5 +33,21 @@ public class EvidenceNotarizationParam {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 }
