@@ -13,6 +13,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MIME;
@@ -20,9 +22,18 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.bouncycastle.util.io.pem.PemReader;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import java.io.*;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -497,7 +508,8 @@ public class BaoquanClient {
         }
         httpPost.setEntity(multipartEntityBuilder.build());
         // execute http json
-        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+//        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+        CloseableHttpClient closeableHttpClient = createSSLClientDefault();
         CloseableHttpResponse closeableHttpResponse;
         try {
             closeableHttpResponse = closeableHttpClient.execute(httpPost);
@@ -507,6 +519,24 @@ public class BaoquanClient {
         return closeableHttpResponse;
     }
 
+    public static CloseableHttpClient createSSLClientDefault() {
+        try {
+            SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+                //信任所有
+                @Override
+                public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    return true;
+                }
+            }).build();
+
+            HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,hostnameVerifier);
+            return HttpClients.custom().setSSLSocketFactory(sslsf).build();
+        } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+            e.printStackTrace();
+        }
+        return HttpClients.createDefault();
+    }
 
     private void checkSha256(String sha256) {
         if (StringUtils.isBlank(sha256) || sha256.length() != 64 || !sha256.matches("[a-z0-9]*")) {
