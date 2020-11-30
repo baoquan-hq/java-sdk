@@ -439,14 +439,7 @@ public class BaoquanClient {
         return String.format("%s/attestations/%s?accessKey=%s&signature=%s&tonce=%d", getHost(), ano, getAccessKey(), signature, tonce);
     }
 
-    /**
-     * create attestation with attachments, one factoid can have more than one attachments
-     *
-     * @param payload {@link CreateAttestationPayload}
-     *                //   * @param attachments attachments map, the key is the index of corresponding factoid in factoid set
-     * @return {@link CreateAttestationResponse}
-     * @throws ServerException {@link ServerException}
-     */
+
     public kycEnterpriseResponse kycEnterprise(KycEnterprisePayload payload, ByteArrayBody businessFile) throws ServerException {
         // checkCreateAttestationPayload(payload);
         Map<String, Object> payloadMap = buildKycEnterprisePayloadMap(payload);
@@ -1142,10 +1135,7 @@ public class BaoquanClient {
 //        return json("contract/signGroup", payloadMap, null, ResultResponse.class);
 //    }
 
-    /**
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
+
     public ListContractResponse queryList(ContractListPayload payload) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("start", payload.getStart());
@@ -1169,13 +1159,7 @@ public class BaoquanClient {
     }
 
 
-    /**
-     * senduthorizationVerifyCode
-     *
-     * @param phone phone
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
+
     public ResultResponse sendAuthorizationVerifyCode(String phone, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("phone", phone);
@@ -1214,14 +1198,6 @@ public class BaoquanClient {
         return json("contract/uploadPdf", payloadMap, streamBodyMap, UploadContractResponse.class);
     }
 
-    /**
-     * send VerifyCode
-     *
-     * @param contractId contractId
-     * @param phone      phone
-     * @return CloseableHttpResponse
-     * @throws ServerException ServerException
-     */
     public ResultResponse sendVerifyCode(String contractId, String phone, String type) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("contract_id", contractId);
