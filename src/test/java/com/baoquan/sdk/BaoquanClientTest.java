@@ -4,6 +4,8 @@ import com.baoquan.sdk.exceptions.ServerException;
 import com.baoquan.sdk.pojos.payload.*;
 import com.baoquan.sdk.pojos.response.*;
 import com.baoquan.sdk.pojos.response.data.GetAttestationUrlData;
+import com.baoquan.sdk.utils.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -1827,4 +1829,10 @@ public class BaoquanClientTest {
         System.out.println(map.get("status"));
     }
 
+
+    @Test
+    public void textGetCfca() throws ServerException, JsonProcessingException {
+        ResultModel response = client.getCfca("0","7","刘尧尧","320321199409243619","");
+        System.out.print(Utils.objectToJson(response));
+    }
 }

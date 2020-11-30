@@ -1268,4 +1268,13 @@ public class BaoquanClient {
         return json("AttestationNovel/deductAndRecord", map, null, Map.class);
     }
 
+    public ResultModel getCfca(String identType, String customerType, String userName,String idCard, String caPassword) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("identType", identType);
+        payloadMap.put("customerType", customerType);
+        payloadMap.put("userName", userName);
+        payloadMap.put("idCard", idCard);
+        payloadMap.put("caPassword", caPassword);
+        return json("users/cfca", payloadMap, null, ResultModel.class);
+    }
 }
