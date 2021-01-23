@@ -1,5 +1,6 @@
 package com.baoquan.jsdk;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baoquan.jsdk.comm.*;
 import com.baoquan.jsdk.exceptions.ClientException;
 import com.baoquan.jsdk.exceptions.ServerException;
@@ -215,6 +216,33 @@ public class BaoquanClient {
         return json("process/token", payloadMap, null, ResultModel.class);
     }
 
+    public JSONObject getTaskList(Integer page_num, Integer page_size) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("pageNum", page_num + "");
+        payloadMap.put("pageSize", page_size + "");
+        return this.Tojson("task/list", payloadMap, (Map)null);
+    }
+
+    public JSONObject taskAdd(String mark_id) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("markId", mark_id);
+        return this.Tojson("task/add", payloadMap, (Map)null);
+    }
+
+    public DownloadAttestationInfo taskDownload(String short_path,String mark_id) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("shortPath", short_path);
+        payloadMap.put("markId", mark_id);
+        return this.file("task/download", payloadMap);
+    }
+
+    public JSONObject taskRetry(String mark_id) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("markId", mark_id);
+        return this.Tojson("task/retry", payloadMap, (Map)null);
+    }
+
+
     public ResultModel getProcessInfo(String ano) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
         payloadMap.put("ano", ano);
@@ -406,6 +434,32 @@ public class BaoquanClient {
         }
         streamBodyMap.put("imagefile", attachment);
         return streamBodyMap;
+    }
+
+    private JSONObject Tojson(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap) throws ServerException {
+        String requestId = this.requestIdGenerator.createRequestId();
+        CloseableHttpResponse closeableHttpResponse = this.post(requestId, apiName, payload, streamBodyMap);
+        int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+        HttpEntity httpEntity = closeableHttpResponse.getEntity();
+
+        String response;
+        try {
+            response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+            closeableHttpResponse.close();
+        } catch (IOException var12) {
+            throw new ClientException(var12);
+        }
+
+        if (statusCode == 200) {
+            try {
+                JSONObject responseObject = JSONObject.parseObject(response);
+                return responseObject;
+            } catch (Exception var11) {
+                throw new ServerException(requestId, "Unknown error", System.currentTimeMillis());
+            }
+        } else {
+            throw new ServerException(requestId, response, System.currentTimeMillis());
+        }
     }
 
     private <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
