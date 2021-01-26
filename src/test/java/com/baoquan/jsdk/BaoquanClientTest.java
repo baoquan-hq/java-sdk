@@ -1,6 +1,7 @@
 package com.baoquan.jsdk;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baoquan.jsdk.Enum.IdentityTypeEnum;
 import com.baoquan.jsdk.comm.*;
 import com.baoquan.jsdk.exceptions.ServerException;
@@ -30,18 +31,25 @@ public class BaoquanClientTest {
     public void initClient() {
         client = new BaoquanClient();
 //        client.setHost("https://api.baoquan.com");
-        client.setHost("http://192.168.3.98:9090");
-//        client.setHost("http://localhost:9090");
+ //       client.setHost("http://192.168.3.98:9090");
+        client.setHost("http://localhost:9090");
         client.setAccessKey("ceshikey");
         client.setVersion("v3");
         try {
 //            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
-            client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
+ //           client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
+            client.setPemPath("D:\\zl\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Test
+    public void test11() throws ServerException {
+        JSONObject response = client.getTaskList(1,2);
+        System.out.println(client.getHost()+"  "+client.getAccessKey()+" "+client.getPemPath()+"  "+client.getVersion()+"  "+client.getRequestIdGenerator().createRequestId());
+        System.out.println(response);
+    }
 
     @Test
     public void testCreateAttestation() {
