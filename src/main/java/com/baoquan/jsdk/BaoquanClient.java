@@ -241,7 +241,11 @@ public class BaoquanClient {
         payloadMap.put("markId", mark_id);
         return this.Tojson("task/retry", payloadMap, (Map)null);
     }
-
+    public JSONObject taskSearch(String mark_id) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("markId", mark_id);
+        return this.Tojson("task/search", payloadMap, (Map)null);
+    }
 
     public ResultModel getProcessInfo(String ano) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
