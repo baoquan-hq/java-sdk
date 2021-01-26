@@ -255,6 +255,13 @@ public class BaoquanClient {
         return json("process/stop", payloadMap, null, ResultModel.class);
     }
 
+
+    public ResultModel cancelProcess(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("process/cancel", payloadMap, null, ResultModel.class);
+    }
+
     public ResultModel createMusicAttestation(MusicAttestationParam payload) throws ServerException {
         Map<String, Object> payloadMap = buildCreateMusicAttestationPayloadMap(payload);
         return json("attestations/music", payloadMap, null, ResultModel.class);
@@ -462,7 +469,8 @@ public class BaoquanClient {
         }
     }
 
-    private <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+
+    public  <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
         CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
         int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
@@ -576,7 +584,6 @@ public class BaoquanClient {
     public static CloseableHttpClient createSSLClientDefault() {
         try {
             SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                //信任所有
                 @Override
                 public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
                     return true;
