@@ -229,9 +229,9 @@ public class BaoquanClient {
         return this.Tojson("task/add", payloadMap, (Map)null);
     }
 
-    public DownloadAttestationInfo taskDownload(String short_path,String mark_id) throws ServerException {
+    public DownloadAttestationInfo taskDownload(String download_type,String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
-        payloadMap.put("shortPath", short_path);
+        payloadMap.put("downloadType", download_type);
         payloadMap.put("markId", mark_id);
         return this.file("task/download", payloadMap);
     }
