@@ -131,10 +131,11 @@ public class BaoquanClient {
      * @throws ServerException {@link ServerException}
      */
     public ResultModel createAttestationWithSha256(HashAttestationParam payload) throws ServerException {
-
         Map<String, Object> payloadMap = buildCreateAttestationPayloadMap(payload);
         checkSha256(payload.getSha256());
         payloadMap.put("sha256", payload.getSha256());
+        if (StringUtils.isNotBlank(payload.getSm3()))
+            payloadMap.put("sm3", payload.getSm3());
         return json("attestations/hash", payloadMap, null, ResultModel.class);
     }
 
@@ -158,10 +159,10 @@ public class BaoquanClient {
         return file("attestations/download", payloadMap);
     }
 
-    public ResultModel downloadPdf(String ano) throws ServerException {
+    public ResultModel downloadPdf(String no) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
-        payloadMap.put("ano", ano);
-        return json("attestations/pdf/download", payloadMap,null,ResultModel.class);
+        payloadMap.put("no", no);
+        return json("attestations/pdf/download", payloadMap, null, ResultModel.class);
     }
 
 
@@ -220,16 +221,16 @@ public class BaoquanClient {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("pageNum", page_num + "");
         payloadMap.put("pageSize", page_size + "");
-        return this.Tojson("task/list", payloadMap, (Map)null);
+        return this.Tojson("task/list", payloadMap, (Map) null);
     }
 
     public JSONObject taskAdd(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/add", payloadMap, (Map)null);
+        return this.Tojson("task/add", payloadMap, (Map) null);
     }
 
-    public DownloadAttestationInfo taskDownload(String short_path,String mark_id) throws ServerException {
+    public DownloadAttestationInfo taskDownload(String short_path, String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("shortPath", short_path);
         payloadMap.put("markId", mark_id);
@@ -239,7 +240,7 @@ public class BaoquanClient {
     public JSONObject taskRetry(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/retry", payloadMap, (Map)null);
+        return this.Tojson("task/retry", payloadMap, (Map) null);
     }
 
 
@@ -433,7 +434,7 @@ public class BaoquanClient {
 
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
-        if(null == attachment){
+        if (null == attachment) {
             throw new IllegalArgumentException("Please upload the file");
         }
         if (StringUtils.isEmpty(attachment.getFilename())) {
@@ -470,7 +471,7 @@ public class BaoquanClient {
     }
 
 
-    public  <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+    public <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
         CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
         int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
@@ -591,7 +592,7 @@ public class BaoquanClient {
             }).build();
 
             HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,hostnameVerifier);
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
             return HttpClients.custom().setSSLSocketFactory(sslsf).build();
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
             e.printStackTrace();
