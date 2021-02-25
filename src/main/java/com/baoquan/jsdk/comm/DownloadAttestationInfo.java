@@ -11,6 +11,8 @@ public class DownloadAttestationInfo implements Serializable {
     private String fileName;
     private InputStream fileInputStream;
 
+    private String fileType;
+
     public String getFileName() {
         return fileName;
     }
@@ -25,5 +27,13 @@ public class DownloadAttestationInfo implements Serializable {
 
     public void setFileInputStream(InputStream fileInputStream) {
         this.fileInputStream = fileInputStream;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

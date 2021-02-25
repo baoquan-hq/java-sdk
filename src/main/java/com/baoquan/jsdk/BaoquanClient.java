@@ -221,28 +221,32 @@ public class BaoquanClient {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("pageNum", page_num + "");
         payloadMap.put("pageSize", page_size + "");
-        return this.Tojson("task/list", payloadMap, (Map) null);
+        return this.Tojson("task/list", payloadMap, (Map)null);
     }
 
     public JSONObject taskAdd(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/add", payloadMap, (Map) null);
+        return this.Tojson("task/add", payloadMap, (Map)null);
     }
 
-    public DownloadAttestationInfo taskDownload(String short_path, String mark_id) throws ServerException {
+    public DownloadAttestationInfo taskDownload(String download_type,String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
-        payloadMap.put("shortPath", short_path);
+        payloadMap.put("downloadType", download_type);
         payloadMap.put("markId", mark_id);
-        return this.file("task/download", payloadMap);
+        return this.Tofile("task/download", payloadMap);
     }
 
     public JSONObject taskRetry(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/retry", payloadMap, (Map) null);
+        return this.Tojson("task/retry", payloadMap, (Map)null);
     }
-
+    public JSONObject taskSearch(String mark_id) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap();
+        payloadMap.put("markId", mark_id);
+        return this.Tojson("task/search", payloadMap, (Map)null);
+    }
 
     public ResultModel getProcessInfo(String ano) throws ServerException {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
@@ -434,7 +438,7 @@ public class BaoquanClient {
 
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
-        if (null == attachment) {
+        if(null == attachment){
             throw new IllegalArgumentException("Please upload the file");
         }
         if (StringUtils.isEmpty(attachment.getFilename())) {
@@ -471,7 +475,7 @@ public class BaoquanClient {
     }
 
 
-    public <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+    public  <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
         CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
         int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
@@ -528,6 +532,42 @@ public class BaoquanClient {
         }
         return downloadFile;
     }
+
+    private DownloadAttestationInfo Tofile(String apiName, Map<String, Object> payload) throws ServerException {
+        String requestId = requestIdGenerator.createRequestId();
+        CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, null);
+        int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+        HttpEntity httpEntity = closeableHttpResponse.getEntity();
+        if (statusCode != HttpStatus.SC_OK) {
+            String response;
+            try {
+                response = IOUtils.toString(httpEntity.getContent(), Consts.UTF_8);
+            } catch (Exception e) {
+                throw new ClientException(e);
+            }
+            throw new ServerException(requestId, response, System.currentTimeMillis());
+        }
+        DownloadAttestationInfo downloadFile = new DownloadAttestationInfo();
+        String ctype=closeableHttpResponse.getFirstHeader("Content-Type").toString();
+        if(null!=ctype && ctype.contains("application/json")){
+             downloadFile.setFileType("application/json");
+        }else{
+             downloadFile.setFileType("application/zip");
+        }
+       /*  Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
+        Pattern pattern = Pattern.compile(".*filename=(.*).*");
+        Matcher matcher = pattern.matcher(header.getValue());
+        if (matcher.matches()) {
+            downloadFile.setFileName(matcher.group(1));
+        }*/
+        try {
+            downloadFile.setFileInputStream(httpEntity.getContent());
+        } catch (IOException e) {
+            throw new ServerException(requestId, e.getMessage(), System.currentTimeMillis());
+        }
+        return downloadFile;
+    }
+
 
     private CloseableHttpResponse post(String requestId, String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap) {
         String path = String.format("/api/%s/%s", version, apiName);
@@ -592,7 +632,7 @@ public class BaoquanClient {
             }).build();
 
             HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,hostnameVerifier);
             return HttpClients.custom().setSSLSocketFactory(sslsf).build();
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
             e.printStackTrace();
