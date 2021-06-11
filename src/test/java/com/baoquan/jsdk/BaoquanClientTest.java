@@ -439,7 +439,46 @@ public class BaoquanClientTest {
     public void testgetMusicInfo() {
         ResultModel response = null;
         try {
-            response = client.getMusicAttestationInfo("480678247831441408");
+            response = client.getMusicAttestationInfo("609032990105821185");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(Utils.objectToJson(response));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void createECommerceAttestation() throws ServerException {
+        ECommerceAttestationParam payload = new ECommerceAttestationParam();
+        payload.setUnique_id(randomUniqueId());// 设置保全唯一码
+        payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");// 设置模板id
+        Map<IdentityTypeEnum, String> identities = new HashMap<>();
+        identities.put(IdentityTypeEnum.ID, "429006198507104214");
+        payload.setIdentities(identities);
+        List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
+        PayloadFactoidParam factoid = new PayloadFactoidParam();
+        LinkedHashMap<String, String> loanDataMap = new LinkedHashMap<String, String>();
+        loanDataMap.put("web_address", "xxx");
+        loanDataMap.put("name", "ceshi");
+        factoid.setData(loanDataMap);
+        factoid.setUnique_id(randomUniqueId());
+        factoid.setType("evidence");
+        factoids.add(factoid);
+        payload.setFactoids(factoids);
+        payload.setUrl("https://mobile.yangkeduo.com/goods.html?goods_id=192243255532");
+        payload.setPlatform("APPAUTOPDD");
+        ResultModel response = client.createECommerceAttestation(payload);
+        System.out.println(response.getData());
+    }
+
+    @Test
+    public void getECommerceInfo() {
+        ResultModel response = null;
+        try {
+            response = client.getECommerceAttestationInfo("610113122199805952");
         } catch (ServerException e) {
             e.printStackTrace();
         }

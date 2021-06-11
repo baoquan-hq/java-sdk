@@ -278,6 +278,17 @@ public class BaoquanClient {
         return json("music/info", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel createECommerceAttestation(ECommerceAttestationParam payload) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateECommerceAttestationPayloadMap(payload);
+        return json("attestations/ecommerce", payloadMap, null, ResultModel.class);
+    }
+
+    public ResultModel getECommerceAttestationInfo(String ano) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("ano", ano);
+        return json("attestations/ecommerce/info", payloadMap, null, ResultModel.class);
+    }
+
     private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
 //        payloadMap.put("unique_id", payload.getUnique_id());
@@ -326,6 +337,18 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildCreateECommerceAttestationPayloadMap(ECommerceAttestationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("unique_id", payload.getUnique_id());
+        payloadMap.put("template_id", payload.getTemplate_id());
+        payloadMap.put("identities", payload.getIdentities());
+        payloadMap.put("factoids", payload.getFactoids());
+        payloadMap.put("url", payload.getUrl());
+        payloadMap.put("platform", payload.getPlatform());
+        payloadMap.put("evidenceName", payload.getEvidenceName());
+        payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
+        return payloadMap;
+    }
 
     private Map<String, Object> buildCreateAttestationPayloadMap(BaseAttestationPayloadParam payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
