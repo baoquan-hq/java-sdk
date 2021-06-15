@@ -22,6 +22,8 @@ public class UrlAttestationParam extends BaseAttestationPayloadParam {
 
     private String callBackUrl;
 
+    private String taskType;
+
     public String getUrl() {
         return url;
     }
@@ -60,5 +62,13 @@ public class UrlAttestationParam extends BaseAttestationPayloadParam {
 
     public void setCallBackUrl(String callBackUrl) {
         this.callBackUrl = callBackUrl;
+    }
+
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
     }
 }

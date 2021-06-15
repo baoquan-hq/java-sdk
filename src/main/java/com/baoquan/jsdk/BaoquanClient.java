@@ -298,6 +298,7 @@ public class BaoquanClient {
         payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
         payloadMap.put("evidenceName", payload.getEvidenceName());
         payloadMap.put("mode", payload.getMode());
+        payloadMap.put("taskType", payload.getTaskType());
         return payloadMap;
     }
 
