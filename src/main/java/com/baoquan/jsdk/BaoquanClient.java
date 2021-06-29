@@ -524,7 +524,8 @@ public class BaoquanClient {
         Pattern pattern = Pattern.compile(".*filename=(.*).*");
         Matcher matcher = pattern.matcher(header.getValue());
         if (matcher.matches()) {
-            downloadFile.setFileName(matcher.group(1));
+            String filename = matcher.group(1);
+            downloadFile.setFileName(Utils.decode(filename));
         }
         try {
             downloadFile.setFileInputStream(httpEntity.getContent());

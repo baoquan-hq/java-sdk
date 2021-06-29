@@ -8,6 +8,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -77,5 +79,29 @@ public class Utils {
     }
     ObjectMapper objectMapper = new ObjectMapper();
     return objectMapper.readValue(json, t);
+  }
+
+  public static String encode(String filename) {
+    return encode(filename, "UTF-8");
+  }
+
+  public static String encode(String filename, String charset) {
+    try {
+      return URLEncoder.encode(filename, charset).replaceAll("\\+", "%20");
+    } catch (UnsupportedEncodingException e) {
+      return filename;
+    }
+  }
+
+  public static String decode(String filename) {
+    return decode(filename, "UTF-8");
+  }
+
+  public static String decode(String filename, String charset) {
+    try {
+      return URLDecoder.decode(filename, charset);
+    } catch (UnsupportedEncodingException e) {
+      return filename;
+    }
   }
 }
