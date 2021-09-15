@@ -221,16 +221,16 @@ public class BaoquanClient {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("pageNum", page_num + "");
         payloadMap.put("pageSize", page_size + "");
-        return this.Tojson("task/list", payloadMap, (Map)null);
+        return this.Tojson("task/list", payloadMap, (Map) null);
     }
 
     public JSONObject taskAdd(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/add", payloadMap, (Map)null);
+        return this.Tojson("task/add", payloadMap, (Map) null);
     }
 
-    public DownloadAttestationInfo taskDownload(String download_type,String mark_id) throws ServerException {
+    public DownloadAttestationInfo taskDownload(String download_type, String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("downloadType", download_type);
         payloadMap.put("markId", mark_id);
@@ -240,12 +240,13 @@ public class BaoquanClient {
     public JSONObject taskRetry(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/retry", payloadMap, (Map)null);
+        return this.Tojson("task/retry", payloadMap, (Map) null);
     }
+
     public JSONObject taskSearch(String mark_id) throws ServerException {
         Map<String, Object> payloadMap = new HashMap();
         payloadMap.put("markId", mark_id);
-        return this.Tojson("task/search", payloadMap, (Map)null);
+        return this.Tojson("task/search", payloadMap, (Map) null);
     }
 
     public ResultModel getProcessInfo(String ano) throws ServerException {
@@ -289,6 +290,11 @@ public class BaoquanClient {
         return json("attestations/ecommerce/info", payloadMap, null, ResultModel.class);
     }
 
+    public ResultModel createOrganization(OrganizationParam organizationParam) throws ServerException {
+        Map<String, Object> payloadMap = buildCreateOrganizationPayloadMap(organizationParam);
+        return json("organization", payloadMap, null, ResultModel.class);
+    }
+
     private Map<String, Object> buildCreateAttestation4UrlConfirmPayloadMap(UrlAttestationStep2Param payload) {
         Map<String, Object> payloadMap = new HashMap<String, Object>();
 //        payloadMap.put("unique_id", payload.getUnique_id());
@@ -321,6 +327,7 @@ public class BaoquanClient {
         payloadMap.put("factoids", payload.getFactoids());
         payloadMap.put("evidenceType", payload.getEvidenceType());
         payloadMap.put("nodeGroup", payload.getNodeGroup());
+        payloadMap.put("evidenceName", payload.getEvidenceName());
         return payloadMap;
     }
 
@@ -406,6 +413,16 @@ public class BaoquanClient {
         return payloadMap;
     }
 
+    private Map<String, Object> buildCreateOrganizationPayloadMap(OrganizationParam payload) {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("phoneNumber", payload.getPhoneNumber());
+        payloadMap.put("password", payload.getPassword());
+        payloadMap.put("realName", payload.getRealName());
+        payloadMap.put("orgCode", payload.getOrgCode());
+        payloadMap.put("contactName", payload.getContactName());
+        return payloadMap;
+    }
+
     public String attestationAccessUrl(String ano) throws ServerException {
         String signature = "";
         long tonce = System.currentTimeMillis();
@@ -462,7 +479,7 @@ public class BaoquanClient {
 
     private Map<String, ByteArrayBody> buildMonitorFile(ByteArrayBody attachment) {
         Map<String, ByteArrayBody> streamBodyMap = new HashMap<String, ByteArrayBody>();
-        if(null == attachment){
+        if (null == attachment) {
             throw new IllegalArgumentException("Please upload the file");
         }
         if (StringUtils.isEmpty(attachment.getFilename())) {
@@ -499,7 +516,7 @@ public class BaoquanClient {
     }
 
 
-    public  <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
+    public <T> T json(String apiName, Map<String, Object> payload, Map<String, ByteArrayBody> streamBodyMap, Class<T> responseClass) throws ServerException {
         String requestId = requestIdGenerator.createRequestId();
         CloseableHttpResponse closeableHttpResponse = post(requestId, apiName, payload, streamBodyMap);
         int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
@@ -572,11 +589,11 @@ public class BaoquanClient {
             throw new ServerException(requestId, response, System.currentTimeMillis());
         }
         DownloadAttestationInfo downloadFile = new DownloadAttestationInfo();
-        String ctype=closeableHttpResponse.getFirstHeader("Content-Type").toString();
-        if(null!=ctype && ctype.contains("application/json")){
-             downloadFile.setFileType("application/json");
-        }else{
-             downloadFile.setFileType("application/zip");
+        String ctype = closeableHttpResponse.getFirstHeader("Content-Type").toString();
+        if (null != ctype && ctype.contains("application/json")) {
+            downloadFile.setFileType("application/json");
+        } else {
+            downloadFile.setFileType("application/zip");
         }
        /*  Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
         Pattern pattern = Pattern.compile(".*filename=(.*).*");
@@ -656,7 +673,7 @@ public class BaoquanClient {
             }).build();
 
             HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,hostnameVerifier);
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
             return HttpClients.custom().setSSLSocketFactory(sslsf).build();
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
             e.printStackTrace();

@@ -10,6 +10,8 @@ public class ProcessAttestationParam extends BaseAttestationPayloadParam {
     @NotBlank(message = "nodeGroup不能为空")
     private String nodeGroup;
 
+    private String evidenceName;
+
     public String getEvidenceType() {
         return evidenceType;
     }
@@ -24,5 +26,13 @@ public class ProcessAttestationParam extends BaseAttestationPayloadParam {
 
     public void setNodeGroup(String nodeGroup) {
         this.nodeGroup = nodeGroup;
+    }
+
+    public String getEvidenceName() {
+        return evidenceName;
+    }
+
+    public void setEvidenceName(String evidenceName) {
+        this.evidenceName = evidenceName;
     }
 }
