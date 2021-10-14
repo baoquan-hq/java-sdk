@@ -31,14 +31,14 @@ public class BaoquanClientTest {
     public void initClient() {
         client = new BaoquanClient();
 //        client.setHost("https://api.baoquan.com");
- //       client.setHost("http://192.168.3.98:9090");
+//        client.setHost("http://192.168.3.98:9090");
         client.setHost("http://localhost:9090");
         client.setAccessKey("ceshikey");
         client.setVersion("v3");
         try {
 //            client.setPemPath("C:\\Users\\LA\\Desktop\\private_key.pem");
  //           client.setPemPath("E:\\dataqin\\java-sdk\\src\\main\\resources\\key.pem");
-            client.setPemPath("D:\\zl\\key.pem");
+            client.setPemPath("C:\\tmp\\key.pem");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -158,17 +158,17 @@ public class BaoquanClientTest {
     public void createAttestationWithUrl2() throws ServerException {
 
         UrlAttestationParam payload = new UrlAttestationParam();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
-        payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");
+        payload.setTemplate_id("6341edafb70d488a8be7269993b41be0");
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
         identities.put(IdentityTypeEnum.ID, "429006198507104214");
         payload.setIdentities(identities);
         List<PayloadFactoidParam> factoids = new ArrayList<PayloadFactoidParam>();
         PayloadFactoidParam factoid = new PayloadFactoidParam();
         LinkedHashMap<String, String> loanDataMap = new LinkedHashMap<String, String>();
-        loanDataMap.put("web_address", "https://jx.tmall.com/?spm=a219t.7664554.1998457203.159.hWZb4X&ali_trackid=2:mm_122806507_911000261_109921750097:1584691132_121_1943880412");
+        loanDataMap.put("web_address", "http://www.qdpinot.com");
 //        loanDataMap.put("web_address", "https://detail.tmall.com/item.htm?spm=a230r.1.14.1.57e28c97rRfHZK&id=568546227960&ns=1&abbucket=2");
         loanDataMap.put("name", "ceshi");
         factoid.setData(loanDataMap);
@@ -176,11 +176,11 @@ public class BaoquanClientTest {
         factoid.setType("evidence");
         factoids.add(factoid);
         payload.setFactoids(factoids);
-//        payload.setUrl("https://www.baidu.com");
-        payload.setUrl("https://www.w3school.com.cn");
+        payload.setUrl("http://www.qdpinot.com");
+//        payload.setUrl("https://www.w3school.com.cn");
         payload.setMode(1);
-        payload.setEvidenceName("测试取证");
-        payload.setEvidenceLabel("测试取证");
+        payload.setEvidenceName("test");
+        payload.setEvidenceLabel("test");
         ResultModel response = client.createAttestationWithUrl(payload);
         System.out.println(response.getData());
     }
@@ -189,7 +189,7 @@ public class BaoquanClientTest {
     public String createAttestationWithUrl() throws ServerException {
 
         UrlAttestationParam payload = new UrlAttestationParam();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
         payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");
@@ -229,7 +229,7 @@ public class BaoquanClientTest {
                     createAttestationWithUrl();
 //                    createAttestationWithUrlConfirm(createAttestationWithUrl());
                     countDownLatch.countDown();
-                    System.out.println("线程" + Thread.currentThread().getName() + "执行完成！");
+                    System.out.println("线程" + Thread.currentThread().getName() + "执行完成");
                 } catch (Exception e) {
                 }
             });
@@ -240,7 +240,7 @@ public class BaoquanClientTest {
 //    @Test
     public void createAttestationWithUrlConfirm(String no) throws ServerException {
         UrlAttestationStep2Param payload = new UrlAttestationStep2Param();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
         payload.setTemplate_id("4g8kLrgrr8AGTXKqUzW1rc");
@@ -256,7 +256,7 @@ public class BaoquanClientTest {
     @Test
     public void createAttestationWithUrlConfirm() throws ServerException {
         UrlAttestationStep2Param payload = new UrlAttestationStep2Param();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
         payload.setTemplate_id("4g8kLrgrr8AGTXKqUzW1rc");
@@ -272,7 +272,7 @@ public class BaoquanClientTest {
     @Test
     public void downloadImgWithUrlAttestation() throws ServerException {
         UrlAttestationStep2Param payload = new UrlAttestationStep2Param();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
         payload.setTemplate_id("4g8kLrgrr8AGTXKqUzW1rc");
@@ -300,12 +300,12 @@ public class BaoquanClientTest {
 
     public static void byteToFile(byte[] bytes, String path) {
         try {
-            // 根据绝对路径初始化文件
+            // 根据绝对路径初始化文
             File localFile = new File(path);
             if (!localFile.exists()) {
                 localFile.createNewFile();
             }
-            // 输出流
+            // 输出
             OutputStream os = new FileOutputStream(localFile);
             os.write(bytes);
             os.close();
@@ -342,6 +342,7 @@ public class BaoquanClientTest {
         payload.setTemplate_id("mqAkuZQwNZbpbrmVTob6Ss");
         payload.setUnique_id(randomUniqueId());
         payload.setEvidenceType("PHONE");
+        payload.setEvidenceName("测试");
         Map<IdentityTypeEnum, String> identities = new HashMap<IdentityTypeEnum, String>();
         identities.put(IdentityTypeEnum.ID, "15817112383");
         payload.setIdentities(identities);
@@ -407,7 +408,7 @@ public class BaoquanClientTest {
     public void createMusicAttestation() throws ServerException {
 
         MusicAttestationParam payload = new MusicAttestationParam();
-        // 设置保全唯一码
+        // 设置保全唯一
         payload.setUnique_id(randomUniqueId());
         // 设置模板id
         payload.setTemplate_id("4oE5JmY9SJqyieww75rYiW");
