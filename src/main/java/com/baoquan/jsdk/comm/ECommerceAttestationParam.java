@@ -14,6 +14,8 @@ public class ECommerceAttestationParam extends BaseAttestationPayloadParam {
 
     private String evidenceLabel;
 
+    private String publisher;
+
     private String type;
 
     public String getPlatform() {
@@ -54,5 +56,13 @@ public class ECommerceAttestationParam extends BaseAttestationPayloadParam {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 }
