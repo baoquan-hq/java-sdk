@@ -18,6 +18,8 @@ public class MusicAttestationParam extends BaseAttestationPayloadParam {
 
     private String album;   //专辑
 
+    private String type;   //类型
+
     public String getPlatform() {
         return platform;
     }
@@ -56,5 +58,13 @@ public class MusicAttestationParam extends BaseAttestationPayloadParam {
 
     public void setAlbum(String album) {
         this.album = album;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
