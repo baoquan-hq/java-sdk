@@ -342,6 +342,7 @@ public class BaoquanClient {
         payloadMap.put("song", payload.getSong());
         payloadMap.put("singer", payload.getSinger());
         payloadMap.put("album", payload.getAlbum());
+        payloadMap.put("type", payload.getType());
         return payloadMap;
     }
 
