@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.baoquan</groupId>
     <artifactId>eagle-sdk</artifactId>
-    <version>3.0.24</version>
+    <version>3.0.25</version>
     <name>eagle-sdk</name>
     <description>eagle-java-sdk</description>
     <url>https://new.baoquan.com</url>
