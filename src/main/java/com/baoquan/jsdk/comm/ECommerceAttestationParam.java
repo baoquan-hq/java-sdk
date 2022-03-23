@@ -18,6 +18,16 @@ public class ECommerceAttestationParam extends BaseAttestationPayloadParam {
 
     private String type;
 
+    private Boolean businessLicenseStatus;
+
+    public Boolean getBusinessLicenseStatus() {
+        return businessLicenseStatus;
+    }
+
+    public void setBusinessLicenseStatus(Boolean businessLicenseStatus) {
+        this.businessLicenseStatus = businessLicenseStatus;
+    }
+
     public String getPlatform() {
         return platform;
     }

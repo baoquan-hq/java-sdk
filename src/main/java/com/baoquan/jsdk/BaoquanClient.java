@@ -343,6 +343,7 @@ public class BaoquanClient {
         payloadMap.put("song", payload.getSong());
         payloadMap.put("singer", payload.getSinger());
         payloadMap.put("album", payload.getAlbum());
+        payloadMap.put("type", payload.getType());
         return payloadMap;
     }
 
@@ -358,6 +359,7 @@ public class BaoquanClient {
         payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
         payloadMap.put("type", payload.getType());
         payloadMap.put("publisher", payload.getPublisher());
+        payloadMap.put("businessLicenseStatus", payload.getBusinessLicenseStatus());
         return payloadMap;
     }
 
