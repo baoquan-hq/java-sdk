@@ -6,4 +6,5 @@ gradle.properties
 secring.gpg
 out/
 gradle
-
+gradlew
+gradlew.bat
