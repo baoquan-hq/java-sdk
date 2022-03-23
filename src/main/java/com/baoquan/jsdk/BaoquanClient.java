@@ -328,6 +328,7 @@ public class BaoquanClient {
         payloadMap.put("evidenceType", payload.getEvidenceType());
         payloadMap.put("nodeGroup", payload.getNodeGroup());
         payloadMap.put("evidenceName", payload.getEvidenceName());
+        payloadMap.put("tag", payload.getTag());
         return payloadMap;
     }
 
