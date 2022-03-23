@@ -358,6 +358,7 @@ public class BaoquanClient {
         payloadMap.put("evidenceLabel", payload.getEvidenceLabel());
         payloadMap.put("type", payload.getType());
         payloadMap.put("publisher", payload.getPublisher());
+        payloadMap.put("businessLicenseStatus", payload.getBusinessLicenseStatus());
         return payloadMap;
     }
 
