@@ -734,4 +734,11 @@ public class BaoquanClient {
         Map<String, ByteArrayBody> streamBodyMap = buildFile(attachment);
         return json("evidence/hash", payloadMap, streamBodyMap, ResultModel.class);
     }
+
+    public ResultModel getChainTransaction(String chain, String hash) throws ServerException {
+        Map<String, Object> payloadMap = new HashMap<String, Object>();
+        payloadMap.put("chain", chain);
+        payloadMap.put("hash", hash);
+        return json("chain/transaction", payloadMap, null, ResultModel.class);
+    }
 }
